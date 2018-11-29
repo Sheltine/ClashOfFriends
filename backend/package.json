@@ -1,0 +1,8 @@
+{
+  "name": "Coyote",
+  "version": "1.0.0",
+  "description": "Backend of Clash Of Friends",
+  "main": "index.js",
+  "author": "Julien Biefer, Léo Cortès, Johanna Melly",
+  "license": "MIT"
+}
