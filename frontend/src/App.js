@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import { Link } from 'react-router-dom'
 import './App.css';
-import Routing from './Routing'
-
+import Connexion from './components/Form_connexion'
 
 class App extends Component {
   render() {
@@ -17,7 +16,7 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to reload.
             <Link to='/loul'>LOUL</Link>
-
+          <Connexion />
           </p>
           <a
             className="App-link"
