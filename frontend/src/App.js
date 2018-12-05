@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import { Link } from 'react-router-dom'
-import './App.css';
 import Connexion from './components/Form_connexion'
+import Inscription from './components/Form_inscription'
 
+import 'semantic-ui-css/semantic.min.css';
 class App extends Component {
   render() {
     return (
@@ -16,7 +17,7 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to reload.
             <Link to='/loul'>LOUL</Link>
-          <Connexion />
+          <Inscription />
           </p>
           <a
             className="App-link"
