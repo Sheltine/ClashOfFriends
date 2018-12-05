@@ -16,12 +16,20 @@ class DBAccess {
         this.User = mongoose.model('User', userSchama);
 
         /*
-        this.u = new this.User({username: 'amadeous', email: 'test@teste.me', avatarImg: "Encoreuntest.jpg", firstname: 'J', lastname: 'B', password: 'coucou1234'});
-        this.u.save(function (err) {
+        this.u = new this.User({username: 'jade', email: 'jade@teste.me', avatarImg: "Encoreuntest.jpg", firstname: 'J', lastname: 'B', password: 'coucou1234', birthdate: Date.now()});
+        this.u.save(function (err, u) {
             if (err) return console.error(err);
-            console.log('Youpie !');
+            console.log(`${ u.username } added to DB !`);
           });
           */
+    }
+
+    getUsers() {
+        return this.User.find();
+    }
+
+    getUser(params) {
+        return this.User.findOne(params);
     }
 }
 
@@ -71,7 +79,7 @@ const userSchama = new Schema({
             validator: function(p) { return p.length > 8; },
             message: "Message must be >= 8 chars"
         } },
-    birthDate: {
+    birthdate: {
         type: Date,
         required: true
     },
@@ -79,7 +87,7 @@ const userSchama = new Schema({
         type: Date,
         required: true,
         default: Date.now() },
-    updateDate: {
+    lastUpdateDate: {
         type: Date,
         required: true,
         default: Date.now() }
