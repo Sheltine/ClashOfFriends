@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Checkbox } from 'semantic-ui-react'
+import {FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap'
+
 
 
 
@@ -37,20 +39,34 @@ class FormConnexion extends Component {
 
   render() {
     return (
-        <Form onSubmit={this.handleSubmit}>
-            <Form.Field>
-            <label>Username</label>
-            <input name="username" value={this.state.username} onChange={this.handleInputChange} placeholder='Username' />
-            </Form.Field>
-            <Form.Field>
-            <label>Password</label>
-            <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange} placeholder='Password' />
-            </Form.Field>
-            <Form.Field>
-            <Checkbox label='I agree to the Terms and Conditions' />
-            </Form.Field>
-            <Button type='submit'>Submit</Button>
-      </Form>            
+        
+        <div className="Centered-form">
+            <form onSubmit={this.handleSubmit}>
+            <FormGroup>
+                <ControlLabel>Username</ControlLabel>
+                <FormControl
+                    type="text"
+                    value={this.state.username}
+                    placeholder="Username"
+                    name="username"
+                    onChange={this.handleInputChange} />
+                <FormControl.Feedback />
+                </FormGroup>
+
+                <FormGroup>
+                <ControlLabel>Password</ControlLabel>
+                <FormControl
+                    type="password"
+                    value={this.state.password}
+                    placeholder="Password"
+                    name="password"
+                    onChange={this.handleInputChange} />
+                <FormControl.Feedback />
+                </FormGroup>
+
+                <Button type='submit'>Submit</Button>
+        </form>
+      </div>
     );
   }
 }

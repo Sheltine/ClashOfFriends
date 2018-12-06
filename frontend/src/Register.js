@@ -5,34 +5,25 @@ import Connexion from './components/Form_connexion'
 import Inscription from './components/Form_inscription'
 
 import 'semantic-ui-css/semantic.min.css';
-class App extends Component {
+class Register extends Component {
   render() {
     return (
      
       <div className="App">
 
-        <header className="App-header">
-        
-          <p>
-            Please connect to ayour account.
-            <Link to='/loul'>LOUL</Link>
-          </p>
-        </header>
         <body>
-        
         <div className="row">
         <div className="col-md-6 col-md-offset-5">
-        <h2>Connexion</h2>
-        <p>Not registered yet? <Link to='/register'>Register</Link></p>
-        <Connexion />
+        <h1>Register</h1>
+        <p>Already have an account? <Link to='/'>Connect</Link></p>
+        <Inscription />
         
-         </div>
+        </div>
         </div>
         </body>
-       
       </div>
     );
   }
 }
 
-export default App;
+export default Register;
