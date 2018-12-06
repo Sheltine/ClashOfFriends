@@ -3,9 +3,11 @@ import logo from './logo.svg';
 import { Link } from 'react-router-dom'
 import Connexion from './components/Form_connexion'
 import Inscription from './components/Form_inscription'
+import Sidebar from './components/Sidebar'
+import NavbarHead from './components/Navbar_head'
 
 import 'semantic-ui-css/semantic.min.css';
-class Register extends Component {
+class Timeline extends Component {
   render() {
     return (
      
@@ -13,17 +15,22 @@ class Register extends Component {
 
         <body>
         <div className="row">
-        <div className="col-md-6 col-md-offset-5">
-        <h1>Register</h1>
-        <p>Already have an account? <Link to='/connexion'>Connect</Link></p>
-        <Inscription />
-        
+          <NavbarHead />
         </div>
+        <div className="row">
+          <div className="col-md-2">
+            <Sidebar />
+          </div>
+          <div className="col-md-offset-5">
+
+          
+         </div>
         </div>
         </body>
+       
       </div>
     );
   }
 }
 
-export default Register;
+export default Timeline;
