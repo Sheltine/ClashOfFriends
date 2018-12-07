@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import { Link } from 'react-router-dom'
-import Connexion from './components/Form_connexion'
-import Inscription from './components/Form_inscription'
 import Sidebar from './components/Sidebar'
+import PostsList from './components/PostGroup_timeline'
 import NavbarHead from './components/Navbar_head'
+import BoxChallenge from './components/Box_challenge'
 
-import 'semantic-ui-css/semantic.min.css';
+
 class Timeline extends Component {
   render() {
     return (
@@ -14,18 +12,24 @@ class Timeline extends Component {
       <div className="App">
 
         <body>
-        <div className="row">
-          <NavbarHead />
-        </div>
-        <div className="row">
-          <div className="col-md-2">
-            <Sidebar />
+          <div className="row">
+            <NavbarHead />
           </div>
-          <div className="col-md-offset-5">
-
-          
-         </div>
-        </div>
+          <div className="row">
+            <div className="col-md-2">
+              <div className="Sidebar-style">
+                <Sidebar />
+              </div>
+            </div>
+            <div className="col-md-offset-5">
+              <div className="Challenge-style">
+                <BoxChallenge />
+              </div>
+            </div>
+            <div className="col-md-offset-3">
+                <PostsList />
+            </div>
+          </div>
         </body>
        
       </div>

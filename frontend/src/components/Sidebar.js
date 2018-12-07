@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
-import { Nav, NavItem } from 'react-bootstrap'
+import { Nav, NavItem, DropdownButton, MenuItem } from 'react-bootstrap'
 
 function handleSelect(selectedKey) {
-    alert(`selected ${selectedKey}`);
+    //do something
   }
 
 class Sidebar extends Component {
   render() {
     return (
-        <Nav className="Navbar-style" bsStyle="pills" stacked activeKey={1} onSelect={handleSelect}>
+        <Nav className="Navbar-style" stacked activeKey={1} onSelect={handleSelect}>
             <NavItem eventKey={1} href="/">
-            Home
+                Home
             </NavItem>
             <NavItem eventKey={2} href="/register">
-            Profile
+                Profile
             </NavItem>
             <NavItem eventKey={3}>
-            Challenge
+                <DropdownButton
+                title="Challenge"
+                >
+                <MenuItem eventKey="1">Verbal</MenuItem>
+                <MenuItem eventKey="2">Picture</MenuItem>
+            </DropdownButton>
             </NavItem>
         </Nav>
     );
