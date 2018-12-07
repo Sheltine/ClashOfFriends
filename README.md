@@ -30,6 +30,6 @@ Les utilisateurs auront une page de profile (« Mur ») où seront affiché le
 ## Technologies utilisées
 
 * Frontend : [React.js](https://reactjs.org)
-* Backend : [Express.js](https://expressjs.com)
+* Backend : [GraphQL](https://graphql.org)
 * Base de donnée : [MongoDB](https://www.mongodb.com)
 * Traduction : [React-i18next](https://github.com/i18next/react-i18next)
