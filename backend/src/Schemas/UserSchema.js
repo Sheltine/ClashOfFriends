@@ -1,0 +1,64 @@
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
+const userSchema = new Schema({
+    username: { 
+        type: String,
+        index: [true, "Username is required."],
+        required: true },
+    email: {
+        type: String,
+        unique: true,
+        validate: {
+            validator: function(e) {
+                return /^[A-z0-9._%+-]+@[A-z0-9.-]+\.[A-z]{2,63}$/.test(e);
+            },
+            message: props => `${ props } is not a valid email address`
+        },
+        required: [true, "Email is required."] },
+    avatarImg: {
+        type: String,
+        validate: {
+            validator: function(i) {
+                return i === null || /^[A-z0-9]+\.(jpe?g|png)$/.test(i);
+            },
+            message: props => `${ props } is not a valid image`
+        } },
+    firstname: {
+        type: String,
+        validate: {
+            validator: function(f) {
+                return /^[A-z\-\ ]+$/.test(f) && f.length <= 35;
+            },
+            message: props => `${ props } is not a valid fistname`
+        } },
+    lastname: {
+        type: String,
+        validate: {
+            validator: function(l) {
+                return /^[A-z\-\ ]+$/.test(l) && l.length <= 35;
+            },
+            message: props => `${ props } is not a valid last`
+        } },
+    password: {
+        type: String,
+        required: true,
+        validate: {
+            validator: function(p) { return p.length > 8; },
+            message: "Message must be >= 8 chars"
+        } },
+    birthdate: {
+        type: Date,
+        required: true
+    },
+    creationDate: {
+        type: Date,
+        required: true,
+        default: Date.now() },
+    lastUpdateDate: {
+        type: Date,
+        required: true,
+        default: Date.now() }
+});
+
+module.exports = mongoose.model('User', userSchema);
