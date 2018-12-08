@@ -5,6 +5,7 @@ class name extends Component {
   render() {
     return (
         <div>
+          things
         </div>
     );
   }
