@@ -1,24 +1,21 @@
 // Loads environment variables
 require('dotenv/config');
-const { auth, register } = require('./src/auth');
 const moment = require('moment');
 const { ApolloServer, gql } = require('apollo-server');
-const connection = require('./src/DBAccess');
 const jwt = require('jsonwebtoken');
-const { jwtOptions } = require('./config');
-
-// Default values
-const BIRTH_FORMAT = 'DD/MM/YYYY';
-const DATE_FORMAT = 'DD/MM/YYYY HH:mm:ss';
+const { auth, register } = require('./src/auth');
+const connection = require('./src/DBAccess');
+const { jwtOptions, BIRTHDATE_FORMAT, DATE_FORMAT } = require('./config');
 
 const typeDefs = gql`
-    type Query {
-        message: String
-        users: [User]
-        auth(username: String!, password: String!): AuthResponse!
-        register(username: String!, email: String!, firstname: String!, lastname: String!,
-                birthdate: String!, password: String!, avatarImg: String): AuthResponse!
-        user(username: String!): User
+    input UserInput {
+        username: String!
+        email: String!,
+        firstname: String!,
+        lastname: String!,
+        avatarImg: String,
+        birthdate: String!,
+        password: String!
     }
     type User {
         id: String,
@@ -35,60 +32,103 @@ const typeDefs = gql`
         user: User!,
         token: String!
     }
+    type Query {
+        message: String
+        users: [User]
+        auth(username: String!, password: String!): AuthResponse
+        user(username: String!): User
+    }
+    type Mutation {
+        register(user: UserInput!): AuthResponse
+    }
 `;
 
 const resolvers = {
     Query: {
         message: () => 'Hello world !',
-        users: () => {
-            return connection.getUsers();
-        },
-        auth: (parent, args) => {
-            return auth(args.username, args.password);
-        },
-        register: (parent, args) => {
-            return register(args);
-        },
-        user: (parent, args, context) => {
-            return connection.getUser({username: args.username});
-        }
+        users: () => connection.getUsers(),
+        auth: (parent, args) => auth(args.username, args.password),
+        user: (parent, args) => connection.getUser({ username: args.username }),
     },
-    User : {
-        birthdate: (u) => { return moment(u.birthdate).format(BIRTH_FORMAT); },
-        creationDate: (u) => { return moment(u.creationDate).format(DATE_FORMAT); },
-        lastUpdateDate: (u) => { return moment(u.lastUpdateDate).format(DATE_FORMAT); }
-    }
+    Mutation: {
+        register: (_, { user }) => register(user),
+    },
+    User: {
+        birthdate: u => moment(u.birthdate).format(BIRTHDATE_FORMAT),
+        creationDate: u => moment(u.creationDate).format(DATE_FORMAT),
+        lastUpdateDate: u => moment(u.lastUpdateDate).format(DATE_FORMAT),
+    },
 };
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req, res }) => {
-        // We here mare a verification over the request and we check if access is protected or not
-        const obj = gql`${req.query.query}`;
-        // We let strict access to auth and register without token
-        if (obj.definitions.length === 1 && obj.definitions[0].selectionSet.selections.length === 1 &&
-            (obj.definitions[0].selectionSet.selections[0].name.value === 'auth') || 
-            (obj.definitions[0].selectionSet.selections[0].name.value === 'register')) {
-            console.log("No need to authenticate")
-        } else {
-            // Otherwise, we need a token
-            let userId = null;
-            if (null != req.headers.authorization) {
-                const providedToken = req.headers.authorization.substring("bearer ".length);
-                userId = jwt.verify(providedToken, jwtOptions.secret).userId;
-                connection.getUser({_id: userId}).then((d) => {
-                    if (null != d)
-                        console.log(`Token : Welcome back ${d.username} !`);
-                });
+    context: ({ req }) => {
+        // We here make a verification over the request and we check if access is protected or not
+        let authRequired = true;
+        if (req.query.query != null) {
+            console.log('A query was run');
+
+            const obj = gql`${req.query.query}`;
+            const isInspection = obj.definitions.length === 4
+                                 && obj.definitions[0].operation === 'query'
+                                 && obj.definitions[0].kind === 'OperationDefinition'
+                                 && obj.definitions[0].name.value === 'IntrospectionQuery'
+                                 && obj.definitions[1].kind === 'FragmentDefinition'
+                                 && obj.definitions[1].name.value === 'FullType'
+                                 && obj.definitions[2].kind === 'FragmentDefinition'
+                                 && obj.definitions[2].name.value === 'InputValue'
+                                 && obj.definitions[3].kind === 'FragmentDefinition'
+                                 && obj.definitions[3].name.value === 'TypeRef';
+            if (isInspection) {
+                console.log('Inspection');
             }
-            // FIXME: now introspection is not allowed. Comment the following to make it work.
-            if (null === userId) {
-                console.log("Attempt to use service without auth");
-                throw new Error("You need to authenticate");
+
+            const isAuth = obj.definitions.length === 1
+                           && obj.definitions[0].selectionSet.selections.length === 1
+                           && obj.definitions[0].selectionSet.selections[0].name.value === 'auth';
+            if (isAuth) {
+                console.log('Authentification');
+            }
+
+            if (isInspection || isAuth) {
+                authRequired = false;
+            }
+        } else if (req.res.req.body != null) {
+            console.log('Mutation it seems');
+            const obj = gql`${req.res.req.body.query}`;
+            const isRegister = obj.definitions.length === 1
+                               && obj.definitions[0].operation === 'mutation'
+                               && obj.definitions[0].selectionSet.selections.length === 1
+                               && obj.definitions[0].selectionSet.selections[0].name.value === 'register';
+                
+            if (isRegister) {
+                console.log('Registration');
+                authRequired = false;
             }
         }
-            
+
+        if (authRequired) {
+            let userId = null;
+            let user = null;
+            if (req.headers.authorization != null) {
+                const providedToken = req.headers.authorization.substring('bearer '.length);
+                userId = jwt.verify(providedToken, jwtOptions.secret).userId;
+                user = connection.getUser({ _id: userId }).then((d) => {
+                    if (d != null) {
+                        console.log(`Token : Welcome back ${d.username} !`);
+                        return d;
+                    }
+                });
+                if (user != null) {
+                    return { user };
+                }
+            }
+            if (userId === null) {
+                console.log('Attempt to use service without auth');
+                throw new Error('You need to authenticate');
+            }
+        }
     },
 
     // Default configuration in development
@@ -96,7 +136,7 @@ const server = new ApolloServer({
     // playground: true,
 });
 
-server.listen().then(({url}) => {
+server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`);
 });
 

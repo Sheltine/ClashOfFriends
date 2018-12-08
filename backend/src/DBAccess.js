@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 const User = require('./Schemas/UserSchema');
-const { DB_PARAMS } = require('../config');
+const { DB_PARAMS, BIRTHDATE_FORMAT } = require('../config');
 
 class DBAccess {
     constructor({ user, password, replica1, replica2, replica3, port = 27017, replicaSet, dbName } = {}) {
@@ -14,10 +15,10 @@ class DBAccess {
         });
 
         /*
-        this.u = new this.User({username: 'jade', email: 'jade@teste.me', avatarImg: "Encoreuntest.jpg", firstname: 'J', lastname: 'B', password: 'coucou1234', birthdate: Date.now()});
+        this.u = new User({username: 'amadeous', email: 'ama@teste.me', avatarImg: "Encoreuntest.jpg", firstname: 'J', lastname: 'B', password: 'coucou1234', birthdate: Date.now()});
         this.u.save(function (err, u) {
             if (err) return console.error(err);
-            console.log(`${ u.username } added to DB !`);
+            console.log(`${u.username} added to DB !`);
           });
           */
     }
@@ -28,6 +29,26 @@ class DBAccess {
 
     getUser(params) {
         return User.findOne(params);
+    }
+
+    addUser(params) {
+        const u = new User({
+            username: params.username,
+            email: params.email,
+            firstname: params.firstname,
+            lastname: params.lastname,
+            avatarImg: params.avatarImg,
+            birthdate: moment(params.birthdate, BIRTHDATE_FORMAT).toDate(),
+            password: params.password,
+        });
+        return u.save().then((user, err) => {
+            if (err) {
+                console.error(err);
+                return err;
+            }
+            console.log(`${user.username} added to DB ! `);
+            return user;
+        });
     }
 }
 

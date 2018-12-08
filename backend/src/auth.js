@@ -1,21 +1,44 @@
-const connection = require('./DBAccess');
 const jwt = require('jsonwebtoken');
+const connection = require('./DBAccess');
 const { jwtOptions } = require('../config');
 
-// TODO : check if fields are null
+function issueToken({ id, username }) {
+    const token = jwt.sign({ userId: id, username }, jwtOptions.secret);
+    return token;
+}
+
+function thowErrorIfNull(param, paramName) {
+    if (param === null) {
+        throw new Error(`${paramName} cannot be null.`);
+    }
+}
+
 function auth(username, password) {
-    return connection.getUser({username, password}).then((data) => {
-        if (null === data)
-            throw new Error("Not found");
-        const token = jwt.sign({ userId: data._id, username: data.username }, jwtOptions.secret);
-        return { token, user: data };
+    if (username === null || password === null) {
+        throw new Error('Username/password must be defined.');
+    }
+
+    return connection.getUser({ username, password }).then((u) => {
+        if (u === null) {
+            throw new Error('Not found');
+        }
+        return { token: issueToken({ id:u.id, username: u.username }), user: u };
     });
 }
 
-// TODO : check if fields are null
-// TODO : register in DB if everything is good
-function register(args = {username, email, firstname, lastname, birthdate, password, avatarImg}) {
-    
+function register(args) {
+    thowErrorIfNull(args.username, 'Username');
+    thowErrorIfNull(args.email, 'Email');
+    thowErrorIfNull(args.firstname, 'Firstname');
+    thowErrorIfNull(args.lastname, 'Lastname');
+    thowErrorIfNull(args.password, 'Password');
+    thowErrorIfNull(args.birthdate, 'Birthdate');
+    return connection.addUser(args).then((u) => {
+        if (undefined === u.id) {
+            throw new Error(u);
+        }
+        return { token: issueToken({ id:u.id, username: u.username }), user: u };
+    });
 }
 
-module.exports = { auth, register };
+module.exports = { auth, register };

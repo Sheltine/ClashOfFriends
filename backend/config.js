@@ -13,5 +13,7 @@ module.exports = {
     },
     jwtOptions: {
         secret: process.env.JWT_SECRET,
-    }
+    },
+    BIRTHDATE_FORMAT: 'DD/MM/YYYY',
+    DATE_FORMAT: 'DD/MM/YYYY HH:mm:ss',
 }

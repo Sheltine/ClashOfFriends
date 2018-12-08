@@ -1,55 +1,57 @@
 const mongoose = require('mongoose');
+
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-    username: { 
+    username: {
         type: String,
-        index: [true, "Username is required."],
+        index: [true, 'Username is required.'],
+        unique: true,
         required: true },
     email: {
         type: String,
         unique: true,
         validate: {
-            validator: function(e) {
+            validator(e) {
                 return /^[A-z0-9._%+-]+@[A-z0-9.-]+\.[A-z]{2,63}$/.test(e);
             },
-            message: props => `${ props } is not a valid email address`
+            message: props => `${props} is not a valid email address`,
         },
-        required: [true, "Email is required."] },
+        required: [true, 'Email is required.'] },
     avatarImg: {
         type: String,
         validate: {
-            validator: function(i) {
+            validator(i) {
                 return i === null || /^[A-z0-9]+\.(jpe?g|png)$/.test(i);
             },
-            message: props => `${ props } is not a valid image`
+            message: props => `${props} is not a valid image`,
         } },
     firstname: {
         type: String,
         validate: {
-            validator: function(f) {
+            validator(f) {
                 return /^[A-z\-\ ]+$/.test(f) && f.length <= 35;
             },
-            message: props => `${ props } is not a valid fistname`
+            message: props => `${props} is not a valid fistname`,
         } },
     lastname: {
         type: String,
         validate: {
-            validator: function(l) {
+            validator(l) {
                 return /^[A-z\-\ ]+$/.test(l) && l.length <= 35;
             },
-            message: props => `${ props } is not a valid last`
+            message: props => `${props} is not a valid last`,
         } },
     password: {
         type: String,
         required: true,
         validate: {
-            validator: function(p) { return p.length > 8; },
-            message: "Message must be >= 8 chars"
+            validator(p) { return p.length > 8; },
+            message: 'Message must be >= 8 chars',
         } },
     birthdate: {
         type: Date,
-        required: true
+        required: true,
     },
     creationDate: {
         type: Date,
@@ -58,7 +60,7 @@ const userSchema = new Schema({
     lastUpdateDate: {
         type: Date,
         required: true,
-        default: Date.now() }
+        default: Date.now() },
 });
 
 module.exports = mongoose.model('User', userSchema);
