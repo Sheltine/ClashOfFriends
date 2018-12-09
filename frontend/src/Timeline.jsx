@@ -1,16 +1,48 @@
 import React, { Component } from 'react';
-import Sidebar from './components/Sidebar'
-import PostsList from './components/PostGroup_timeline'
-import NavbarHead from './components/Navbar_head'
-import BoxChallenge from './components/Box_challenge'
+import ApolloClient from 'apollo-boost';
+import { Query, ApolloProvider } from 'react-apollo';
+import gql from 'graphql-tag';
+import Sidebar from './components/Sidebar';
+import PostsList from './components/PostGroup_timeline';
+import NavbarHead from './components/Navbar_head';
+import BoxChallenge from './components/Box_challenge';
 
+const client = new ApolloClient({
+  uri: 'http://localhost:4000',
+});
 
 class Timeline extends Component {
   render() {
     return (
-     
       <div className="App">
+        <ApolloProvider client={client}>
+          <div>
+            <h2>Co&apos; to server debug</h2>
+          </div>
+          <Query
+            query={gql`
+              {
+                auth(username:"amadeous", password:"coucou1234"){
+                  token, user{
+                    id, username
+                  }
+                }
+              }
+            `}
+          >
+            {({ loading, error, data }) => {
+              if (loading) return <p>Loading...</p>;
+              if (error) return <p>Error :(</p>;
 
+              return data.rates.map(({ currency, rate }) => (
+                <div key={currency}>
+                  <p>{`${currency}: ${rate}`}</p>
+                </div>
+              ));
+            }}
+          </Query>
+
+        </ApolloProvider>
         <body>
           <div className="row">
             <NavbarHead />
@@ -27,11 +59,11 @@ class Timeline extends Component {
               </div>
             </div>
             <div className="col-md-offset-3">
-                <PostsList />
+              <PostsList />
             </div>
           </div>
         </body>
-       
+
       </div>
     );
   }

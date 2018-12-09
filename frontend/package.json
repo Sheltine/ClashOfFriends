@@ -6,9 +6,13 @@
   "license": "MIT",
   "description": "Frontend of Clash Of Friends",
   "dependencies": {
+    "apollo-boost": "^0.1.22",
+    "graphql": "^14.0.2",
+    "graphql-tag": "^2.10.0",
     "jsonwebtoken": "^8.4.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
+    "react-apollo": "^2.3.2",
     "react-bootstrap": "^0.32.4",
     "react-datepicker": "^2.0.0",
     "react-dom": "^16.6.3",
@@ -38,6 +42,7 @@
   ],
   "devDependencies": {
     "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.14.0"
+    "eslint-plugin-import": "^2.14.0",
+    "gql": "^1.1.2"
   }
 }
