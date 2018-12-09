@@ -9,7 +9,7 @@ module.exports = {
         password: process.env.MONGO_DB_PWD,
         port: process.env.MONGO_DB_PORT || 27017,
         replicaSet: process.env.MONGO_DB_REPLICA_SET,
-        name: process.env.MONGO_DB_NAME,
+        dbName: process.env.MONGO_DB_NAME,
     },
     jwtOptions: {
         secret: process.env.JWT_SECRET,

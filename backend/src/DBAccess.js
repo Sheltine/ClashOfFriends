@@ -41,7 +41,7 @@ class DBAccess {
             birthdate: moment(params.birthdate, BIRTHDATE_FORMAT).toDate(),
             password: params.password,
         });
-        return u.save().then((user, err) => {
+        const ret = u.save().then((user, err) => {
             if (err) {
                 console.error(err);
                 return err;
@@ -49,6 +49,7 @@ class DBAccess {
             console.log(`${user.username} added to DB ! `);
             return user;
         });
+        return ret;
     }
 }
 

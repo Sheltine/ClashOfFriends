@@ -33,7 +33,9 @@ function register(args) {
     thowErrorIfNull(args.lastname, 'Lastname');
     thowErrorIfNull(args.password, 'Password');
     thowErrorIfNull(args.birthdate, 'Birthdate');
-    return connection.addUser(args).then((u) => {
+    return connection.addUser(args).then((u, err) => {
+        console.log(`success: ${u}`);
+        console.log(`error: ${err}`);
         if (undefined === u.id) {
             throw new Error(u);
         }

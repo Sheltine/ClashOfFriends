@@ -1,7 +1,7 @@
 // Loads environment variables
 require('dotenv/config');
 const moment = require('moment');
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer, gql, AuthenticationError } = require('apollo-server');
 const jwt = require('jsonwebtoken');
 const { auth, register } = require('./src/auth');
 const connection = require('./src/DBAccess');
@@ -25,8 +25,8 @@ const typeDefs = gql`
         lastname: String!,
         avatarImg: String,
         birthdate: String!,
-        creationDate: String,
-        lastUpdateDate: String
+        createdAt: String,
+        updatedAt: String
     }
     type AuthResponse {
         user: User!,
@@ -55,8 +55,8 @@ const resolvers = {
     },
     User: {
         birthdate: u => moment(u.birthdate).format(BIRTHDATE_FORMAT),
-        creationDate: u => moment(u.creationDate).format(DATE_FORMAT),
-        lastUpdateDate: u => moment(u.lastUpdateDate).format(DATE_FORMAT),
+        createdAt: u => moment(u.createdAt).format(DATE_FORMAT),
+        updatedAt: u => moment(u.updatedAt).format(DATE_FORMAT),
     },
 };
 
@@ -126,10 +126,33 @@ const server = new ApolloServer({
             }
             if (userId === null) {
                 console.log('Attempt to use service without auth');
-                throw new Error('You need to authenticate');
+                throw new AuthenticationError('must authenticate');
             }
         }
     },
+    // TODO: Launch in prod: uncomment the following
+    // debug: false,
+
+    /*
+    formatError: (error) => {
+        console.log(error);
+        if (error.message.indexOf('duplicate key') !== -1) {
+            if (error.message.indexOf('ClashOfFriends.users') !== -1) {
+                if (error.message.indexOf('username') !== -1) {
+                    throw new UserInputError('This username is already taken', { username: 'test' });
+                }
+                if (error.message.indexOf('email') !== -1) {
+                    return new UserInputError('This email is already taken.');
+                }
+            }
+        } else {
+            return new Error(`Internal server error: ${error}`);
+            // Or, you can delete the exception information
+            // delete error.extensions.exception;
+            // return error;
+        }
+      },
+      */
 
     // Default configuration in development
     // introspection: true,
@@ -139,5 +162,3 @@ const server = new ApolloServer({
 server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`);
 });
-
-// Changer process.env.nodeenv
