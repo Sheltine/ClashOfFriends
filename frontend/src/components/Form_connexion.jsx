@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable prefer-destructuring */
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';

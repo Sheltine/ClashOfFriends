@@ -63,7 +63,6 @@ PostTimeline.propTypes = {
   category: PropTypes.string.isRequired,
   player2: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
-
 };
 
 export default PostTimeline;
