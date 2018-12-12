@@ -3,8 +3,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { post } from 'axios';
+import ApolloClient from 'apollo-boost';
+import gql from 'graphql-tag';
 
 const serverUrl = 'http://localhost:4000';
+const client = new ApolloClient({
+  uri: serverUrl,
+});
 
 class ChallengeForm extends Component {
     constructor(props) {
@@ -28,12 +33,20 @@ class ChallengeForm extends Component {
         });
         const reader = new FileReader();
         reader.readAsDataURL(e.target.files[0]);
+        console.log('test: ', e.target.result);
         reader.onload = (a) => {
-            console.log('img data ', a.target.result);
+            client
+                .query({
+                    query: gql`
+                    {
+                        file(type:"png", file:"${a.target.result}")
+                    }
+                    `,
+                })
+                .then(result => console.log(result));
             };
-        const formData = { file: e.target.result };
-        return post(serverUrl, formData)
-            .then(response => console.log('result', response));
+        // console.log(formData);
+        // envoyer ça différemment
     }
 
 // check https://www.npmjs.com/package/react-file-viewer/v/0.4.1 for fileviewer

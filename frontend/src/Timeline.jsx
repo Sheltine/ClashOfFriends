@@ -22,6 +22,7 @@ class Timeline extends Component {
             <h2>Co&apos; to server debug</h2>
           </div>
           <Query
+          // dans server, remplacer if (authRequired) par if (!authRequired) pour debug
             query={gql`
               {
                 auth(username:"amadeous", password:"coucou1234"){
@@ -35,7 +36,6 @@ class Timeline extends Component {
             {({ loading, error, data }) => {
               if (loading) return <p>Loading...</p>;
               if (error) return <p>Error :(</p>;
-              console.log('DATAAAAAAAAAA:', data);
               return (
                 <div>
                   <p>{`${data.auth.user.username}`}</p>
