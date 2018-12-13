@@ -46,28 +46,27 @@ class FormInscription extends Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
-        // Debug purpose       
-        client
-            .mutate({
-                mutation: gql
-                `mutation{register(user : {
-                    username:"${this.state.username}",
-                    password:"${this.state.password}",
-                    firstname:"${this.state.firstname}",
-                    lastname:"${this.state.lastname}",
-                    email:"${this.state.email}",
-                    birthdate:"20/10/12"
-                   }) {
-                     token,
-                     user {
-                       id,
-                       username,
-                       createdAt
-                     }
-                   }}
-                `,
-            }).then(response => console.log(response.data.auth.token));
+    event.preventDefault();    
+    client
+        .mutate({
+            mutation: gql
+            `mutation{register(user : {
+                username:"${this.state.username}",
+                password:"${this.state.password}",
+                firstname:"${this.state.firstname}",
+                lastname:"${this.state.lastname}",
+                email:"${this.state.email}",
+                birthdate:"${this.state.birthdate}"
+                }) {
+                  token,
+                  user {
+                    id,
+                    username,
+                    createdAt
+                  }
+                }}
+            `,
+        }).then(response => console.log(response.data.auth.token));
 }
 
       passwordValidation() {
@@ -95,6 +94,12 @@ class FormInscription extends Component {
         return 'error';
       }
 
+      birthdateValidation(){
+        const length = this.state.birthdate.length;
+        if(length != 8 || !this.state.birthdate.match(/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{2}$/i)){
+          return 'error';
+        }
+      }
 
   render() {
     return (
@@ -138,13 +143,16 @@ class FormInscription extends Component {
             <FormControl.Feedback />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup 
+            validationState={this.birthdateValidation()}
+          >
             <ControlLabel>Birthdate</ControlLabel>
-            <DatePicker
+            <FormControl
+              type="text"
               name="birthdate"
-              value={this.state.birthdate}
-              selected={this.birthdate}
-              onChange={this.getDate}
+              placeholder="jj/mm/yy"
+              // selected={this.birthdate}
+              onChange={this.handleInputChange}
             />
           </FormGroup>
 
