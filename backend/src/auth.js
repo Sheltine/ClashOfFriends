@@ -40,13 +40,17 @@ function register(args) {
         if (undefined === u.id) {
             throw new Error(u);
         }
-        return { token: issueToken({ id:u.id, username: u.username }), user: u };
+        return { token: issueToken({ id: u.id, username: u.username }), user: u };
     });
 }
 
-function mustBeAuthentificated(context) {
-    if (!context.user) throw new AuthenticationError('You must provide a valid token.');
-    console.log(`${context.user} authenticated`);
+function update(u) {
+    console.log(`Coucou ${u}`);
 }
 
-module.exports = { auth, register, mustBeAuthentificated };
+function mustBeAuthenticated(context) {
+    if (!context.user) throw new AuthenticationError('You must provide a valid token.');
+    console.log(`${context.user.username} authenticated`);
+}
+
+module.exports = { auth, register, update, mustBeAuthenticated };

@@ -16,4 +16,4 @@ module.exports = {
     },
     BIRTHDATE_FORMAT: 'DD/MM/YYYY',
     DATE_FORMAT: 'DD/MM/YYYY HH:mm:ss',
-}
+};
