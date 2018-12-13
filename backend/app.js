@@ -65,6 +65,7 @@ const server = new ApolloServer({
     resolvers,
     context: ({ req }) => {
         // We here make a verification over the request and we check if access is protected or not
+        /*
         let authRequired = true;
         if (req.query.query != null) {
             console.log('A query was run');
@@ -109,6 +110,7 @@ const server = new ApolloServer({
         }
 
         if (authRequired) {
+            */
             let userId = null;
             let user = null;
             if (req.headers.authorization != null) {
@@ -124,11 +126,13 @@ const server = new ApolloServer({
                     return { user };
                 }
             }
+            /*
             if (userId === null) {
                 console.log('Attempt to use service without auth');
                 throw new AuthenticationError('must authenticate');
             }
         }
+        */
     },
     // TODO: Launch in prod: uncomment the following
     // debug: false,
