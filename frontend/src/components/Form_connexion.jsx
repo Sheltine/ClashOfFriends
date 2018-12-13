@@ -35,6 +35,7 @@ class FormConnexion extends Component {
         // Debug purpose
         // eslint-disable-next-line react/destructuring-assignment
 
+        event.preventDefault();
         client
             .query({
                 query: gql`
@@ -47,8 +48,6 @@ class FormConnexion extends Component {
                   }
                 `,
             }).then(response => console.log(response.data.auth.token));
-
-        event.preventDefault();
       }
 
   render() {

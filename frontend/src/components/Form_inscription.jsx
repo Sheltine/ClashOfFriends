@@ -46,30 +46,51 @@ class FormInscription extends Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
         // Debug purpose
-        client
-            .mutate({
-                mutation: gql`
-                  {
-                    register(
-                        username:"${this.state.username}",
-                        password:"${this.state.password}",
-                        firstname:"${this.state.firstname}",
-                        lastname:"${this.state.lastname}",
-                        email:"${this.state.email}",
-                        birthdate:${this.state.birthdate}
-                      ){
-                        token,
-                        user {
-                          id,
-                          username,
-                          createdAt
+
+        /*
+                          {
+                    register(user :{
+                          username:"${this.state.username}",
+                          password:"${this.state.password}",
+                          firstname:"${this.state.firstname}",
+                          lastname:"${this.state.lastname}",
+                          email:"${this.state.email}",
+                          birthdate:"20/20/12"
+                        ){
+                          token,
+                          user {
+                            id,
+                            username,
+                            createdAt
+                          }
                         }
                       }
                   }
+        */
+
+       
+        client
+            .mutate({
+                mutation: gql
+                `mutation{register(user : {
+                    username:"${this.state.username}",
+                    password:"${this.state.password}",
+                    firstname:"${this.state.firstname}",
+                    lastname:"${this.state.lastname}",
+                    email:"${this.state.email}",
+                    birthdate:"20/10/12"
+                   }) {
+                     token,
+                     user {
+                       id,
+                       username,
+                       createdAt
+                     }
+                   }}
                 `,
             }).then(response => console.log(response.data.auth.token));
-    event.preventDefault();
 }
 
       passwordValidation() {
