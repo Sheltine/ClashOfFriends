@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { AuthenticationError } = require('apollo-server');
 const connection = require('./DBAccess');
 const { jwtOptions } = require('../config');
 
@@ -43,4 +44,9 @@ function register(args) {
     });
 }
 
-module.exports = { auth, register };
+function mustBeAuthentificated(context) {
+    if (!context.user) throw new AuthenticationError('You must provide a valid token.');
+    console.log(`${context.user} authenticated`);
+}
+
+module.exports = { auth, register, mustBeAuthentificated };

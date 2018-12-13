@@ -3,7 +3,7 @@ require('dotenv/config');
 const moment = require('moment');
 const { ApolloServer, gql, AuthenticationError } = require('apollo-server');
 const jwt = require('jsonwebtoken');
-const { auth, register } = require('./src/auth');
+const { auth, register, mustBeAuthentificated } = require('./src/auth');
 const connection = require('./src/DBAccess');
 const { jwtOptions, BIRTHDATE_FORMAT, DATE_FORMAT } = require('./config');
 
@@ -46,9 +46,9 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         message: () => 'Hello world !',
-        users: () => connection.getUsers(),
-        auth: (parent, args) => auth(args.username, args.password),
-        user: (parent, args) => connection.getUser({ username: args.username }),
+        users: (p, a, c) => { mustBeAuthentificated(c); connection.getUsers(); },
+        auth: (p, args) => auth(args.username, args.password),
+        user: (p, a, c) => { mustBeAuthentificated(c); connection.getUser({ username: a.username }); },
     },
     Mutation: {
         register: (_, { user }) => register(user),
@@ -111,20 +111,18 @@ const server = new ApolloServer({
 
         if (authRequired) {
             */
-            let userId = null;
             let user = null;
             if (req.headers.authorization != null) {
                 const providedToken = req.headers.authorization.substring('bearer '.length);
-                userId = jwt.verify(providedToken, jwtOptions.secret).userId;
-                user = connection.getUser({ _id: userId }).then((d) => {
+                const jwtPayload = jwt.verify(providedToken, jwtOptions.secret);
+                user = connection.getUser({ _id: jwtPayload.userId }).then((d) => {
                     if (d != null) {
                         console.log(`Token : Welcome back ${d.username} !`);
-                        return d;
+                        return { user };
                     }
+                    throw new AuthenticationError('You must provide a valid token.');
+                    
                 });
-                if (user != null) {
-                    return { user };
-                }
             }
             /*
             if (userId === null) {
