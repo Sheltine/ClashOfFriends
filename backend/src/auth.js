@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { AuthenticationError } = require('apollo-server');
+const { AuthenticationError, ForbiddenError } = require('apollo-server');
 const connection = require('./DBAccess');
 const { jwtOptions } = require('../config');
 
@@ -12,6 +12,15 @@ function thowErrorIfNull(param, paramName) {
     if (param === null) {
         throw new Error(`${paramName} cannot be null.`);
     }
+}
+
+function checkIfUserComplete(u) {
+    thowErrorIfNull(u.username, 'Username');
+    thowErrorIfNull(u.email, 'Email');
+    thowErrorIfNull(u.firstname, 'Firstname');
+    thowErrorIfNull(u.lastname, 'Lastname');
+    thowErrorIfNull(u.password, 'Password');
+    thowErrorIfNull(u.birthdate, 'Birthdate');
 }
 
 function auth(username, password) {
@@ -28,15 +37,8 @@ function auth(username, password) {
 }
 
 function register(args) {
-    thowErrorIfNull(args.username, 'Username');
-    thowErrorIfNull(args.email, 'Email');
-    thowErrorIfNull(args.firstname, 'Firstname');
-    thowErrorIfNull(args.lastname, 'Lastname');
-    thowErrorIfNull(args.password, 'Password');
-    thowErrorIfNull(args.birthdate, 'Birthdate');
-    return connection.addUser(args).then((u, err) => {
-        console.log(`success: ${u}`);
-        console.log(`error: ${err}`);
+    checkIfUserComplete(args);
+    return connection.addUser(args).then((u) => {
         if (undefined === u.id) {
             throw new Error(u);
         }
@@ -44,8 +46,19 @@ function register(args) {
     });
 }
 
-function update(u) {
-    console.log(`Coucou ${u}`);
+function update(himself, newU) {
+    checkIfUserComplete(newU);
+    // We must check a user cannot change it's username and that it edits its profile
+    if (himself.username !== newU.username) {
+        throw new ForbiddenError("You cannot edit another user's profile.");
+    }
+
+    return connection.updateUser(himself.id, newU).then((user) => {
+        if (undefined === user.id) {
+            throw new Error(user);
+        }
+        return user;
+    });
 }
 
 function mustBeAuthenticated(context) {

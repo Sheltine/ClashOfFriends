@@ -10,14 +10,6 @@ module.exports = gql`
         birthdate: String!,
         password: String!
     }
-    input UserUpdatable {
-        email: String!,
-        firstname: String!,
-        lastname: String!,
-        avatarImg: String,
-        birthdate: String!,
-        password: String!
-    }
     type User {
         id: String,
         username: String!
@@ -42,6 +34,6 @@ module.exports = gql`
     type Mutation {
         message: String
         register(user: UserInput!): AuthResponse
-        updateProfile(user: UserUpdatable!): User
+        updateProfile(user: UserInput!): User
     }
 `;

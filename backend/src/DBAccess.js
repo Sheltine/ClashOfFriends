@@ -23,6 +23,18 @@ class DBAccess {
           */
     }
 
+    convertToUser(params) {
+        return new User({
+            username: params.username,
+            email: params.email,
+            firstname: params.firstname,
+            lastname: params.lastname,
+            avatarImg: params.avatarImg,
+            birthdate: moment(params.birthdate, BIRTHDATE_FORMAT).toDate(),
+            password: params.password,
+        });
+    }
+
     getUsers() {
         return User.find();
     }
@@ -32,16 +44,8 @@ class DBAccess {
     }
 
     addUser(params) {
-        const u = new User({
-            username: params.username,
-            email: params.email,
-            firstname: params.firstname,
-            lastname: params.lastname,
-            avatarImg: params.avatarImg,
-            birthdate: moment(params.birthdate, BIRTHDATE_FORMAT).toDate(),
-            password: params.password,
-        });
-        const ret = u.save().then((user, err) => {
+        const u = this.convertToUser(params);
+        return u.save().then((user, err) => {
             if (err) {
                 console.error(err);
                 return err;
@@ -49,7 +53,17 @@ class DBAccess {
             console.log(`${user.username} added to DB ! `);
             return user;
         });
-        return ret;
+    }
+
+    updateUser(userId, params) {
+        return User.findOneAndUpdate({ _id: userId }, params, { new: true, runValidators: true }).then((user, err) => {
+            if (err) {
+                console.error(err);
+                return err;
+            }
+            console.log(`${params.username} updated in DB ! `);
+            return user;
+        });
     }
 }
 
