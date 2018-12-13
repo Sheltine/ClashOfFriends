@@ -47,30 +47,7 @@ class FormInscription extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-        // Debug purpose
-
-        /*
-                          {
-                    register(user :{
-                          username:"${this.state.username}",
-                          password:"${this.state.password}",
-                          firstname:"${this.state.firstname}",
-                          lastname:"${this.state.lastname}",
-                          email:"${this.state.email}",
-                          birthdate:"20/20/12"
-                        ){
-                          token,
-                          user {
-                            id,
-                            username,
-                            createdAt
-                          }
-                        }
-                      }
-                  }
-        */
-
-       
+        // Debug purpose       
         client
             .mutate({
                 mutation: gql
