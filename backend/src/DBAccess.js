@@ -18,7 +18,7 @@ class DBAccess {
         this.u = new User({username: 'amadeous', email: 'ama@teste.me', avatarImg: "Encoreuntest.jpg", firstname: 'J', lastname: 'B', password: 'coucou1234', birthdate: Date.now()});
         this.u.save(function (err, u) {
             if (err) return console.error(err);
-            console.log(`${u.username} added to DB !`);
+            console.log(`${u.username} added to DB !`);
           });
           */
     }

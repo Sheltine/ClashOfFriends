@@ -32,7 +32,7 @@ function auth(username, password) {
         if (u === null) {
             throw new Error('Not found');
         }
-        return { token: issueToken({ id:u.id, username: u.username }), user: u };
+        return { token: issueToken({ id: u.id, username: u.username }), user: u };
     });
 }
 
