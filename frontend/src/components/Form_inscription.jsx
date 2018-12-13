@@ -3,6 +3,13 @@ import { Button } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
+import ApolloClient from 'apollo-boost';
+import gql from 'graphql-tag';
+
+const serverUrl = 'http://localhost:4000';
+const client = new ApolloClient({
+  uri: serverUrl,
+});
 
 class FormInscription extends Component {
     constructor(props) {
@@ -40,7 +47,28 @@ class FormInscription extends Component {
 
   handleSubmit(event) {
         // Debug purpose
-    alert(`Firstname:  ${this.state.birthdate}, lastname: ${this.state.lastname}`);
+        client
+            .mutate({
+                mutation: gql`
+                  {
+                    register(
+                        username:"${this.state.username}",
+                        password:"${this.state.password}",
+                        firstname:"${this.state.firstname}",
+                        lastname:"${this.state.lastname}",
+                        email:"${this.state.email}",
+                        birthdate:${this.state.birthdate}
+                      ){
+                        token,
+                        user {
+                          id,
+                          username,
+                          createdAt
+                        }
+                      }
+                  }
+                `,
+            }).then(response => console.log(response.data.auth.token));
     event.preventDefault();
 }
 

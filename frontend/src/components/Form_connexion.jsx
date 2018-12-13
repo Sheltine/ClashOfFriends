@@ -3,7 +3,6 @@ import { Button } from 'semantic-ui-react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
-import PropTypes from 'prop-types';
 
 const serverUrl = 'http://localhost:4000';
 const client = new ApolloClient({
