@@ -10,8 +10,8 @@ class Connexion extends Component {
         <body>
           <div className="row">
             <div className="col-md-offset-5">
-              <h2>Connexion</h2>
-              <p>Not registered yet? <Link to="/register">Register</Link></p>
+              <h2>Connexion</h2><Link to="/register">Register</Link>
+              <p>Not registered yet? </p>
               <ConnexionForm />
             </div>
           </div>

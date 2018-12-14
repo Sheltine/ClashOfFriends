@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
-import DatePicker from 'react-datepicker';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
 import ApolloClient from 'apollo-boost';
@@ -46,11 +45,11 @@ class FormInscription extends Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();    
+    event.preventDefault();
     client
         .mutate({
-            mutation: gql
-            `mutation{register(user : {
+            mutation: gql`
+            mutation{register(user : {
                 username:"${this.state.username}",
                 password:"${this.state.password}",
                 firstname:"${this.state.firstname}",
@@ -94,11 +93,12 @@ class FormInscription extends Component {
         return 'error';
       }
 
-      birthdateValidation(){
+      birthdateValidation() {
         const length = this.state.birthdate.length;
-        if(length != 8 || !this.state.birthdate.match(/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{2}$/i)){
+        if (length !== 8 || !this.state.birthdate.match(/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{2}$/i)) {
           return 'error';
         }
+        return null;
       }
 
   render() {
@@ -143,7 +143,7 @@ class FormInscription extends Component {
             <FormControl.Feedback />
           </FormGroup>
 
-          <FormGroup 
+          <FormGroup
             validationState={this.birthdateValidation()}
           >
             <ControlLabel>Birthdate</ControlLabel>

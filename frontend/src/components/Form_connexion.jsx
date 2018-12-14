@@ -1,13 +1,53 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 import { Button } from 'semantic-ui-react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
+import { Query, ApolloProvider } from 'react-apollo';
+
 
 const serverUrl = 'http://localhost:4000';
 const client = new ApolloClient({
   uri: serverUrl,
 });
+
+function getErrorMsg(username, password, submitted) {
+  if (submitted === true) {
+      return (
+        <ApolloProvider client={client}>
+          <Query
+        // dans server, remplacer if (authRequired) par if (!authRequired) pour debug
+            query={gql`
+            {
+              auth(username:"${username}", password:"${password}"){
+                token, user{
+                  id, username
+                }
+              }
+            }
+          `}
+          >
+            {({ loading, error, data }) => {
+            if (loading) return <p>Loading...</p>;
+            if (error) return <p>Wrong credentials</p>;
+            sessionStorage.setItem('userToken', data.auth.token);
+            sessionStorage.setItem('isConnected', true);
+            localStorage.setItem('currentUser', JSON.stringify(data.auth.user));
+            return (
+              <div>
+                <p>Welcome {`${data.auth.user.username}`}</p>
+                <Redirect to="/" />
+              </div>
+            );
+          }}
+          </Query>
+
+        </ApolloProvider>
+      );
+    }
+    return <p />;
+}
 
 class FormConnexion extends Component {
     constructor(props) {
@@ -15,6 +55,7 @@ class FormConnexion extends Component {
         this.state = {
             username: '',
             password: '',
+            submitted: false,
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -28,26 +69,19 @@ class FormConnexion extends Component {
 
     this.setState({
         [name]: value,
+        submitted: false,
+
     });
   }
 
     handleSubmit(event) {
         // Debug purpose
         // eslint-disable-next-line react/destructuring-assignment
-
-        event.preventDefault();
-        client
-            .query({
-                query: gql`
-                  {
-                    auth(username:"${this.state.username}", password:"${this.state.password}"){
-                      token, user{
-                        id, username
-                      }
-                    }
-                  }
-                `,
-            }).then(response => console.log(response.data.auth.token));
+        this.setState({
+         submitted: true,
+        });
+      console.log('submitted: ', this.state.username);
+      event.preventDefault();
       }
 
   render() {
@@ -78,9 +112,9 @@ class FormConnexion extends Component {
             />
             <FormControl.Feedback />
           </FormGroup>
-
           <Button type="submit">Submit</Button>
         </form>
+        <p>{getErrorMsg(this.state.username, this.state.password, this.state.submitted)}</p>
       </div>
     );
   }

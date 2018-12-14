@@ -11,8 +11,6 @@ const Routing = () => (
       <Route exact path="/" component={Timeline} />
       <Route path="/register" component={Register} />
       <Route path="/connexion" component={Connexion} />
-
-
     </Switch>
   </main>
 );

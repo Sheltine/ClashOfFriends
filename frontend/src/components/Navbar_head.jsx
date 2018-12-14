@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Navbar, FormGroup, FormControl, Button } from 'react-bootstrap';
 
-
+function disconnect() {
+  // localStorage.clear();
+  sessionStorage.clear();
+  console.log('déconnexion');
+}
 class NavbarHead extends Component {
   render() {
     return (
@@ -21,9 +26,9 @@ class NavbarHead extends Component {
         </Navbar.Form>
         <Navbar.Collapse>
           <Navbar.Text pullRight>
-            John Doe
+            {JSON.parse(localStorage.getItem('currentUser')).username}
             <br />
-            Logout
+            <Link onClick={disconnect()} to="/connexion">Logout</Link>
           </Navbar.Text>
         </Navbar.Collapse>
       </Navbar>

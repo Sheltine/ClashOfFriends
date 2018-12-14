@@ -11,6 +11,7 @@
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
     "jsonwebtoken": "^8.4.0",
+    "moment": "^2.23.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-apollo": "^2.3.2",
