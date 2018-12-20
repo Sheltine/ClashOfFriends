@@ -5,11 +5,12 @@ import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
 import { Query, ApolloProvider } from 'react-apollo';
 
+const { backendURL } = require('../config.js');
 
-const serverUrl = 'http://localhost:4000';
 const client = new ApolloClient({
-  uri: serverUrl,
+  uri: backendURL,
 });
+
 
 function getErrorMsg(username, password, submitted) {
   if (submitted === true) {

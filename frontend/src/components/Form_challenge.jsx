@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
 
-const serverUrl = 'http://localhost:4000';
+const { backendURL } = require('../config.js');
+
 const client = new ApolloClient({
-  uri: serverUrl,
+  uri: backendURL,
 });
 
 class ChallengeForm extends Component {
