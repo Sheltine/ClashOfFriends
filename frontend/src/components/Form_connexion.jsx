@@ -5,12 +5,13 @@ import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
 import { Query, ApolloProvider } from 'react-apollo';
 
-const { backendURL } = require('../config.js');
+const { BACKEND_URL } = require('../config');
+
+console.log(`BackendURL: ${BACKEND_URL}`);
 
 const client = new ApolloClient({
-  uri: backendURL,
+  uri: BACKEND_URL,
 });
-
 
 function getErrorMsg(username, password, submitted) {
   if (submitted === true) {
@@ -29,6 +30,9 @@ function getErrorMsg(username, password, submitted) {
           `}
           >
             {({ loading, error, data }) => {
+              console.log(`Error: ${error}`);
+              console.log('Data:');
+              console.log(data);
             if (loading) return <p>Loading...</p>;
             if (error) {
               return (

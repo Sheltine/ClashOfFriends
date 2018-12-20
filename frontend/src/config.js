@@ -1,4 +1,7 @@
+require('dotenv/config');
+
+console.log(`ici : ${process.env.REACT_APP_BACKEND_URL}`);
 
 module.exports = {
-    backendURL: process.env.BACKEND_URL || 'http://localhost:4000',
+    BACKEND_URL: process.env.REACT_APP_BACKEND_URL,
 };

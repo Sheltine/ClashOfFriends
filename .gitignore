@@ -89,3 +89,6 @@ lib/*.jar
 **/.DS_Store
 
 **/*.pdf
+
+# In our case, we want to ignore other .gitignore since those are used for heroku
+**/.gitignore
