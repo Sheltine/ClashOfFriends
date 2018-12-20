@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-import { Button } from 'semantic-ui-react';
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { FormGroup, FormControl, ControlLabel, Button, Alert } from 'react-bootstrap';
 import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
 import { Query, ApolloProvider } from 'react-apollo';
@@ -30,7 +29,16 @@ function getErrorMsg(username, password, submitted) {
           >
             {({ loading, error, data }) => {
             if (loading) return <p>Loading...</p>;
-            if (error) return <p>Wrong credentials</p>;
+            if (error) {
+              return (
+                <div>
+                  <br />
+                  <Alert bsStyle="danger">
+                    <strong>Wrong credentials!</strong> Please try again
+                  </Alert>
+                </div>
+                );
+          }
             sessionStorage.setItem('userToken', data.auth.token);
             sessionStorage.setItem('isConnected', true);
             localStorage.setItem('currentUser', JSON.stringify(data.auth.user));

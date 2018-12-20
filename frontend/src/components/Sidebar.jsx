@@ -1,29 +1,31 @@
 import React, { Component } from 'react';
-import { Nav, NavItem, DropdownButton, MenuItem } from 'react-bootstrap';
+import { Redirect } from 'react-router';
+import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 function handleSelect(selectedKey) {
-    alert(selectedKey);
-    // do something
+    switch (selectedKey) {
+      case '1':
+       return <Redirect to="/register" />;
+      case '3.1':
+        return <p>coucou</p>;
+      default:
+        return null;
+    }
   }
-
 class Sidebar extends Component {
   render() {
     return (
       <Nav className="Navbar-style" stacked activeKey={1} onSelect={handleSelect}>
-        <NavItem eventKey={1} href="/">
+        <NavItem eventKey={1}>
                 Home
         </NavItem>
         <NavItem eventKey={2} href="/register">
                 Profile
         </NavItem>
-        <NavItem eventKey={3}>
-          <DropdownButton
-            title="Challenge"
-          >
-            <MenuItem eventKey="1">Verbal</MenuItem>
-            <MenuItem eventKey="2">Picture</MenuItem>
-          </DropdownButton>
-        </NavItem>
+        <NavDropdown title="Challenge" eventKey={3}>
+          <MenuItem eventKey={3.1}>Verbal</MenuItem>
+          <MenuItem eventKey={3.2}>Picture</MenuItem>
+        </NavDropdown>
       </Nav>
     );
   }
