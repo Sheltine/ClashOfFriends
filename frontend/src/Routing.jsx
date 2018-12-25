@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Connexion from './Connexion';
 import Register from './Register';
 import Timeline from './Timeline';
+import Profile from './Profile';
 
 // Ajouter ici les routes vers les pages
 const Routing = () => (
@@ -11,6 +12,7 @@ const Routing = () => (
       <Route exact path="/" component={Timeline} />
       <Route path="/register" component={Register} />
       <Route path="/connexion" component={Connexion} />
+      <Route path="/profile" component={Profile} />
     </Switch>
   </main>
 );

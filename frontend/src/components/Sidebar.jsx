@@ -19,7 +19,7 @@ class Sidebar extends Component {
         <NavItem eventKey={1}>
                 Home
         </NavItem>
-        <NavItem eventKey={2} href="/register">
+        <NavItem eventKey={2} href="/profile">
                 Profile
         </NavItem>
         <NavDropdown title="Challenge" eventKey={3}>

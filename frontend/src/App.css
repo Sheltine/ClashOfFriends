@@ -70,3 +70,12 @@
 .ListComments-style {
   background-color: #ededed;
 }
+
+.Follow-style {
+  width: 20em;
+}
+
+.Glyph-red {
+  font-size: 1.3em;
+  color: red;
+}

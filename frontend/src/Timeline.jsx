@@ -7,7 +7,7 @@ import BoxChallenge from './components/Box_challenge';
 
 class Timeline extends Component {
   render() {
-    if (localStorage.getItem('currentUser') && sessionStorage.getItem('userToken')) {
+    if (localStorage.getItem('currentUser') && localStorage.getItem('userToken')) {
       return (
         <div className="App">
           <body>

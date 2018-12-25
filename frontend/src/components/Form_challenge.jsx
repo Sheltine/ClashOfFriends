@@ -34,8 +34,8 @@ class ChallengeForm extends Component {
         });
         const reader = new FileReader();
         reader.readAsDataURL(e.target.files[0]);
-        console.log('test: ', e.target.result);
         reader.onload = (a) => {
+            console.log('file', a.target.result);
             client
                 .query({
                     query: gql`

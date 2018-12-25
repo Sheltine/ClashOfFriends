@@ -44,8 +44,7 @@ function getErrorMsg(username, password, submitted) {
                 </div>
                 );
           }
-            sessionStorage.setItem('userToken', data.auth.token);
-            sessionStorage.setItem('isConnected', true);
+            localStorage.setItem('userToken', data.auth.token);
             localStorage.setItem('currentUser', JSON.stringify(data.auth.user));
             return (
               <div>
