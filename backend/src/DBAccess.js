@@ -65,6 +65,38 @@ class DBAccess {
             return user;
         });
     }
+
+    getFollowers(userId) {
+        return User.find({ following: userId });
+    }
+
+    addFollower(followingUser, followedUsername) {
+        if (followingUser.username === followedUsername) {
+            return new Error(`${followingUser.username} cannot follow itself`);
+        }
+        return this.getUser({ username: followedUsername }).then((user, err) => {
+            if (err) {
+                console.error(err);
+                return new Error('Cannot find a user with this username');
+            }
+
+            // We check if this user does not already follow this user
+            followingUser.following.forEach((f) => {
+                if (f.toString() === user.id) {
+                    throw new Error(`${followingUser.username} already follows ${followedUsername}`);
+                }
+            });
+            followingUser.following.push(user);
+            return followingUser.save().then((u, e) => {
+                if (e) {
+                    console.error(e);
+                    return e;
+                }
+                console.log(`${u.username} now follows ${followedUsername}`);
+                return u;
+            });
+        });
+    }
 }
 
 const connection = new DBAccess(DB_PARAMS);

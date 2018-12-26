@@ -18,6 +18,8 @@ module.exports = gql`
         lastname: String!,
         avatarImg: String,
         birthdate: String!,
+        followers: [User],
+        following: [User],
         createdAt: String,
         updatedAt: String
     }
@@ -35,5 +37,6 @@ module.exports = gql`
         message: String
         register(user: UserInput!): AuthResponse
         updateProfile(user: UserInput!): User
+        follow(username: String!): User
     }
 `;

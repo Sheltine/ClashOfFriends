@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+const modelName = 'User';
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
@@ -22,7 +23,7 @@ const userSchema = new Schema({
         type: String,
         validate: {
             validator(i) {
-                return i === null || /^[A-z0-9]+\.(jpe?g|png)$/.test(i);
+                return i === null || /^[A-z0-9]+\.(jpe?g|png)$/.test(i);
             },
             message: props => `${props} is not a valid image`,
         } },
@@ -53,6 +54,7 @@ const userSchema = new Schema({
         type: Date,
         required: true,
     },
+    following: [{ type: Schema.Types.ObjectId, ref: modelName }],
 }, { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model(modelName, userSchema);

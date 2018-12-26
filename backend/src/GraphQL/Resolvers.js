@@ -14,8 +14,11 @@ module.exports = {
         message: () => 'Hello mutation !',
         register: (_, { user }) => register(user),
         updateProfile: (_, { user }, c) => { mustBeAuthenticated(c); return update(c.user, user); },
+        follow: (_, { username }, c) => { mustBeAuthenticated(c); return connection.addFollower(c.user, username); },
     },
     User: {
+        followers: u => connection.getFollowers(u.id),
+        following: u => u.following.map(id => connection.getUser({ _id: id })),
         birthdate: u => moment(u.birthdate).format(BIRTHDATE_FORMAT),
         createdAt: u => moment(u.createdAt).format(DATE_FORMAT),
         updatedAt: u => moment(u.updatedAt).format(DATE_FORMAT),
