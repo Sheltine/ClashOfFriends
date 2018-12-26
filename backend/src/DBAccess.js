@@ -97,6 +97,35 @@ class DBAccess {
             });
         });
     }
+
+    removeFollower(unfollowingUser, notAnyMoreFollowedUsername) {
+        if (unfollowingUser.username === notAnyMoreFollowedUsername) {
+            return new Error(`${unfollowingUser.username} cannot follow itself`);
+        }
+
+        return this.getUser({ username: notAnyMoreFollowedUsername }).then((user, err) => {
+            if (err) {
+                console.error(err);
+                return new Error('Cannot find a user with this username');
+            }
+
+            // We check if this user does follow this user or not
+            for (let i = 0; i < unfollowingUser.following.length; i += 1) {
+                if (unfollowingUser.following[i].toString() === user.id) {
+                    unfollowingUser.following.splice(i, 1);
+                    return unfollowingUser.save().then((u, e) => {
+                        if (e) {
+                            console.error(e);
+                            return e;
+                        }
+                        console.log(`${u.username} does not follows ${notAnyMoreFollowedUsername} any more`);
+                        return u;
+                    });
+                }
+            }
+            throw new Error(`${unfollowingUser.username} does not follow ${notAnyMoreFollowedUsername}`);
+        });
+    }
 }
 
 const connection = new DBAccess(DB_PARAMS);

@@ -6,6 +6,7 @@ module.exports = {
         "no-console"                : 0,
         "max-len"                   : 0,
         "object-curly-newline"      : 0,
-        "indent"                    : 0
+        "indent"                    : 0,
+        "no-loop-func"              : 0
     }
 };

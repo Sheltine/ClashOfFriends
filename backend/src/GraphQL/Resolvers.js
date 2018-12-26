@@ -15,6 +15,7 @@ module.exports = {
         register: (_, { user }) => register(user),
         updateProfile: (_, { user }, c) => { mustBeAuthenticated(c); return update(c.user, user); },
         follow: (_, { username }, c) => { mustBeAuthenticated(c); return connection.addFollower(c.user, username); },
+        unfollow: (_, { username }, c) => { mustBeAuthenticated(c); return connection.removeFollower(c.user, username); },
     },
     User: {
         followers: u => connection.getFollowers(u.id),

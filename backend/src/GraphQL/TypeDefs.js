@@ -38,5 +38,6 @@ module.exports = gql`
         register(user: UserInput!): AuthResponse
         updateProfile(user: UserInput!): User
         follow(username: String!): User
+        unfollow(username: String!): User
     }
 `;

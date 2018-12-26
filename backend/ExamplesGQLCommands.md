@@ -92,3 +92,19 @@ mutation {
   }
 }
 ```
+
+### Unfollow a user from its username
+
+```graphql
+mutation {
+  unfollow(username: "amadeous") {
+    username,
+    followers {
+      username,
+    },
+    following {
+      username,
+    },
+  }
+}
+```
