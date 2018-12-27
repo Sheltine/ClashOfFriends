@@ -21,6 +21,7 @@ class Profile extends Component {
                   </div>
                   <div className="col-md-offset-3">
                     <div className="row">
+                      {console.log(JSON.parse(localStorage.getItem('currentUser')))}
                       <FriendList />
                     </div>
                   </div>

@@ -23,7 +23,18 @@ function getErrorMsg(username, password, submitted) {
             {
               auth(username:"${username}", password:"${password}"){
                 token, user{
-                  id, username
+                  id,
+                  username,
+                  firstname,
+                  lastname,
+                  email,
+                  birthdate,
+                  followers {
+                    username,
+                  },
+                  following {
+                    username,
+                  },
                 }
               }
             }

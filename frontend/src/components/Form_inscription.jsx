@@ -5,12 +5,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
 
-const { backendURL } = require('../config.js');
+const { BACKEND_URL } = require('../config.js');
 
 const client = new ApolloClient({
-  uri: backendURL,
+  uri: BACKEND_URL,
 });
-
 
 class FormInscription extends Component {
     constructor(props) {
