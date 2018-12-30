@@ -29,6 +29,7 @@ function getErrorMsg(username, password, submitted) {
                   lastname,
                   email,
                   birthdate,
+                  createdAt,
                   followers {
                     username,
                   },
@@ -109,8 +110,9 @@ class FormConnexion extends Component {
 
   render() {
     return (
-
       <div className="Centered-form">
+        {localStorage.clear()}
+        {sessionStorage.clear()}
         <form onSubmit={this.handleSubmit}>
           <FormGroup>
             <ControlLabel>Username</ControlLabel>

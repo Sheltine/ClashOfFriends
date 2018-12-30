@@ -62,11 +62,28 @@ class FormInscription extends Component {
                   user {
                     id,
                     username,
-                    createdAt
+                    firstname,
+                    lastname,
+                    email,
+                    birthdate,
+                    followers {
+                      username,
+                    },
+                    following {
+                      username,
+                    },
                   }
                 }}
             `,
-        }).then(response => console.log(response.data.auth.token));
+        }).then((response) => {
+          console.log(response.data.register.token);
+          if (response.data.register.token !== null) {
+            console.log('noice');
+            localStorage.setItem('userToken', response.data.register.token);
+            localStorage.setItem('currentUser', JSON.stringify(response.data.register.user));
+            window.location('/');
+          }
+        });
 }
 
       passwordValidation() {
@@ -105,6 +122,8 @@ class FormInscription extends Component {
   render() {
     return (
       <div className="Centered-form">
+        {localStorage.clear()}
+        {sessionStorage.clear()}
         <form onSubmit={this.handleSubmit}>
           <FormGroup
             controlId="formBasicText"

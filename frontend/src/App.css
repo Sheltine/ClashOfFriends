@@ -84,3 +84,29 @@
   font-size: 1.3em;
   color: blue;
 }
+
+.Card-style {
+  display: flex;
+
+}
+
+.vspace {
+  margin-top: 5em;
+}
+
+.minispace {
+  margin-top: 2em;
+}
+
+.CardTable-style {
+  margin-top: 2em;
+}
+
+.UserInfo-style {
+  border-style: solid;
+  border-width: 1px;
+  border-color: lightgray;
+  border-radius: .3em;
+  padding: 2em;
+  width: 50em;
+}

@@ -18,7 +18,6 @@ const authLink = new ApolloLink((operation, forward) => {
         authorization: token ? `Bearer ${token}` : '',
     },
 });
-
 // Call the next link in the middleware chain.
 return forward(operation);
 });
@@ -69,6 +68,7 @@ class FriendList extends Component {
                   lastname,
                   email,
                   birthdate,
+                  createdAt,
                   followers {
                     username,
                   },

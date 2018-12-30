@@ -16,7 +16,7 @@ class Sidebar extends Component {
   render() {
     return (
       <Nav className="Navbar-style" stacked activeKey={1} onSelect={handleSelect}>
-        <NavItem eventKey={1}>
+        <NavItem eventKey={1} href="/">
                 Home
         </NavItem>
         <NavItem eventKey={2} href="/profile">
