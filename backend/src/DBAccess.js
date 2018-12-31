@@ -56,7 +56,9 @@ class DBAccess {
     }
 
     updateUser(userId, params) {
-        return User.findOneAndUpdate({ _id: userId }, params, { new: true, runValidators: true }).then((user, err) => {
+        const newParams = params;
+        newParams.birthdate = moment(params.birthdate, BIRTHDATE_FORMAT).toDate();
+        return User.findOneAndUpdate({ _id: userId }, newParams, { new: true, runValidators: true }).then((user, err) => {
             if (err) {
                 console.error(err);
                 return err;
