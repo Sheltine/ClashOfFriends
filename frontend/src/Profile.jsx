@@ -25,10 +25,9 @@ class Profile extends Component {
                     <div className="Card-style">
                       <CardUser />
                     </div>
-                    
                   </div>
                   <div className="col-md-offset-4">
-                  <div className="UserInfo-style">
+                    <div className="UserInfo-style">
                       <UserInfo />
                     </div>
                   </div>
