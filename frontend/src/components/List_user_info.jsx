@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormGroup, FormControl, ControlLabel, Button, Alert } from 'react-bootstrap';
 import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from 'apollo-boost';
-import { Mutation, ApolloProvider } from 'react-apollo';
+// import { Mutation, ApolloProvider } from 'react-apollo';
 import gql from 'graphql-tag';
 
 
@@ -46,7 +46,7 @@ class UserInfo extends Component {
         this.update = this.update.bind(this);
         this.displayContent = this.displayContent.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        //this.getErrorMsg = this.getErrorMsg.bind(this);
+        // this.getErrorMsg = this.getErrorMsg.bind(this);
   }
 
   // eslint-disable-next-line class-methods-use-this

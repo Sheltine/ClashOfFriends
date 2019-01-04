@@ -14,21 +14,21 @@ class Timeline extends Component {
             <div className="row">
               <NavbarHead />
             </div>
-            <div className="row">
-              <div className="col-md-2">
-                <div className="Sidebar-style">
-                  <Sidebar />
-                </div>
-              </div>
+            <div className="col-md-2 Sidebar-style">
+              <Sidebar />
+            </div>
+            <row>
               <div className="col-md-offset-5">
                 <div className="Challenge-style">
                   <BoxChallenge />
                 </div>
               </div>
-              <div className="col-md-offset-3">
+            </row>
+            <row>
+              <div className="col-md-5 col-md-offset-3">
                 <PostsList />
               </div>
-            </div>
+            </row>
           </body>
 
         </div>

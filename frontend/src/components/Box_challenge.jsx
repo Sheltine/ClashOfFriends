@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { ButtonToolbar, ButtonGroup, Button, Glyphicon, Modal } from 'react-bootstrap';
 import ChallengeForm from './Form_challenge';
 
-
 class name extends Component {
   constructor(props, context) {
     super(props, context);

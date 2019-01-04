@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import { ListGroup, ListGroupItem, Glyphicon, Tooltip, OverlayTrigger, Button } from 'react-bootstrap';
 import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from 'apollo-boost';
 import gql from 'graphql-tag';
+import { Query, ApolloProvider } from 'react-apollo';
+import Select from 'react-select';
 
 const { BACKEND_URL } = require('../config.js');
 
@@ -46,9 +48,18 @@ class FriendList extends Component {
             // à remplacer par la vraie liste de followers
             followers: JSON.parse(localStorage.getItem('currentUser')).followers,
             following: JSON.parse(localStorage.getItem('currentUser')).following,
+            newFollowing: '',
         };
         this.unfollow = this.unfollow.bind(this);
         this.follow = this.follow.bind(this);
+        this.handleUserSelect = this.handleUserSelect.bind(this);
+  }
+
+  handleUserSelect(event) {
+    this.setState({
+        newFollowing: event.value,
+    });
+    console.log('Option selected:', this.state.newFollowing);
   }
 
     // eslint-disable-next-line class-methods-use-this
@@ -94,43 +105,89 @@ class FriendList extends Component {
         console.log('coucou');
         const toFollow = event.target.value;
         console.log(toFollow);
-        client
-        .mutate({
-            mutation: gql`
-            mutation {
-                follow(username: "${toFollow}") {
-                  id,
-                  username,
-                  firstname,
-                  lastname,
-                  email,
-                  birthdate,
-                  followers {
+        if (event.target.value !== '') {
+          client
+          .mutate({
+              mutation: gql`
+              mutation {
+                  follow(username: "${toFollow}") {
+                    id,
                     username,
-                  },
-                  following {
-                    username,
-                  },
-                }
-              }
-            `,
-        }).then((response) => {
-                console.log('Réponse serveur: ', response.data);
-                localStorage.setItem('currentUser', JSON.stringify(response.data.follow));
-                this.setState(
-                    {
-                        following: JSON.parse(localStorage.getItem('currentUser')).following,
+                    firstname,
+                    lastname,
+                    email,
+                    birthdate,
+                    followers {
+                      username,
                     },
-                );
-            });
+                    following {
+                      username,
+                    },
+                  }
+                }
+              `,
+          }).then((response) => {
+                  console.log('Réponse serveur: ', response.data);
+                  localStorage.setItem('currentUser', JSON.stringify(response.data.follow));
+                  this.setState(
+                      {
+                          following: JSON.parse(localStorage.getItem('currentUser')).following,
+                      },
+                  );
+              });
+        }
         // si possible modifier pour prevState si moyen de faire fonctionner
     }
 
   render() {
     return (
       <div>
-        <div className="row">
-          <div className="col-md-2">
+        <ApolloProvider client={client}>
+          <Query
+        // dans server, remplacer if (authRequired) par if (!authRequired) pour debug
+            query={gql`
+            {
+              users {
+                username
+              }
+            }
+          `}
+          >
+            {({ loading, error, data }) => {
+              console.log(`Error: ${error}`);
+              console.log('Data:');
+              console.log(data);
+            if (loading) return <p>Loading...</p>;
+            if (error) {
+              return null;
+          }
+          const options = [];
+
+          data.users.map(user => (
+              options.push({ value: `${user.username}`, label: `${user.username}` })
+          ));
+
+            return (
+              <div className="row">
+                <div className="col-md-4 col-md-offset-4">
+                  <h3>Find users</h3>
+                  <Select
+                    value={this.state.challenger}
+                    onChange={this.handleUserSelect}
+                    options={options}
+                  />
+                  <Button bsSize="medium" onClick={this.follow} value={this.state.newFollowing} type="submit">
+                   Follow
+                  </Button>
+                </div>
+              </div>
+            );
+          }}
+          </Query>
+
+        </ApolloProvider>
+        <div className="row vspace">
+          <div className="col-md-2 col-md-offset-4">
             <h1>Followers</h1>
             <ListGroup componentClass="ul">
               {
@@ -146,7 +203,7 @@ class FriendList extends Component {
               }
             </ListGroup>
           </div>
-          <div className="col-md-offset-5">
+          <div className="col-md-offset-6">
             <h1>Following</h1>
             <ListGroup componentClass="ul">
               {
