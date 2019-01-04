@@ -14,6 +14,7 @@ module.exports = {
         message: () => 'Hello mutation !',
         register: (_, { user }) => register(user),
         updateProfile: (_, { user }, c) => { mustBeAuthenticated(c); return update(c.user, user); },
+        changePassword: (_, { oldPassword, newPassword }, c) => { mustBeAuthenticated(c); return connection.changeUserPassword(c.user, oldPassword, newPassword); },
         follow: (_, { username }, c) => { mustBeAuthenticated(c); return connection.addFollower(c.user, username); },
         unfollow: (_, { username }, c) => { mustBeAuthenticated(c); return connection.removeFollower(c.user, username); },
     },

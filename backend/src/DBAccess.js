@@ -68,6 +68,22 @@ class DBAccess {
         });
     }
 
+    changeUserPassword(u, oldPassword, newPassword) {
+        return User.findOneAndUpdate({ _id: u.id, password: oldPassword }, { password: newPassword }, { runValidators: true })
+            .then((user, err) => {
+                if (err) {
+                    console.error(err);
+                    return err;
+                }
+                if (user === null) {
+                    console.log(`${u.username} failed to change password (wrong old password)`);
+                    return new Error('Wrong password');
+                }
+                console.log(`Password changed for ${user.username}`);
+                return user;
+        });
+    }
+
     getFollowers(userId) {
         return User.find({ following: userId });
     }

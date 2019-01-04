@@ -45,6 +45,7 @@ module.exports = gql`
         message: String
         register(user: UserInput!): AuthResponse
         updateProfile(user: UserUpdate!): User
+        changePassword(oldPassword: String!, newPassword: String!): User
         follow(username: String!): User
         unfollow(username: String!): User
     }
