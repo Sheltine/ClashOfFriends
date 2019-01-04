@@ -9,7 +9,8 @@ module.exports = {
         users: (p, a, c) => { mustBeAuthenticated(c); return connection.getUsers(); },
         auth: (p, a) => auth(a.username, a.password),
         user: (p, a, c) => { mustBeAuthenticated(c); return connection.getUser({ username: a.username }); },
-        categories: (p, a, c) => { mustBeAuthenticated(c); return connection.getCategories(); },
+        categories: () => connection.getCategories(),
+        themes: () => connection.getThemes(),
     },
     Mutation: {
         message: () => 'Hello mutation !',
@@ -29,5 +30,9 @@ module.exports = {
     Category: {
         createdAt: c => moment(c.createdAt).format(DATE_FORMAT),
         updatedAt: c => moment(c.updatedAt).format(DATE_FORMAT),
+    },
+    Theme: {
+        createdAt: t => moment(t.createdAt).format(DATE_FORMAT),
+        updatedAt: t => moment(t.updatedAt).format(DATE_FORMAT),
     },
 };

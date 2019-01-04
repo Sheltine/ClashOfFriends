@@ -42,6 +42,12 @@ module.exports = gql`
         createdAt: String,
         updatedAt: String
     }
+    type Theme {
+        id: String,
+        name: String,
+        createdAt: String,
+        updatedAt: String
+    }
     type AuthResponse {
         user: User!,
         token: String!
@@ -52,6 +58,7 @@ module.exports = gql`
         auth(username: String!, password: String!): AuthResponse
         user(username: String!): User
         categories: [Category]
+        themes: [Theme]
     }
     type Mutation {
         message: String

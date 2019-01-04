@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 const User = require('./Schemas/UserSchema');
 const Category = require('./Schemas/CategorySchema');
+const Theme = require('./Schemas/ThemeSchema');
 const { DB_PARAMS, BIRTHDATE_FORMAT } = require('../config');
 
 class DBAccess {
@@ -22,6 +23,14 @@ class DBAccess {
             console.log(`${u.username} added to DB !`);
           });
           */
+
+          /*
+        this.t = new Theme({name: 'Haine'});
+        this.t.save().then((err, t) => {
+            if (err) return console.error(err);
+            console.log(`Theme ${t.name} added to DB !`);
+        });
+        */
     }
 
     convertToUser(params) {
@@ -148,6 +157,10 @@ class DBAccess {
 
     getCategories() {
         return Category.find();
+    }
+
+    getThemes() {
+        return Theme.find();
     }
 }
 

@@ -14,7 +14,7 @@ const categorySchema = new Schema({
         required: [true, 'Name is required.'],
         validate: {
             validator(e) {
-                return /^[A-z0-9 ]+$/.test(e);
+                return /^[A-z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ ]{1, 100}$/.test(e);
             },
             message: props => `${props} is not a valid category name`,
           },
@@ -24,7 +24,7 @@ const categorySchema = new Schema({
             type: String,
             validate: {
                 validator(e) {
-                    return /^[A-z0-9]+$/.test(e);
+                    return /^[A-z0-9]{1, 100}$/.test(e);
                 },
                 message: props => `${props} is not a valid fileType name`,
               },
