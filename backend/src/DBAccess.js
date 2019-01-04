@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 const User = require('./Schemas/UserSchema');
+const Category = require('./Schemas/CategorySchema');
 const { DB_PARAMS, BIRTHDATE_FORMAT } = require('../config');
 
 class DBAccess {
@@ -143,6 +144,10 @@ class DBAccess {
             }
             throw new Error(`${unfollowingUser.username} does not follow ${notAnyMoreFollowedUsername}`);
         });
+    }
+
+    getCategories() {
+        return Category.find();
     }
 }
 

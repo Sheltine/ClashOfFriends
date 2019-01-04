@@ -31,6 +31,17 @@ module.exports = gql`
         createdAt: String,
         updatedAt: String
     }
+    type Category {
+        id: String,
+        name: String,
+        fileType: [String],
+        uploadDurationMin: Int,
+        uploadDurationMax: Int,
+        voteDurationMin: Int,
+        voteDurationMax: Int,
+        createdAt: String,
+        updatedAt: String
+    }
     type AuthResponse {
         user: User!,
         token: String!
@@ -40,6 +51,7 @@ module.exports = gql`
         users: [User]
         auth(username: String!, password: String!): AuthResponse
         user(username: String!): User
+        categories: [Category]
     }
     type Mutation {
         message: String
