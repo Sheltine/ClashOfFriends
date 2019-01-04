@@ -10,6 +10,14 @@ module.exports = gql`
         birthdate: String!,
         password: String!
     }
+    input UserUpdate {
+        username: String!
+        email: String!,
+        firstname: String!,
+        lastname: String!,
+        avatarImg: String,
+        birthdate: String!
+    }
     type User {
         id: String,
         username: String!
@@ -36,7 +44,7 @@ module.exports = gql`
     type Mutation {
         message: String
         register(user: UserInput!): AuthResponse
-        updateProfile(user: UserInput!): User
+        updateProfile(user: UserUpdate!): User
         follow(username: String!): User
         unfollow(username: String!): User
     }
