@@ -13,10 +13,12 @@ const client = new ApolloClient({
 });
 
 const options = [];
+if (JSON.parse(localStorage.getItem('currentUser')) !== null) {
+    JSON.parse(localStorage.getItem('currentUser')).following.map(following => (
+        options.push({ value: `${following.username}`, label: `${following.username}` })
+    ));
+}
 
-JSON.parse(localStorage.getItem('currentUser')).following.map(following => (
-    options.push({ value: `${following.username}`, label: `${following.username}` })
-));
 
 console.log('options: ', options);
 
