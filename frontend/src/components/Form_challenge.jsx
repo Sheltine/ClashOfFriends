@@ -12,18 +12,18 @@ const client = new ApolloClient({
   uri: backendURL,
 });
 
-const options = [];
-if (JSON.parse(localStorage.getItem('currentUser')) !== null) {
-    JSON.parse(localStorage.getItem('currentUser')).following.map(following => (
-        options.push({ value: `${following.username}`, label: `${following.username}` })
-    ));
-}
-
-
-console.log('options: ', options);
+        const options = [];
 
 class ChallengeForm extends Component {
     constructor(props) {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user !== null) {
+            user.following.map(following => (
+                options.push({ value: `${following.username}`, label: `${following.username}` })
+            ));
+        }
+
+        console.log('options: ', options);
         super(props);
         this.state = {
             file: '',
@@ -71,7 +71,6 @@ class ChallengeForm extends Component {
         <h1>{this.props.category} Challenge</h1>
         <p>Find your friend</p>
         <Select
-          value={this.state.challenger}
           onChange={this.handleUserSelect}
           options={options}
         />
