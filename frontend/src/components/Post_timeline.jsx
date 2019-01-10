@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ListGroup, ListGroupItem, Glyphicon } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Glyphicon, Panel } from 'react-bootstrap';
 import Comment from '../comment';
 
 // ICI récupération d'un post en particulier selon son id
@@ -10,26 +10,27 @@ const comments = [];
 comments.push(new Comment('0', 'John', 'Bien ouéj!'));
 comments.push(new Comment('1', 'Marina', 'Cimer'));
 
- function displayContent(category, content) {
-    switch (category) {
-      case 'verbal':
-        return <blockquote>{content}</blockquote>;
-      case 'picture':
-        return <div className="pull-right"><img alt="Winning pic" className="PicChallenge-icon" src={content} height="150em" width="150em" /></div>;
-      case 'sound':
-        return (
-          <audio controls>
-            <source src={content} type="audio/mpeg" />
-          </audio>
-                );
-      default:
-        return null;
-    }
+function displayContent(category, content) {
+  switch (category) {
+    case 'verbal':
+      return <blockquote>{content}</blockquote>;
+    case 'picture':
+      return <div className="pull-right"><img alt="Winning pic" className="PicChallenge-icon" src={content} height="150em" width="150em" /></div>;
+    case 'sound':
+      return (
+        <audio controls>
+          <source src={content} type="audio/mpeg" />
+        </audio>
+      );
+    default:
+      return null;
   }
+}
 
 class PostTimeline extends Component {
   render() {
     return (
+      /*
       <div>
         <div className="Post-div">
           <div className="row">
@@ -50,6 +51,41 @@ class PostTimeline extends Component {
                   </div>))
               }
             </ListGroup>
+          </div>
+        </div>
+      </div>
+      */
+     
+      <div>
+        <div className="Post-div">
+          <div className="row">
+            <Panel bsStyle="primary">
+              <Panel.Heading>
+                <Panel.Title componentClass="h3">{this.props.player1} {this.props.gameResult} against {this.props.player2}</Panel.Title>
+              </Panel.Heading>
+              <Panel.Body>
+                <div className="row">
+                  {displayContent(this.props.category, this.props.content)}
+                </div>
+                
+                {/*
+                <div className="row">
+                  <Glyphicon className="Glyphicon-large pull-right" glyph="comment" />
+                </div>
+                */}
+
+                <div className="row">
+                  <ListGroup componentClass="ul">
+                    {
+                      comments.map(comment => (
+                        <div>
+                          <ListGroupItem className="ListComments-style"><b>{comment.user}</b>: {comment.comment}</ListGroupItem>
+                        </div>))
+                    }
+                  </ListGroup>
+                </div>
+              </Panel.Body>
+            </Panel>
           </div>
         </div>
       </div>
