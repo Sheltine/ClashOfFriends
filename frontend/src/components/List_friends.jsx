@@ -172,7 +172,6 @@ class FriendList extends Component {
                 <div className="col-md-4 col-md-offset-4">
                   <h3>Find users</h3>
                   <Select
-                    value={this.state.challenger}
                     onChange={this.handleUserSelect}
                     options={options}
                   />
