@@ -9,11 +9,14 @@ module.exports = {
         users: (p, a, c) => { mustBeAuthenticated(c); return connection.getUsers(); },
         auth: (p, a) => auth(a.username, a.password),
         user: (p, a, c) => { mustBeAuthenticated(c); return connection.getUser({ username: a.username }); },
+        categories: () => connection.getCategories(),
+        themes: () => connection.getThemes(),
     },
     Mutation: {
         message: () => 'Hello mutation !',
         register: (_, { user }) => register(user),
         updateProfile: (_, { user }, c) => { mustBeAuthenticated(c); return update(c.user, user); },
+        changePassword: (_, { oldPassword, newPassword }, c) => { mustBeAuthenticated(c); return connection.changeUserPassword(c.user, oldPassword, newPassword); },
         follow: (_, { username }, c) => { mustBeAuthenticated(c); return connection.addFollower(c.user, username); },
         unfollow: (_, { username }, c) => { mustBeAuthenticated(c); return connection.removeFollower(c.user, username); },
     },
@@ -23,5 +26,13 @@ module.exports = {
         birthdate: u => moment(u.birthdate).format(BIRTHDATE_FORMAT),
         createdAt: u => moment(u.createdAt).format(DATE_FORMAT),
         updatedAt: u => moment(u.updatedAt).format(DATE_FORMAT),
+    },
+    Category: {
+        createdAt: c => moment(c.createdAt).format(DATE_FORMAT),
+        updatedAt: c => moment(c.updatedAt).format(DATE_FORMAT),
+    },
+    Theme: {
+        createdAt: t => moment(t.createdAt).format(DATE_FORMAT),
+        updatedAt: t => moment(t.updatedAt).format(DATE_FORMAT),
     },
 };

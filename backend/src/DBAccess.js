@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 const User = require('./Schemas/UserSchema');
+const Category = require('./Schemas/CategorySchema');
+const Theme = require('./Schemas/ThemeSchema');
 const { DB_PARAMS, BIRTHDATE_FORMAT } = require('../config');
 
 class DBAccess {
@@ -21,6 +23,14 @@ class DBAccess {
             console.log(`${u.username} added to DB !`);
           });
           */
+
+          /*
+        this.t = new Theme({name: 'Haine'});
+        this.t.save().then((err, t) => {
+            if (err) return console.error(err);
+            console.log(`Theme ${t.name} added to DB !`);
+        });
+        */
     }
 
     convertToUser(params) {
@@ -65,6 +75,22 @@ class DBAccess {
             }
             console.log(`${params.username} updated in DB ! `);
             return user;
+        });
+    }
+
+    changeUserPassword(u, oldPassword, newPassword) {
+        return User.findOneAndUpdate({ _id: u.id, password: oldPassword }, { password: newPassword }, { runValidators: true })
+            .then((user, err) => {
+                if (err) {
+                    console.error(err);
+                    return err;
+                }
+                if (user === null) {
+                    console.log(`${u.username} failed to change password (wrong old password)`);
+                    return new Error('Wrong password');
+                }
+                console.log(`Password changed for ${user.username}`);
+                return user;
         });
     }
 
@@ -127,6 +153,14 @@ class DBAccess {
             }
             throw new Error(`${unfollowingUser.username} does not follow ${notAnyMoreFollowedUsername}`);
         });
+    }
+
+    getCategories() {
+        return Category.find();
+    }
+
+    getThemes() {
+        return Theme.find();
     }
 }
 
