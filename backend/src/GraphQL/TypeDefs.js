@@ -48,9 +48,19 @@ module.exports = gql`
         createdAt: String,
         updatedAt: String
     }
+    type Format {
+        id: String,
+        name: String,
+        categories: [Category],
+        createdAt: String,
+        updatedAt: String
+    }
     type AuthResponse {
         user: User!,
         token: String!
+    }
+    type Challenge {
+        x: String
     }
     type Query {
         message: String
@@ -59,6 +69,8 @@ module.exports = gql`
         user(username: String!): User
         categories: [Category]
         themes: [Theme]
+        formats: [Format]
+        format(category: String!): [Format]
     }
     type Mutation {
         message: String
@@ -67,5 +79,8 @@ module.exports = gql`
         changePassword(oldPassword: String!, newPassword: String!): User
         follow(username: String!): User
         unfollow(username: String!): User
+        challenge(username: String!, categoryId: String!): User
+        acceptChallenge(challengeId: String!): Challenge
+        rejectChallenge(challengeId: String!): Challenge
     }
 `;

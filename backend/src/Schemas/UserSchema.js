@@ -31,7 +31,7 @@ const userSchema = new Schema({
         type: String,
         validate: {
             validator(f) {
-                return /^[A-z\-\ ]+$/.test(f) && f.length <= 35;
+                return /^[A-z\-áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ ]+$/.test(f) && f.length <= 35;
             },
             message: props => `${props} is not a valid fistname`,
         } },
@@ -39,7 +39,7 @@ const userSchema = new Schema({
         type: String,
         validate: {
             validator(l) {
-                return /^[A-z\-\ ]+$/.test(l) && l.length <= 35;
+                return /^[A-z\-áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ ]+$/.test(l) && l.length <= 35;
             },
             message: props => `${props} is not a valid last`,
         } },

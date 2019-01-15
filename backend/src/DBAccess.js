@@ -3,7 +3,10 @@ const moment = require('moment');
 const User = require('./Schemas/UserSchema');
 const Category = require('./Schemas/CategorySchema');
 const Theme = require('./Schemas/ThemeSchema');
+const Format = require('./Schemas/FormatSchema');
+const Challenge = require('./Schemas/ChallengeSchema');
 const { DB_PARAMS, BIRTHDATE_FORMAT } = require('../config');
+const { getRandomValueFromZero, getRandomValueFromMin } = require('./Utils');
 
 class DBAccess {
     constructor({ user, password, replica1, replica2, replica3, port = 27017, replicaSet, dbName } = {}) {
@@ -22,13 +25,30 @@ class DBAccess {
             if (err) return console.error(err);
             console.log(`${u.username} added to DB !`);
           });
-          */
+        */
 
-          /*
-        this.t = new Theme({name: 'Haine'});
+        /*
+        this.t = new Theme({ name: 'Impatience' });
         this.t.save().then((err, t) => {
             if (err) return console.error(err);
             console.log(`Theme ${t.name} added to DB !`);
+        });
+        */
+
+        /*
+        Promise.all([this.getCategory({ name: 'Audio' }), this.getCategory({ name: 'Vidéo' })]).then((d, err) => {
+            const audio = d[0][0];
+            const video = d[1][0];
+            console.log(audio);
+            console.log(video);
+            this.f = new Format();
+            this.f.name = '< 45 secondes';
+            this.f.categories.push(audio);
+            this.f.categories.push(video);
+            this.f.save().then((format, err2) => {
+                if (err2) return console.error(err2);
+                console.log(`Format ${format.name} added to DB`);
+            });
         });
         */
     }
@@ -45,8 +65,8 @@ class DBAccess {
         });
     }
 
-    getUsers() {
-        return User.find();
+    getUsers(params) {
+        return User.find(params);
     }
 
     getUser(params) {
@@ -155,12 +175,108 @@ class DBAccess {
         });
     }
 
-    getCategories() {
-        return Category.find();
+    /*
+     * Inspired by https://stackoverflow.com/questions/39277670/how-to-find-random-record-in-mongoose
+     */
+    getRandomFormat(cat) {
+        return Format.find({ categories: cat.id }).countDocuments().then((count) => {
+            const random = getRandomValueFromZero(count);
+            if (isNaN(random)) {
+                console.log('Problem when getting random number !');
+            }
+            return Format.findOne({ categories: cat.id }).skip(random);
+        });
     }
 
-    getThemes() {
-        return Theme.find();
+    getRandomTheme() {
+        // Get the count of all Themes
+        return Theme.find().estimatedDocumentCount().then((count) => {
+            console.log(count);
+            // Get a random entry
+            const random = getRandomValueFromZero(count);
+            if (isNaN(random)) {
+                console.log('Problem when getting random number !');
+            }
+            // Again query all theme but only fetch one offset by our random #
+            return Theme.findOne().skip(random).then((result, err) => {
+                // Tada! random theme
+                return result;
+            });
+        });
+    }
+
+    addChallenge(user, username, categoryId) {
+        return Category.findOne({ _id: categoryId }).then((cat) => {
+            if (!cat) {
+                console.log(`The category ${cat} does not exists`);
+                return new Error('Category not found.');
+            }
+            console.log(cat.name);
+
+            return this.getUser({ username }).then((challenged) => {
+                if (!challenged) {
+                    console.log(`The user ${username} does not exists`);
+                    return new Error('Challenged user not found.');
+                }
+
+                return Promise.all([this.getRandomFormat(cat), this.getRandomTheme()]).then((d) => {
+                    const format = d[0];
+                    const theme = d[1];
+
+                    const uploadTime = getRandomValueFromMin(cat.uploadDurationMin, cat.uploadDurationMax);
+                    console.log(`${cat.uploadDurationMin} <= ${uploadTime} <= ${cat.uploadDurationMax}`);
+
+                    if (!format) {
+                        console.log(`There is no format for this category (${cat})`);
+                        throw new Error(`There is no format for this category (${cat})`);
+                    }
+                    console.log(`Format: ${format}`);
+
+                    if (!theme) {
+                        console.log('No theme chosen');
+                        throw new Error('No theme chosen');
+                    }
+                    console.log(`Theme: ${theme}`);
+
+                    if (!uploadTime) {
+                        console.log(`There is no uploadTime for this category (${cat})`);
+                        throw new Error(`There is no uploadTime for this category (${cat})`);
+                    }
+                    console.log(`UploadTime: ${uploadTime}`);
+
+                    const challenge = new Challenge({
+                        challengerSide: {
+                            user,
+                            uploadStartdate: new Date(),
+                        },
+                        challengedSide: {
+                            user: challenged,
+                        },
+                        category: cat,
+                        theme,
+                        format,
+                        uploadTime,
+                    });
+                    challenge.save().then((c, err) => {
+                        if (err) return console.error(err);
+                        console.log(`Challenge from ${challenge.challengerSide.user.username} to ${challenge.challengedSide.user.username} added to DB !`);
+                    });
+                    return user;
+                });
+            });
+        });
+    }
+
+    getCategory(params) {
+        return Category.find(params);
+    }
+
+    getTheme(params) {
+        return Theme.find(params);
+    }
+
+    getFormat(params) {
+        return Format.find(params);
     }
 }
 
