@@ -31,8 +31,18 @@ module.exports = {
         followers: u => connection.getFollowers(u.id),
         following: u => u.following.map(id => connection.getUser({ _id: id })),
         birthdate: u => moment(u.birthdate).format(BIRTHDATE_FORMAT),
+        pendingChallenges: u => connection.getPendingChallenges(u.id),
         createdAt: u => moment(u.createdAt).format(DATE_FORMAT),
         updatedAt: u => moment(u.updatedAt).format(DATE_FORMAT),
+    },
+    Challenge: {
+        challenger: c => connection.getUser({ _id: c.challengerSide.user }),
+        challenged: c => connection.getUser({ _id: c.challengedSide.user }),
+        theme: c => connection.getOneTheme({ _id: c.theme }),
+        category: c => connection.getOneCategory({ _id: c.category }),
+        format: c => connection.getOneFormat({ _id: c.format }),
+        createdAt: c => moment(c.createdAt).format(DATE_FORMAT),
+        updatedAt: c => moment(c.updatedAt).format(DATE_FORMAT),
     },
     Category: {
         createdAt: c => moment(c.createdAt).format(DATE_FORMAT),

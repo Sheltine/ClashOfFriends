@@ -108,3 +108,33 @@ mutation {
   }
 }
 ```
+
+### Challenge a user
+```
+mutation {
+  challenge(username: "sheltine", categoryId: "5c2fe5379591d0aa36b42ceb") {
+    id,
+    username,
+    pendingChallenges {
+      challenger {
+        username
+      },
+      challenged {
+        username
+      },
+      format {
+        name
+      },
+      theme {
+        name
+      },
+      category {
+        name
+      },
+      uploadTime,
+      createdAt,
+      updatedAt
+    }
+  }
+}
+```

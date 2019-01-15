@@ -28,6 +28,18 @@ module.exports = gql`
         birthdate: String!,
         followers: [User],
         following: [User],
+        pendingChallenges: [Challenge],
+        createdAt: String,
+        updatedAt: String
+    }
+    type Challenge {
+        id: String,
+        challenger: User,
+        challenged: User,
+        category: Category,
+        theme: Theme,
+        format: Format,
+        uploadTime: Int,
         createdAt: String,
         updatedAt: String
     }
@@ -58,9 +70,6 @@ module.exports = gql`
     type AuthResponse {
         user: User!,
         token: String!
-    }
-    type Challenge {
-        x: String
     }
     type Query {
         message: String

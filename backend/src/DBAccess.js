@@ -267,16 +267,38 @@ class DBAccess {
         });
     }
 
+    getOneCategory(params) {
+        return Category.findOne(params);
+    }
+
     getCategory(params) {
         return Category.find(params);
+    }
+
+    getOneTheme(params) {
+        return Theme.findOne(params);
     }
 
     getTheme(params) {
         return Theme.find(params);
     }
 
+    getOneFormat(params) {
+        return Format.findOne(params);
+    }
+
     getFormat(params) {
         return Format.find(params);
+    }
+
+    /**
+     * This means challenges that are initiated by the user but where isAccepted is false
+     */
+    getPendingChallenges(userId) {
+        return Challenge.find({ isAccepted: false, 'challengerSide.user': userId }).then((d) => {
+            console.log(d);
+            return d;
+        });
     }
 }
 

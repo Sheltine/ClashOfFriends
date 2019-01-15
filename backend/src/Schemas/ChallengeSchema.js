@@ -91,6 +91,7 @@ const challengeSchema = new Schema({
   },
   isAccepted: {
     type: Boolean,
+    default: false,
     timestamps: { createdAt: 'respondedAt' },
   },
 }, { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } });
