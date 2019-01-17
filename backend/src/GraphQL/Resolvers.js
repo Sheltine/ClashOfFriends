@@ -22,16 +22,15 @@ module.exports = {
         follow: (_, { username }, c) => { mustBeAuthenticated(c); return connection.addFollower(c.user, username); },
         unfollow: (_, { username }, c) => { mustBeAuthenticated(c); return connection.removeFollower(c.user, username); },
         challenge: (_, { username, categoryId }, c) => { mustBeAuthenticated(c); return connection.addChallenge(c.user, username, categoryId); },
-        /*
-        acceptChallenge:
-        rejectChallenge:
-        */
+        acceptChallenge: (_, { challengeId }, c) => { mustBeAuthenticated(c); return connection.acceptChallenge(c.user, challengeId); },
+        rejectChallenge: (_, { challengeId }, c) => { mustBeAuthenticated(c); return connection.rejectChallenge(c.user, challengeId); },
     },
     User: {
         followers: u => connection.getFollowers(u.id),
         following: u => u.following.map(id => connection.getUser({ _id: id })),
         birthdate: u => moment(u.birthdate).format(BIRTHDATE_FORMAT),
         pendingChallenges: u => connection.getPendingChallenges(u.id),
+        requestedChallenges: u => connection.getRequestedChallenges(u.id),
         createdAt: u => moment(u.createdAt).format(DATE_FORMAT),
         updatedAt: u => moment(u.updatedAt).format(DATE_FORMAT),
     },

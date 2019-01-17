@@ -29,6 +29,7 @@ module.exports = gql`
         followers: [User],
         following: [User],
         pendingChallenges: [Challenge],
+        requestedChallenges: [Challenge],
         createdAt: String,
         updatedAt: String
     }

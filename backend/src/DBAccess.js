@@ -247,7 +247,7 @@ class DBAccess {
                     const challenge = new Challenge({
                         challengerSide: {
                             user,
-                            uploadStartdate: new Date(),
+                            uploadDateStart: new Date(),
                         },
                         challengedSide: {
                             user: challenged,
@@ -295,9 +295,67 @@ class DBAccess {
      * This means challenges that are initiated by the user but where isAccepted is false
      */
     getPendingChallenges(userId) {
-        return Challenge.find({ isAccepted: false, 'challengerSide.user': userId }).then((d) => {
-            console.log(d);
+        return Challenge.find({ isAccepted: null, answerTime: null, 'challengerSide.user': userId }).then((d) => {
             return d;
+        });
+    }
+
+    getRequestedChallenges(userId) {
+        return Challenge.find({ isAccepted: null, answerTime: null, 'challengedSide.user': userId }).then((d) => {
+            return d;
+        });
+    }
+
+    acceptChallenge(user, challengeId) {
+        return Challenge.findOne({ _id: challengeId }).then((chall) => {
+            if (!chall) {
+                throw new Error('The challenge does not exists');
+            }
+            if (chall.challengedSide.user != user.id) {
+                throw new Error('This user cannot accept this challenge');
+            }
+            if (chall.isAccepted) {
+                throw new Error('This challenge cannot be accepted');
+            }
+
+            chall.isAccepted = true;
+            chall.answerTime = new Date();
+            chall.challengedSide.uploadDateStart = new Date();
+            
+            return chall.save().then((c, e) => {
+                if (e) {
+                    console.log(e);
+                    return e;
+                }
+                console.log(`Challenge ${chall.id} accepted`);
+                return c;
+            });
+        });
+    }
+
+    rejectChallenge(user, challengeId) {
+        return Challenge.findOne({ _id: challengeId }).then((chall) => {
+            if (!chall) {
+                throw new Error('The challenge does not exists');
+            }
+            if (chall.challengedSide.user != user.id) {
+                throw new Error('This user cannot refuse this challenge');
+            }
+            if (chall.isAccepted) {
+                throw new Error('This challenge cannot be accepted');
+            }
+
+            chall.isAccepted = false;
+            chall.answerTime = new Date();
+            
+            return chall.save().then((c, e) => {
+                if (e) {
+                    console.log(e);
+                    return e;
+                }
+                console.log(`Challenge ${chall.id} rejected`);
+                return c;
+            });
         });
     }
 }
