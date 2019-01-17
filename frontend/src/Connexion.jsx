@@ -1,22 +1,31 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import ConnexionForm from './components/Form_connexion';
 import 'semantic-ui-css/semantic.min.css';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AppBar from 'material-ui/AppBar';
+import ConnexionForm from './components/Form_connexion';
+
+const styles = {
+  root: {
+    flexGrow: 1,
+  },
+};
 
 class Connexion extends Component {
   render() {
     return (
-      <div className="App">
-        <body>
+      <MuiThemeProvider>
+        <AppBar title="Connexion" showMenuIconButton={false} />
+        <div className="App">
           <div className="row">
             <div className="col-md-offset-5">
-              <h2>Connexion</h2><Link to="/register">Register</Link>
-              <p>Not registered yet? </p>
               <ConnexionForm />
+              <p>Not registered yet? </p>
+              <Link to="/register">Register</Link>
             </div>
           </div>
-        </body>
-      </div>
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
