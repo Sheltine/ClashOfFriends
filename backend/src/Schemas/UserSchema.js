@@ -47,7 +47,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         validate: {
-            validator(p) { return p.length > 8; },
+            validator(p) { return p.length >= 8; },
             message: 'Message must be >= 8 chars',
         } },
     birthdate: {

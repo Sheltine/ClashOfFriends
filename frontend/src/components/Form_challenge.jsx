@@ -12,7 +12,7 @@ const client = new ApolloClient({
   uri: backendURL,
 });
 
-        const options = [];
+const options = [];
 
 class ChallengeForm extends Component {
     constructor(props) {

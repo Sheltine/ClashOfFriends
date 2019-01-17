@@ -40,7 +40,7 @@ const userChallengeSchema = new Schema({
   },
   input: userInput,
   votes: [votesSchema],
-  uploadStartdate: Date,
+  uploadDateStart: Date,
 }, { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } });
 
 /**
@@ -61,7 +61,7 @@ const challengeSchema = new Schema({
   },
   challengedSide: {
     type: userChallengeSchema,
-    required: [true, 'A challenge must be intiated by someone'],
+    required: [true, 'A challenge must be addressed to someone'],
   },
   category: {
     type: Schema.Types.ObjectId,
@@ -91,8 +91,9 @@ const challengeSchema = new Schema({
   },
   isAccepted: {
     type: Boolean,
-    default: false,
-    timestamps: { createdAt: 'respondedAt' },
+  },
+  answerTime: {
+    type: Date,
   },
 }, { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } });
 
