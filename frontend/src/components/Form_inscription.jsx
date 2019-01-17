@@ -1,15 +1,80 @@
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { FormGroup, FormControl, ControlLabel, Alert } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
 import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
+import { Redirect } from 'react-router-dom';
+import { Query, ApolloProvider } from 'react-apollo';
+import TextField from 'material-ui/TextField';
 
 const { BACKEND_URL } = require('../config.js');
 
 const client = new ApolloClient({
   uri: BACKEND_URL,
 });
+
+function getErrorMsg(username, password, submitted) {
+  console.log("Calling");
+  if (submitted === true) {
+    console.log("Submitted = true");
+      return (
+        <ApolloProvider client={client}>
+          <Query
+        // dans server, remplacer if (authRequired) par if (!authRequired) pour debug
+            query={gql`
+            {
+              auth(username:"${username}", password:"${password}"){
+                token, user{
+                  id,
+                  username,
+                  firstname,
+                  lastname,
+                  email,
+                  birthdate,
+                  createdAt,
+                  followers {
+                    username,
+                  },
+                  following {
+                    username,
+                  },
+                }
+              }
+            }
+          `}
+          >
+            {({ loading, error, data }) => {
+              console.log(`Error: ${error}`);
+              console.log('Data:');
+              console.log(data);
+            if (loading) return <p>Loading...</p>;
+            if (error) {
+              return (
+                <div>
+                  <br />
+                  <Alert bsStyle="danger">
+                    <strong>Error while registering!</strong>
+                  </Alert>
+                </div>
+                );
+          }
+            localStorage.setItem('userToken', data.auth.token);
+            localStorage.setItem('currentUser', JSON.stringify(data.auth.user));
+            return (
+              <div>
+                <p>Welcome !</p>
+                <Redirect to="/" />
+              </div>
+            );
+          }}
+          </Query>
+
+        </ApolloProvider>
+      );
+    }
+    return <p />;
+}
 
 class FormInscription extends Component {
     constructor(props) {
@@ -21,6 +86,7 @@ class FormInscription extends Component {
             birthdate: new Date(),
             username: '',
             password: '',
+            submitted: false,
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -47,6 +113,9 @@ class FormInscription extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    this.setState({
+      submitted: true,
+     });
     client
         .mutate({
             mutation: gql`
@@ -122,29 +191,25 @@ class FormInscription extends Component {
   render() {
     return (
       <div className="Centered-form">
+        <br />
         {localStorage.clear()}
         {sessionStorage.clear()}
         <form onSubmit={this.handleSubmit}>
           <FormGroup
             controlId="formBasicText"
           >
-            <ControlLabel>First name</ControlLabel>
-            <FormControl
-              label="First name"
-              type="text"
-              value={this.state.firstname}
-              placeholder="First name"
+            <TextField
+              hintText="Enter your First Name"
+              floatingLabelText="First Name"
               name="firstname"
               onChange={this.handleInputChange}
             />
             <FormControl.Feedback />
           </FormGroup>
           <FormGroup>
-            <ControlLabel>Last name</ControlLabel>
-            <FormControl
-              type="text"
-              value={this.state.lastname}
-              placeholder="Last name"
+            <TextField
+              hintText="Enter your Last Name"
+              floatingLabelText="Last Name"
               name="lastname"
               onChange={this.handleInputChange}
             />
@@ -152,11 +217,10 @@ class FormInscription extends Component {
           </FormGroup>
 
           <FormGroup>
-            <ControlLabel>Email address</ControlLabel>
-            <FormControl
+            <TextField
+              hintText="Enter your Email"
               type="email"
-              value={this.state.email}
-              placeholder="Email"
+              floatingLabelText="Email"
               name="email"
               onChange={this.handleInputChange}
             />
@@ -166,25 +230,22 @@ class FormInscription extends Component {
           <FormGroup
             validationState={this.birthdateValidation()}
           >
-            <ControlLabel>Birthdate</ControlLabel>
-            <FormControl
-              type="text"
+            <TextField
+              hintText="Enter your Birthdate"
+              floatingLabelText="jj/mm/yy"
               name="birthdate"
-              placeholder="jj/mm/yy"
-              // selected={this.birthdate}
               onChange={this.handleInputChange}
             />
+            <FormControl.Feedback />
           </FormGroup>
 
 
           <FormGroup
             validationState={this.usernameValidation()}
           >
-            <ControlLabel>Username</ControlLabel>
-            <FormControl
-              type="text"
-              value={this.state.username}
-              placeholder="Usename"
+            <TextField
+              hintText="Enter your Username"
+              floatingLabelText="Username"
               name="username"
               onChange={this.handleInputChange}
             />
@@ -194,17 +255,18 @@ class FormInscription extends Component {
           <FormGroup
             validationState={this.passwordValidation()}
           >
-            <ControlLabel>Password</ControlLabel>
-            <FormControl
+            <TextField
               type="password"
-              value={this.state.password}
+              hintText="Enter your Password"
+              floatingLabelText="Password"
               name="password"
               onChange={this.handleInputChange}
+              validationState={this.passwordValidation()}
             />
             <FormControl.Feedback />
           </FormGroup>
           <Button type="submit">Submit</Button>
-
+          <p>{getErrorMsg(this.state.username, this.state.password, this.state.submitted)}</p>
         </form>
       </div>
     );
