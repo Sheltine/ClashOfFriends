@@ -26,6 +26,8 @@ const client = new ApolloClient({
 const user = JSON.parse(localStorage.getItem('currentUser'));
 
 let buttonType = 'edit';
+let buttonTypePass = 'edit';
+
 
 class UserInfo extends Component {
     constructor(props) {
@@ -35,18 +37,25 @@ class UserInfo extends Component {
             lastname: user.lastname,
             birthdate: user.birthdate,
             email: user.email,
-            password: '',
             disabled: true,
+            disabledPass: true,
             submitted: false,
             type: '',
+            typePass: '',
+            curPass: '',
+            newPass: '',
+            newPass2: '',
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.makeInfoEditable = this.makeInfoEditable.bind(this);
+        this.makeInfoEditablePass = this.makeInfoEditablePass.bind(this);
         this.cancel = this.cancel.bind(this);
+        this.cancelPass = this.cancelPass.bind(this);
         this.update = this.update.bind(this);
+        this.updatePass = this.updatePass.bind(this);
         this.displayContent = this.displayContent.bind(this);
+        this.displayContentPass = this.displayContentPass.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        // this.getErrorMsg = this.getErrorMsg.bind(this);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -75,80 +84,41 @@ class UserInfo extends Component {
     }
   }
 
-/*
-  getErrorMsg(submitted) {
-    if (submitted === true) {
-      console.log(this.state.firstname);
-      console.log('here we are');
+  // eslint-disable-next-line class-methods-use-this
+  getMsgPass(type) {
+    switch (type) {
+      case 'different':
+      return (
+        <div>
+          <br />
+          <Alert bsStyle="danger">
+            <strong>Passwords must match</strong>
+          </Alert>
+        </div>
+      );
+      case 'error':
         return (
-          <ApolloProvider client={client}>
-            <Mutation
-              mutation={gql`
-              mutation{
-                updateProfile(user : {
-                  username:"${user.username}",
-                  password:"${this.state.password}",
-                  firstname:"${this.state.firstname}",
-                  lastname:"${this.state.lastname}",
-                  email:"${this.state.email}",
-                  birthdate:"${this.state.birthdate}"
-                  }) {
-                      id,
-                      username,
-                      firstname,
-                      lastname,
-                      email,
-                      birthdate,
-                      createdAt,
-                      followers {
-                        username,
-                      },
-                      following {
-                        username,
-                      },
-                  }}
-              `}
-            >
-              {({ loading, error, data }) => {
-                console.log('coucou');
-                console.log(`Error: ${error}`);
-                console.log('Data:');
-                console.log(data);
-              if (loading) return <p>Loading...</p>;
-              if (error) {
-                return (
-                  <div>
-                    <br />
-                    <Alert bsStyle="danger">
-                      <strong>Please provide valid info</strong>
-                    </Alert>
-                  </div>
-                  );
-            }
-            localStorage.setItem('currentUser', JSON.stringify(data.updateProfile));
-            const newUser = JSON.parse(localStorage.getItem('currentUser'));
-            this.setState({
-              firstname: newUser.firstname,
-              lastname: newUser.lastname,
-              birthdate: newUser.birthdate,
-              email: newUser.email,
-            });
-              return (
-                <div>
-                  <br />
-                  <Alert className="vspace" bsStyle="success">
-                    <strong>Your info have been successfully updated</strong>
-                  </Alert>
-                </div>
-              );
-            }}
-            </Mutation>
-          </ApolloProvider>
+          <div>
+            <br />
+            <Alert bsStyle="danger">
+              <strong>Please provide valid info</strong>
+            </Alert>
+          </div>
         );
-      }
+      case 'valid':
+      return (
+        <div>
+          <br />
+          <Alert bsStyle="success">
+            <strong>Your password has been successfully updated</strong>
+          </Alert>
+        </div>
+      );
+      default:
       return <p />;
+    }
   }
-*/
+
 
   displayContent(bt) {
     switch (bt) {
@@ -162,15 +132,30 @@ class UserInfo extends Component {
         return (
           <div>
             <form onSubmit={this.update}>
-              <ControlLabel>Please confirm your password</ControlLabel>
-              <FormControl
-                type="password"
-                name="password"
-                value={this.state.password}
-                onChange={this.handleInputChange}
-              />
               <Button className="minispace" type="submit">Update</Button>
               <Button className="minispace pull-right" onClick={this.cancel}>Cancel</Button>
+            </form>
+          </div>
+          );
+      default:
+        return null;
+    }
+  }
+
+  displayContentPass(bt) {
+    switch (bt) {
+      case 'edit':
+        return (
+          <form onSubmit={this.makeInfoEditablePass}>
+            <Button className="minispace" type="submit">Edit</Button>
+          </form>
+          );
+      case 'update':
+        return (
+          <div>
+            <form onSubmit={this.updatePass}>
+              <Button className="minispace" type="submit">Update</Button>
+              <Button className="minispace pull-right" onClick={this.cancelPass}>Cancel</Button>
             </form>
           </div>
           );
@@ -208,6 +193,14 @@ class UserInfo extends Component {
         buttonType = 'update';
     }
 
+    makeInfoEditablePass(event) {
+      event.preventDefault();
+      this.setState({
+          disabledPass: false,
+      });
+      buttonTypePass = 'update';
+  }
+
     cancel(event) {
       event.preventDefault();
       this.setState({
@@ -216,6 +209,55 @@ class UserInfo extends Component {
       });
       console.log('type: ', this.state.type);
       buttonType = 'edit';
+  }
+
+  cancelPass(event) {
+    console.log('cancelling pass');
+    event.preventDefault();
+    this.setState({
+        disabledPass: true,
+        typePass: '',
+    });
+    console.log('cancelling pass... disabled: ', this.state.disabledPass);
+
+    buttonTypePass = 'edit';
+}
+
+  updatePass(event) {
+    event.preventDefault();
+    if (this.state.newPass === this.state.newPass2) {
+      console.log('c\'est les memes');
+      this.setState({
+          disabledPass: true,
+      });
+      buttonTypePass = 'edit';
+      client
+        .mutate({
+            mutation: gql`
+            mutation{
+              changePassword(
+                newPassword: "${this.state.newPass}",
+                oldPassword: "${this.state.curPass}"
+              ) {
+                    username
+                }
+              }
+            `,
+        }).then((response) => {
+          console.log(response);
+          this.state.typePass = 'valid';
+         }).catch((errors) => {
+          console.log(errors);
+          this.setState({
+            typePass: 'error',
+        });
+        });
+      } else {
+          this.setState({
+            typePass: 'different',
+        });
+        console.log('c\'est pas les memes', this.state.typePass);
+      }
   }
 
     update(event) {
@@ -231,7 +273,6 @@ class UserInfo extends Component {
             mutation{
               updateProfile(user : {
                 username:"${user.username}",
-                password:"${this.state.password}",
                 firstname:"${this.state.firstname}",
                 lastname:"${this.state.lastname}",
                 email:"${this.state.email}",
@@ -316,6 +357,42 @@ class UserInfo extends Component {
         </form>
         {this.displayContent(buttonType)}
         {this.getMsg(this.state.type)}
+
+        <form>
+          <center><h2>Change password</h2></center>
+          <FormGroup className="minispace">
+            <ControlLabel>Current password</ControlLabel>
+            <FormControl
+              type="password"
+              name="curPass"
+              value={this.state.curPass}
+              onChange={this.handleInputChange}
+              disabled={this.state.disabledPass}
+            />
+
+            <ControlLabel>New password (length must be &gt;= 8)</ControlLabel>
+            <FormControl
+              type="password"
+              name="newPass"
+              value={this.state.newPass}
+              onChange={this.handleInputChange}
+              disabled={this.state.disabledPass}
+            />
+          </FormGroup>
+
+          <ControlLabel>Confirm password</ControlLabel>
+          <FormControl
+            type="password"
+            name="newPass2"
+            value={this.state.newPass2}
+            onChange={this.handleInputChange}
+            disabled={this.state.disabledPass}
+          />
+
+        </form>
+        {this.displayContentPass(buttonTypePass)}
+        {this.getMsgPass(this.state.typePass)}
+
       </div>
     );
   }
