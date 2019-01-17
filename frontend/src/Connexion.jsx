@@ -5,11 +5,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import ConnexionForm from './components/Form_connexion';
 
-const styles = {
-  root: {
-    flexGrow: 1,
-  },
-};
 
 class Connexion extends Component {
   render() {

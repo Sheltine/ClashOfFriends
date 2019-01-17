@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
-import { FormGroup, FormControl, ControlLabel, Alert } from 'react-bootstrap';
+import { FormGroup, FormControl, Alert } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
 import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
@@ -15,9 +15,7 @@ const client = new ApolloClient({
 });
 
 function getErrorMsg(username, password, submitted) {
-  console.log("Calling");
   if (submitted === true) {
-    console.log("Submitted = true");
       return (
         <ApolloProvider client={client}>
           <Query
