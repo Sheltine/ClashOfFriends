@@ -14,6 +14,7 @@ module.exports = {
         formats: () => connection.getFormat(),
         format: (p, a) => connection.getFormat({ category: a.category }),
         challenges: (p, a, c) => { mustBeAuthenticated(c); return connection.getChallenges(); },
+        votables: (p, a, c) => { mustBeAuthenticated(c); return connection.getVotablesChallenges(); },
     },
     Mutation: {
         message: () => 'Hello mutation !',

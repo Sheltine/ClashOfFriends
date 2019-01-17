@@ -160,3 +160,30 @@ mutation {
   }
 }
 ```
+
+### Get the list of challenges
+
+```graphql
+mutation {
+  challenges {
+      challenger {
+        username
+      },
+      challenged {
+        username
+      },
+      format {
+        name
+      },
+      theme {
+        name
+      },
+      category {
+        name
+      },
+      uploadTime,
+      createdAt,
+      updatedAt
+    }
+}
+```

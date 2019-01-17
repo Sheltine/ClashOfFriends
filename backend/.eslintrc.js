@@ -7,6 +7,7 @@ module.exports = {
         "max-len"                   : 0,
         "object-curly-newline"      : 0,
         "indent"                    : 0,
-        "no-loop-func"              : 0
+        "no-loop-func"              : 0,
+        "no-param-reassign"         : 0,
     }
 };

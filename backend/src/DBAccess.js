@@ -298,11 +298,16 @@ class DBAccess {
             'challengerSide.input': { $exists: true },
             'challengedSide.input': { $exists: true },
             'challengedSite.input.uploadDateEnd': { $lte: new Date() },
-        }).then((d) => { console.log(d); return d; });
+        });
+    }
+
+    getVotablesChallenges() {
+        const now = new Date();
+        return Challenge.find({ voteDateStart: { $lte: now }, voteDateEnd: { $gte: now } });
     }
 
     /**
-     * This means challenges that are initiated by the user but where isAccepted is false
+     * This means challenges that are initiated by the user but where isAccepted is null
      */
     getPendingChallenges(userId) {
         return Challenge.find({ isAccepted: null, answerTime: null, 'challengerSide.user': userId });
@@ -324,11 +329,12 @@ class DBAccess {
                 throw new Error('This challenge cannot be accepted');
             }
 
+            const now = new Date();
             chall.isAccepted = true;
-            chall.answerTime = new Date();
-            chall.challengedSide.uploadDateStart = new Date();
-            chall.challengedSide.uploadDateEnd = moment().add(chall.uploadTime, 'minutes').add(2, 'seconds').toDate();
-            
+            chall.answerTime = now;
+            chall.challengedSide.uploadDateStart = now;
+            chall.challengedSide.uploadDateEnd = moment(now).add(chall.uploadTime, 'minutes').add(2, 'seconds').toDate();
+
             return chall.save().then((c, e) => {
                 if (e) {
                     console.log(e);
@@ -346,10 +352,10 @@ class DBAccess {
                 throw new Error('The challenge does not exists');
             }
             if (chall.challengedSide.user != user.id) {
-                throw new Error('This user cannot refuse this challenge');
+                throw new Error('This user cannot reject this challenge');
             }
             if (chall.isAccepted) {
-                throw new Error('This challenge cannot be accepted');
+                throw new Error('This challenge cannot be rejected');
             }
 
             chall.isAccepted = false;
