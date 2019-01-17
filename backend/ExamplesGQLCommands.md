@@ -110,7 +110,8 @@ mutation {
 ```
 
 ### Challenge a user
-```
+
+```graphql
 mutation {
   challenge(username: "sheltine", categoryId: "5c2fe5379591d0aa36b42ceb") {
     id,
@@ -135,6 +136,27 @@ mutation {
       createdAt,
       updatedAt
     }
+  }
+}
+```
+
+
+### Accept a challenge
+
+```graphql
+mutation {
+  acceptChallenge(challengeId: "5c40919762133708dae4bba5") {
+    id
+  }
+}
+```
+
+### Reject a challenge
+
+```graphql
+mutation {
+  rejectChallenge(challengeId: "5c40919762133708dae4bba5") {
+    id
   }
 }
 ```

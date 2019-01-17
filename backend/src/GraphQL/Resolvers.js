@@ -29,8 +29,12 @@ module.exports = {
         followers: u => connection.getFollowers(u.id),
         following: u => u.following.map(id => connection.getUser({ _id: id })),
         birthdate: u => moment(u.birthdate).format(BIRTHDATE_FORMAT),
-        pendingChallenges: u => connection.getPendingChallenges(u.id),
-        requestedChallenges: u => connection.getRequestedChallenges(u.id),
+        pendingChallenges: (u, _, c) => {
+            return c.user.id === u.id ? connection.getPendingChallenges(u.id) : null;
+        },
+        requestedChallenges: (u, _, c) => {
+            return c.user.id === u.id ? connection.getRequestedChallenges(u.id) : null;
+        },
         createdAt: u => moment(u.createdAt).format(DATE_FORMAT),
         updatedAt: u => moment(u.updatedAt).format(DATE_FORMAT),
     },
