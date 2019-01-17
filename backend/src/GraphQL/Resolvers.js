@@ -13,6 +13,7 @@ module.exports = {
         themes: () => connection.getTheme(),
         formats: () => connection.getFormat(),
         format: (p, a) => connection.getFormat({ category: a.category }),
+        challenges: (p, a, c) => { mustBeAuthenticated(c); return connection.getChallenges(); },
     },
     Mutation: {
         message: () => 'Hello mutation !',

@@ -29,6 +29,7 @@ const userInput = new Schema({
     description: 'Can be a text or a link to a resource',
   },
 }, { timestamps: { createdAt: 'uploadedAt', updatedAt: 'updatedAt' } });
+
 /**
  * This schema defines what a user input for a challenge
  */
@@ -41,6 +42,7 @@ const userChallengeSchema = new Schema({
   input: userInput,
   votes: [votesSchema],
   uploadDateStart: Date,
+  uploadDateEnd: Date,
 }, { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } });
 
 /**

@@ -244,10 +244,12 @@ class DBAccess {
                     }
                     console.log(`UploadTime: ${uploadTime}`);
 
+                    const now = new Date();
                     const challenge = new Challenge({
                         challengerSide: {
                             user,
-                            uploadDateStart: new Date(),
+                            uploadDateStart: now,
+                            uploadDateEnd: moment(now).add(uploadTime, 'minutes').add(2, 'seconds').toDate(),
                         },
                         challengedSide: {
                             user: challenged,
@@ -291,19 +293,23 @@ class DBAccess {
         return Format.find(params);
     }
 
+    getChallenges() {
+        return Challenge.find({
+            'challengerSide.input': { $exists: true },
+            'challengedSide.input': { $exists: true },
+            'challengedSite.input.uploadDateEnd': { $lte: new Date() },
+        }).then((d) => { console.log(d); return d; });
+    }
+
     /**
      * This means challenges that are initiated by the user but where isAccepted is false
      */
     getPendingChallenges(userId) {
-        return Challenge.find({ isAccepted: null, answerTime: null, 'challengerSide.user': userId }).then((d) => {
-            return d;
-        });
+        return Challenge.find({ isAccepted: null, answerTime: null, 'challengerSide.user': userId });
     }
 
     getRequestedChallenges(userId) {
-        return Challenge.find({ isAccepted: null, answerTime: null, 'challengedSide.user': userId }).then((d) => {
-            return d;
-        });
+        return Challenge.find({ isAccepted: null, answerTime: null, 'challengedSide.user': userId });
     }
 
     acceptChallenge(user, challengeId) {
@@ -321,6 +327,7 @@ class DBAccess {
             chall.isAccepted = true;
             chall.answerTime = new Date();
             chall.challengedSide.uploadDateStart = new Date();
+            chall.challengedSide.uploadDateEnd = moment().add(chall.uploadTime, 'minutes').add(2, 'seconds').toDate();
             
             return chall.save().then((c, e) => {
                 if (e) {
