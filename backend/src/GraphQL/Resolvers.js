@@ -5,16 +5,16 @@ const { auth, register, update, mustBeAuthenticated } = require('../Auth');
 
 module.exports = {
     Query: {
-        message: () => 'Hello world !',
-        users: (p, a, c) => { mustBeAuthenticated(c); return connection.getUsers(); },
-        auth: (p, a) => auth(a.username, a.password),
-        user: (p, a, c) => { mustBeAuthenticated(c); return connection.getUser({ username: a.username }); },
-        categories: () => connection.getCategory(),
-        themes: () => connection.getTheme(),
-        formats: () => connection.getFormat(),
-        format: (p, a) => connection.getFormat({ category: a.category }),
-        challenges: (p, a, c) => { mustBeAuthenticated(c); return connection.getChallenges(); },
-        votables: (p, a, c) => { mustBeAuthenticated(c); return connection.getVotablesChallenges(); },
+        message: () => 'Hello query !',
+        users: (p, a, c) => { mustBeAuthenticated(c); return connection.getUsers({}, a.first, a.offset); },
+        auth: (_, a) => auth(a.username, a.password),
+        user: (_, a, c) => { mustBeAuthenticated(c); return connection.getUser({ username: a.username }); },
+        categories: (_, a) => connection.getCategory({}, a.first, a.offset),
+        themes: (_, a) => connection.getTheme({}, a.first, a.offset),
+        formats: (_, a) => connection.getFormat({}, a.first, a.offset),
+        format: (_, a) => connection.getFormat({ category: a.category }),
+        challenges: (_, a, c) => { mustBeAuthenticated(c); return connection.getChallenges(a.first, a.offset); },
+        votables: (_, a, c) => { mustBeAuthenticated(c); return connection.getVotablesChallenges(a.first, a.offset); },
     },
     Mutation: {
         message: () => 'Hello mutation !',
@@ -28,15 +28,16 @@ module.exports = {
         rejectChallenge: (_, { challengeId }, c) => { mustBeAuthenticated(c); return connection.rejectChallenge(c.user, challengeId); },
     },
     User: {
-        followers: u => connection.getFollowers(u.id),
-        following: u => u.following.map(id => connection.getUser({ _id: id })),
+        followers: (u, a) => connection.getFollowers(u.id, a.first, a.offset),
+        following: (u, a) => {
+            let slice = u.following;
+            if (a.first && a.first > 0) { slice = slice.slice(a.first); }
+            if (a.offset && a.offset > 0) { slice = slice.slice(0, a.offset); }
+            return slice.map(id => connection.getUser({ _id: id }));
+        },
         birthdate: u => moment(u.birthdate).format(BIRTHDATE_FORMAT),
-        pendingChallenges: (u, _, c) => {
-            return c.user.id === u.id ? connection.getPendingChallenges(u.id) : null;
-        },
-        requestedChallenges: (u, _, c) => {
-            return c.user.id === u.id ? connection.getRequestedChallenges(u.id) : null;
-        },
+        pendingChallenges: (u, a, c) => (c.user.id === u.id ? connection.getPendingChallenges(u.id, a.first, a.offset) : null),
+        requestedChallenges: (u, a, c) => (c.user.id === u.id ? connection.getRequestedChallenges(u.id, a.first, a.offset) : null),
         createdAt: u => moment(u.createdAt).format(DATE_FORMAT),
         updatedAt: u => moment(u.updatedAt).format(DATE_FORMAT),
     },
@@ -58,7 +59,7 @@ module.exports = {
         updatedAt: t => moment(t.updatedAt).format(DATE_FORMAT),
     },
     Format: {
-        categories: f => f.categories.map(id => connection.getCategory({ _id: id })),
+        categories: (f, a) => f.categories.map(id => connection.getCategory({ _id: id }, a.first, a.offset)),
         createdAt: f => moment(f.createdAt).format(DATE_FORMAT),
         updatedAt: f => moment(f.updatedAt).format(DATE_FORMAT),
     },

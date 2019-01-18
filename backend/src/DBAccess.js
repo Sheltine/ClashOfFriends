@@ -65,8 +65,11 @@ class DBAccess {
         });
     }
 
-    getUsers(params) {
-        return User.find(params);
+    getUsers(params, _first, _offset) {
+        const query = User.find(params);
+        if (_offset && _offset > 0) { query.skip(_offset); }
+        if (_first && _first > 0) { query.limit(_first); }
+        return query;
     }
 
     getUser(params) {
@@ -114,8 +117,11 @@ class DBAccess {
         });
     }
 
-    getFollowers(userId) {
-        return User.find({ following: userId });
+    getFollowers(userId, _first, _offset) {
+        const query = User.find({ following: userId });
+        if (_offset && _offset > 0) { query.skip(_offset); }
+        if (_first && _first > 0) { query.limit(_first); }
+        return query;
     }
 
     addFollower(followingUser, followedUsername) {
@@ -181,7 +187,7 @@ class DBAccess {
     getRandomFormat(cat) {
         return Format.find({ categories: cat.id }).countDocuments().then((count) => {
             const random = getRandomValueFromZero(count);
-            if (isNaN(random)) {
+            if (isNaN(random) || random === undefined) {
                 console.log('Problem when getting random number !');
             }
             return Format.findOne({ categories: cat.id }).skip(random);
@@ -194,14 +200,11 @@ class DBAccess {
             console.log(count);
             // Get a random entry
             const random = getRandomValueFromZero(count);
-            if (isNaN(random)) {
+            if (isNaN(random) || random === undefined) {
                 console.log('Problem when getting random number !');
             }
             // Again query all theme but only fetch one offset by our random #
-            return Theme.findOne().skip(random).then((result, err) => {
-                // Tada! random theme
-                return result;
-            });
+            return Theme.findOne().skip(random);
         });
     }
 
@@ -224,25 +227,21 @@ class DBAccess {
                     const theme = d[1];
 
                     const uploadTime = getRandomValueFromMin(cat.uploadDurationMin, cat.uploadDurationMax);
-                    console.log(`${cat.uploadDurationMin} <= ${uploadTime} <= ${cat.uploadDurationMax}`);
 
                     if (!format) {
                         console.log(`There is no format for this category (${cat})`);
                         throw new Error(`There is no format for this category (${cat})`);
                     }
-                    console.log(`Format: ${format}`);
 
                     if (!theme) {
                         console.log('No theme chosen');
                         throw new Error('No theme chosen');
                     }
-                    console.log(`Theme: ${theme}`);
 
                     if (!uploadTime) {
                         console.log(`There is no uploadTime for this category (${cat})`);
                         throw new Error(`There is no uploadTime for this category (${cat})`);
                     }
-                    console.log(`UploadTime: ${uploadTime}`);
 
                     const now = new Date();
                     const challenge = new Challenge({
@@ -273,48 +272,69 @@ class DBAccess {
         return Category.findOne(params);
     }
 
-    getCategory(params) {
-        return Category.find(params);
+    getCategory(params, _first, _offset) {
+        const query = Category.find(params);
+        if (_offset && _offset > 0) { query.skip(_offset); }
+        if (_first && _first > 0) { query.limit(_first); }
+        return query;
     }
 
     getOneTheme(params) {
         return Theme.findOne(params);
     }
 
-    getTheme(params) {
-        return Theme.find(params);
+    getTheme(params, _first, _offset) {
+        const query = Theme.find(params);
+        if (_offset && _offset > 0) { query.skip(_offset); }
+        if (_first && _first > 0) { query.limit(_first); }
+        return query;
     }
 
     getOneFormat(params) {
         return Format.findOne(params);
     }
 
-    getFormat(params) {
-        return Format.find(params);
+    getFormat(params, _first, _offset) {
+        const query = Format.find(params);
+        if (_offset && _offset > 0) { query.skip(_offset); }
+        if (_first && _first > 0) { query.limit(_first); }
+        return query;
     }
 
-    getChallenges() {
-        return Challenge.find({
+    getChallenges(_first, _offset) {
+        const query = Challenge.find({
             'challengerSide.input': { $exists: true },
             'challengedSide.input': { $exists: true },
             'challengedSite.input.uploadDateEnd': { $lte: new Date() },
         });
+        if (_offset && _offset > 0) { query.skip(_offset); }
+        if (_first && _first > 0) { query.limit(_first); }
+        return query;
     }
 
-    getVotablesChallenges() {
+    getVotablesChallenges(_first, _offset) {
         const now = new Date();
-        return Challenge.find({ voteDateStart: { $lte: now }, voteDateEnd: { $gte: now } });
+        const query = Challenge.find({ voteDateStart: { $lte: now }, voteDateEnd: { $gte: now } });
+        if (_offset && _offset > 0) { query.skip(_offset); }
+        if (_first && _first > 0) { query.limit(_first); }
+        return query;
     }
 
     /**
      * This means challenges that are initiated by the user but where isAccepted is null
      */
-    getPendingChallenges(userId) {
-        return Challenge.find({ isAccepted: null, answerTime: null, 'challengerSide.user': userId });
+    getPendingChallenges(userId, _first, _offset) {
+        const query = Challenge.find({ isAccepted: null, answerTime: null, 'challengerSide.user': userId });
+        if (_offset && _offset > 0) { query.skip(_offset); }
+        if (_first && _first > 0) { query.limit(_first); }
+        return query;
     }
 
-    getRequestedChallenges(userId) {
-        return Challenge.find({ isAccepted: null, answerTime: null, 'challengedSide.user': userId });
+    getRequestedChallenges(userId, _first, _offset) {
+        const query = Challenge.find({ isAccepted: null, answerTime: null, 'challengedSide.user': userId });
+        if (_offset && _offset > 0) { query.skip(_offset); }
+        if (_first && _first > 0) { query.limit(_first); }
+        return query;
     }
 
     acceptChallenge(user, challengeId) {

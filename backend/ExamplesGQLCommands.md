@@ -44,7 +44,7 @@ Tokens are provided with the register or auth commands.
 ### Get list of users
 
 ```graphql
-query {
+query(first: 2, offset: 10) {
   users {
     username,
     birthdate,
@@ -66,10 +66,10 @@ query {
   user(username: "amadeous") {
     username,
     createdAt,
-    followers {
+    followers(first: 1, offset: 1) {
       username,
     },
-    following {
+    following(first: 1, offset: 1) {
       username,
     },
   }
@@ -165,7 +165,7 @@ mutation {
 
 ```graphql
 mutation {
-  challenges {
+  challenges(first: 10, offset: 5) {
       challenger {
         username
       },
