@@ -26,6 +26,7 @@ module.exports = {
         challenge: (_, { username, categoryId }, c) => { mustBeAuthenticated(c); return connection.addChallenge(c.user, username, categoryId); },
         acceptChallenge: (_, { challengeId }, c) => { mustBeAuthenticated(c); return connection.acceptChallenge(c.user, challengeId); },
         rejectChallenge: (_, { challengeId }, c) => { mustBeAuthenticated(c); return connection.rejectChallenge(c.user, challengeId); },
+        upload: (_, { challengeId, content }, c) => { mustBeAuthenticated(c); return connection.upload(challengeId, content, c.user); },
     },
     User: {
         followers: (u, a) => connection.getFollowers(u.id, a.first, a.offset),

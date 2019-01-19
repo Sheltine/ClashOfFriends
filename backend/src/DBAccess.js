@@ -268,6 +268,10 @@ class DBAccess {
         });
     }
 
+    getOneChallenge(params) {
+        return Challenge.findOne(params);
+    }
+
     getOneCategory(params) {
         return Category.findOne(params);
     }
@@ -390,6 +394,85 @@ class DBAccess {
                 return c;
             });
         });
+    }
+
+    upload(challId, content, user) {
+        const whoUploadValues = { CHALLENGER: 0, CHALLENGED: 1 };
+        let whoUpload = whoUploadValues.OTHER;
+
+        return this.getOneChallenge({ _id: challId }).then((chall) => {
+            if (!chall) {
+                console.log(`Challenge ${challId} not found`);
+                throw new Error('Challenge not found');
+            }
+
+            if (chall.challengerSide.user == user.id) {
+                whoUpload = whoUploadValues.CHALLENGER;
+            } else if (chall.challengedSide.user == user.id) {
+                whoUpload = whoUploadValues.CHALLENGED;
+            } else {
+                console.log(`${user.username} tried to upload a file for challenge ${chall.id} but is not concerned`);
+                throw new Error('You are not allowed to upload file for this challenge');
+            }
+
+            if (!this.hasAcceptedTheChall(whoUpload === whoUploadValues.CHALLENGER ? chall.challengerSide : chall.challengedSide)) {
+                throw new Error('You must accept the challenge first');
+            }
+
+            if (!this.isInTimeToUpload(whoUpload === whoUploadValues.CHALLENGER ? chall.challengerSide : chall.challengedSide)) {
+                throw new Error('You can not upload to this challenge anymore');
+            }
+
+            return this.getOneCategory({ _id: chall.category }).then((cat) => {
+                if (!cat) {
+                    console.log(`Cat ${cat} not found`);
+                    throw new Error('Category not found');
+                }
+
+                if (cat.fileType.length !== 0) {
+                    // If there is at least one filetype, it is another content to be stored elsewhere
+                    console.log('Will be stored elsewhere, later');
+
+                    // content = newPathOfTheContent
+                    return null;
+                }
+
+                // If no filetype, it is text and we store it directly in the DB
+
+                if (whoUpload === whoUploadValues.CHALLENGER) {
+                    // We check if they already uploaded something
+                    if (chall.challengerSide.input) {
+                        chall.challengerSide.input.media = content;
+                    } else {
+                        chall.challengerSide.input = { media: content };
+                    }
+                } else if (whoUpload === whoUploadValues.CHALLENGED) {
+                    // We check if they already uploaded something
+                    if (chall.challengedSide.input) {
+                        chall.challengedSide.input.media = content;
+                    } else {
+                        chall.challengedSide.input = { media: content };
+                    }
+                }
+
+                chall.save().then((savedChall, err) => {
+                    if (err) return console.error(err);
+                    const string = `Content uploaded by ${whoUpload === whoUploadValues.CHALLENGED ? 'challenged' : 'challenger'}`;
+                    console.log(`${string} ${user.username} for challenge ${savedChall.id} !`);
+                });
+
+                return chall;
+            });
+        });
+    }
+
+    hasAcceptedTheChall(challengeSide) {
+        return challengeSide.uploadDateStart && challengeSide.uploadDateEnd;
+    }
+
+    isInTimeToUpload(challengeSide) {
+        const now = new Date();
+        return challengeSide.uploadDateStart <= now && now <= challengeSide.uploadDateEnd;
     }
 }
 

@@ -77,7 +77,7 @@ module.exports = gql`
         users(first: Int, offset: Int): [User]
         auth(username: String!, password: String!): AuthResponse
         user(username: String!): User
-        categories: [Category]
+        categories(first: Int, offset: Int): [Category]
         themes(first: Int, offset: Int): [Theme]
         formats(first: Int, offset: Int): [Format]
         format(category: String!): [Format]
@@ -94,5 +94,6 @@ module.exports = gql`
         challenge(username: String!, categoryId: String!): User
         acceptChallenge(challengeId: String!): Challenge
         rejectChallenge(challengeId: String!): Challenge
+        upload(challengeId: String!, content: String!): Challenge
     }
 `;
