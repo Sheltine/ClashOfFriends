@@ -308,12 +308,12 @@ class DBAccess {
     getChallenges(_first, _offset) {
         const query = Challenge.find({
             'challengerSide.input': { $exists: true },
-            'challengedSide.input': { $exists: true },
-            'challengedSite.input.uploadDateEnd': { $lte: new Date() },
+            'challengedSide.input': { $exists: true },  // Possible qu'il faille enlever cette ligne pour récupérer les challenges de défaites par non participation du challenged
+            'challengedSide.uploadDateEnd': { $lte: new Date() },
         });
         if (_offset && _offset > 0) { query.skip(_offset); }
         if (_first && _first > 0) { query.limit(_first); }
-        return query;
+        return query.then((d) => { console.log(d); return d; });
     }
 
     getVotablesChallenges(_first, _offset) {
@@ -453,6 +453,10 @@ class DBAccess {
                     } else {
                         chall.challengedSide.input = { media: content };
                     }
+
+                    // If the challenged user uploaded something, the votation are going to take place. We need to set up thoses dates
+                    chall.voteDateStart = chall.challengedSide.uploadDateEnd;
+                    chall.voteDateEnd = moment(chall.voteDateStart).add(2, 'days').toDate();
                 }
 
                 chall.save().then((savedChall, err) => {

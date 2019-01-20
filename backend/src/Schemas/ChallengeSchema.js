@@ -43,7 +43,7 @@ const userChallengeSchema = new Schema({
   votes: [votesSchema],
   uploadDateStart: Date,
   uploadDateEnd: Date,
-}, { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } });
+});
 
 /**
  * A challenge involves 2 users, a challenger and a challenged.
