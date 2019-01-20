@@ -164,26 +164,71 @@ mutation {
 ### Get the list of challenges
 
 ```graphql
-mutation {
+query {
   challenges(first: 10, offset: 5) {
-      challenger {
+    id,
+    category {
+      name
+    },
+    format {
+      name
+    },
+    theme {
+			name
+    },
+    comments(first: 2, offset: 1) {
+      message,
+      owner {
         username
-      },
-      challenged {
-        username
-      },
-      format {
-        name
-      },
-      theme {
-        name
-      },
-      category {
-        name
-      },
-      uploadTime,
+      }
       createdAt,
       updatedAt
     }
+    challenger {
+      user {
+        username
+      }
+      uploadDateStart,
+      uploadDateEnd,
+			input {
+        content,
+        uploadedAt,
+        updatedAt
+      }
+    }
+    challenged {
+      user {
+        username
+      }
+      uploadDateStart,
+      uploadDateEnd,
+			input {
+        content,
+        uploadedAt,
+        updatedAt
+      }
+    },
+    uploadTime,
+    voteDateStart,
+    voteDateEnd,
+    createdAt,
+    updatedAt
+  }
+}
+```
+
+### Comment a challenge
+
+```
+mutation {
+  comment(challengeId: "5c4352dc4027c65dbc90dd81", message: "A new comment !") {
+    comments {
+      message,
+      owner {
+        username
+      },
+      createdAt
+    }
+  }
 }
 ```

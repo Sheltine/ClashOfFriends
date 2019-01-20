@@ -5,6 +5,7 @@ const Category = require('./Schemas/CategorySchema');
 const Theme = require('./Schemas/ThemeSchema');
 const Format = require('./Schemas/FormatSchema');
 const Challenge = require('./Schemas/ChallengeSchema');
+const Comment = require('./Schemas/CommentSchema');
 const { DB_PARAMS, BIRTHDATE_FORMAT } = require('../config');
 const { getRandomValueFromZero, getRandomValueFromMin } = require('./Utils');
 
@@ -36,7 +37,7 @@ class DBAccess {
         */
 
         /*
-        Promise.all([this.getCategory({ name: 'Audio' }), this.getCategory({ name: 'Vidéo' })]).then((d, err) => {
+        Promise.all([this.getCategories({ name: 'Audio' }), this.getCategories({ name: 'Vidéo' })]).then((d, err) => {
             const audio = d[0][0];
             const video = d[1][0];
             console.log(audio);
@@ -262,43 +263,43 @@ class DBAccess {
                         if (err) return console.error(err);
                         console.log(`Challenge from ${challenge.challengerSide.user.username} to ${challenge.challengedSide.user.username} added to DB !`);
                     });
-                    return user;
+                    return this.getUser({ _id: user.id });
                 });
             });
         });
     }
 
-    getOneChallenge(params) {
+    getChallenge(params) {
         return Challenge.findOne(params);
     }
 
-    getOneCategory(params) {
+    getCategory(params) {
         return Category.findOne(params);
     }
 
-    getCategory(params, _first, _offset) {
+    getCategories(params, _first, _offset) {
         const query = Category.find(params);
         if (_offset && _offset > 0) { query.skip(_offset); }
         if (_first && _first > 0) { query.limit(_first); }
         return query;
     }
 
-    getOneTheme(params) {
+    getTheme(params) {
         return Theme.findOne(params);
     }
 
-    getTheme(params, _first, _offset) {
+    getThemes(params, _first, _offset) {
         const query = Theme.find(params);
         if (_offset && _offset > 0) { query.skip(_offset); }
         if (_first && _first > 0) { query.limit(_first); }
         return query;
     }
 
-    getOneFormat(params) {
+    getFormat(params) {
         return Format.findOne(params);
     }
 
-    getFormat(params, _first, _offset) {
+    getFormats(params, _first, _offset) {
         const query = Format.find(params);
         if (_offset && _offset > 0) { query.skip(_offset); }
         if (_first && _first > 0) { query.limit(_first); }
@@ -313,7 +314,7 @@ class DBAccess {
         });
         if (_offset && _offset > 0) { query.skip(_offset); }
         if (_first && _first > 0) { query.limit(_first); }
-        return query.then((d) => { console.log(d); return d; });
+        return query;
     }
 
     getVotablesChallenges(_first, _offset) {
@@ -400,7 +401,7 @@ class DBAccess {
         const whoUploadValues = { CHALLENGER: 0, CHALLENGED: 1 };
         let whoUpload = whoUploadValues.OTHER;
 
-        return this.getOneChallenge({ _id: challId }).then((chall) => {
+        return this.getChallenge({ _id: challId }).then((chall) => {
             if (!chall) {
                 console.log(`Challenge ${challId} not found`);
                 throw new Error('Challenge not found');
@@ -423,7 +424,7 @@ class DBAccess {
                 throw new Error('You can not upload to this challenge anymore');
             }
 
-            return this.getOneCategory({ _id: chall.category }).then((cat) => {
+            return this.getCategory({ _id: chall.category }).then((cat) => {
                 if (!cat) {
                     console.log(`Cat ${cat} not found`);
                     throw new Error('Category not found');
@@ -459,13 +460,12 @@ class DBAccess {
                     chall.voteDateEnd = moment(chall.voteDateStart).add(2, 'days').toDate();
                 }
 
-                chall.save().then((savedChall, err) => {
+                return chall.save().then((savedChall, err) => {
                     if (err) return console.error(err);
                     const string = `Content uploaded by ${whoUpload === whoUploadValues.CHALLENGED ? 'challenged' : 'challenger'}`;
                     console.log(`${string} ${user.username} for challenge ${savedChall.id} !`);
+                    return savedChall;
                 });
-
-                return chall;
             });
         });
     }
@@ -477,6 +477,36 @@ class DBAccess {
     isInTimeToUpload(challengeSide) {
         const now = new Date();
         return challengeSide.uploadDateStart <= now && now <= challengeSide.uploadDateEnd;
+    }
+
+    addComment(challengeId, message, user) {
+        return this.getChallenge({ _id: challengeId }).then((challenge) => {
+            if (!challenge) {
+                console.log('Challenge does not exists');
+                throw new Error('Challenge not found');
+            }
+
+            // A user should not comment on a challenge not ready to be voted if not challenger or challenged (should not be visible)
+            if (new Date() < challenge.voteDateStart
+                && user.id != challenge.challengerSide.user && user.id != challenge.challengedSide.user) {
+                console.log(`Challenge ${challengeId} not ready yet to be commented`);
+                throw new Error('Challenge not found');
+            }
+
+            const comment = new Comment({ message, owner: user, challenge: challenge.id });
+            return comment.save().then((savedComment, err) => {
+                if (err) return console.error(err);
+                console.log(`${user.username} commented on challenge ${challenge.id} !`);
+                return this.getChallenge({ _id: challengeId });
+            });
+        });
+    }
+
+    getComments(params, _first, _offset) {
+        const query = Comment.find(params);
+        if (_offset && _offset > 0) { query.skip(_offset); }
+        if (_first && _first > 0) { query.limit(_first); }
+        return query;
     }
 }
 

@@ -10,18 +10,6 @@ const votesSchema = new Schema({
   },
 }, { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } });
 
-const commentsSchema = new Schema({
-  message: {
-    type: String,
-    required: [true, 'A comment cannot be empty'],
-  },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: [true, 'A comment must have an owner'],
-  },
-}, { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } });
-
 const userInput = new Schema({
   media: {
     type: String,
@@ -80,7 +68,6 @@ const challengeSchema = new Schema({
     ref: 'Theme',
     required: [true, 'A challenge must be defined over a theme'],
   },
-  comments: [commentsSchema],
   uploadTime: {
     type: Number,
     required: [true, 'A challenge must have an upload time'],

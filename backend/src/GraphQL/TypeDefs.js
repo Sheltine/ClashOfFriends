@@ -33,14 +33,40 @@ module.exports = gql`
         createdAt: String,
         updatedAt: String
     }
+    type Vote {
+        voter: User,
+        createdAt: String,
+        updatedAt: String
+    }
+    type Comment {
+        message: String,
+        owner: User,
+        createdAt: String,
+        updatedAt: String
+    }
+    type ChallengeInput {
+        content: String,
+        uploadedAt: String,
+        updatedAt: String
+    }
+    type ChallengeSide {
+        user: User,
+        uploadDateStart: String,
+        uploadDateEnd: String,
+        input: ChallengeInput,
+        #votes: [Vote];
+    }
     type Challenge {
         id: String,
-        challenger: User,
-        challenged: User,
+        challenger: ChallengeSide,
+        challenged: ChallengeSide,
         category: Category,
         theme: Theme,
         format: Format,
+        comments(first: Int, offset: Int): [Comment],
         uploadTime: Int,
+        voteDateStart: String,
+        voteDateEnd: String,
         createdAt: String,
         updatedAt: String
     }
@@ -95,5 +121,6 @@ module.exports = gql`
         acceptChallenge(challengeId: String!): Challenge
         rejectChallenge(challengeId: String!): Challenge
         upload(challengeId: String!, content: String!): Challenge
+        comment(challengeId: String!, message: String!): Challenge
     }
 `;
