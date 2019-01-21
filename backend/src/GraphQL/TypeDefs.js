@@ -54,7 +54,7 @@ module.exports = gql`
         uploadDateStart: String,
         uploadDateEnd: String,
         input: ChallengeInput,
-        #votes: [Vote];
+        numberVotes: Int,
     }
     type Challenge {
         id: String,
@@ -68,7 +68,8 @@ module.exports = gql`
         voteDateStart: String,
         voteDateEnd: String,
         createdAt: String,
-        updatedAt: String
+        updatedAt: String,
+        forWhomDidIVote: User,
     }
     type Category {
         id: String,
@@ -122,5 +123,6 @@ module.exports = gql`
         rejectChallenge(challengeId: String!): Challenge
         upload(challengeId: String!, content: String!): Challenge
         comment(challengeId: String!, message: String!): Challenge
+        vote(challengeId: String!, supporterId: String!): Challenge
     }
 `;

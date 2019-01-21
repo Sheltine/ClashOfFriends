@@ -6,6 +6,7 @@ const Theme = require('./Schemas/ThemeSchema');
 const Format = require('./Schemas/FormatSchema');
 const Challenge = require('./Schemas/ChallengeSchema');
 const Comment = require('./Schemas/CommentSchema');
+const Vote = require('./Schemas/VoteSchema');
 const { DB_PARAMS, BIRTHDATE_FORMAT } = require('../config');
 const { getRandomValueFromZero, getRandomValueFromMin } = require('./Utils');
 
@@ -198,7 +199,6 @@ class DBAccess {
     getRandomTheme() {
         // Get the count of all Themes
         return Theme.find().estimatedDocumentCount().then((count) => {
-            console.log(count);
             // Get a random entry
             const random = getRandomValueFromZero(count);
             if (isNaN(random) || random === undefined) {
@@ -507,6 +507,63 @@ class DBAccess {
         if (_offset && _offset > 0) { query.skip(_offset); }
         if (_first && _first > 0) { query.limit(_first); }
         return query;
+    }
+
+    addVote(user, challengeId, supporterId) {
+        return Vote.find({ voter: user.id, challenge: challengeId, support: supporterId }).then((v) => {
+            if (v.length !== 0) {
+                console.log(`User ${user.username} already voted on challenge ${challengeId}`);
+                throw new Error('Already voted on this challenge');
+            }
+
+            return this.getChallenge({ _id: challengeId }).then((challenge) => {
+                if (!challenge) {
+                    console.log(`Challenge $${challengeId} does not exist`);
+                    throw new Error('Challenge not found');
+                }
+                if (challenge.challengerSide.user != supporterId && challenge.challengedSide.user != supporterId) {
+                    console.log(`User ${user.username} tried to vote for a ${challengeId} not involved in the challenge`);
+                    throw new Error('This user is not involved in the challenge');
+                }
+                if (challenge.challengerSide.user == user.id || challenge.challengedSide.user == user.id) {
+                    console.log(`User ${user.username} (${user.id}) tried to vote for ${supporterId} on challenge`);
+                    throw new Error('Cannot vote for a challenge you\'re involved in');
+                }
+
+                return this.getUser({ _id: supporterId }).then((support) => {
+                    if (!support) {
+                        console.log(`User ${supporterId} does not exist`);
+                        throw new Error('Supported user not found');
+                    }
+                    console.log(`Support.id: ${support.id}`);
+    
+                    const vote = new Vote({ voter: user, challenge, support });
+                    return vote.save().then((savedVote, err) => {
+                        if (err) return console.error(err);
+                        console.log(`${user.username} voted for ${support.username} on challenge ${challenge.id} !`);
+                        return challenge;
+                    });
+                });
+            });
+        });
+    }
+
+    getVotedUser(challengeId, voterId) {
+        return Vote.findOne({ challenge: challengeId, voter: voterId }).then((vote) => {
+            return vote ? this.getUser({ _id: vote.support }) : null;
+        });
+    }
+
+    /*
+     * This way of getting votes is really not optimsed. Could be upgraded if time allows.
+     * This would implies to have a better DB
+     */
+    getNumberVoteForChallengeSide(challengeSideId) {
+        return this.getChallenge({ $or: [{ 'challengerSide._id': challengeSideId }, { 'challengedSide._id': challengeSideId }] })
+            .then((challenge) => {
+            const userId = challengeSideId == challenge.challengerSide.id ? challenge.challengerSide.user : challenge.challengedSide.user;
+            return Vote.find({ support: userId, challenge: challenge.id }).count();
+        });
     }
 }
 

@@ -2,14 +2,6 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const votesSchema = new Schema({
-  voter: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: [true, 'A vote must have an owner'],
-  },
-}, { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } });
-
 const userInput = new Schema({
   media: {
     type: String,
@@ -28,7 +20,6 @@ const userChallengeSchema = new Schema({
     required: [true, 'An input must be linked by a user.'],
   },
   input: userInput,
-  votes: [votesSchema],
   uploadDateStart: Date,
   uploadDateEnd: Date,
 });

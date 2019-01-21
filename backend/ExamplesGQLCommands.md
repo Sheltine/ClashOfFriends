@@ -194,7 +194,8 @@ query {
         content,
         uploadedAt,
         updatedAt
-      }
+      },
+      numberVotes,
     }
     challenged {
       user {
@@ -207,6 +208,10 @@ query {
         uploadedAt,
         updatedAt
       }
+      numberVotes,
+    },
+    forWhomDidIVote {
+      username
     },
     uploadTime,
     voteDateStart,
@@ -228,6 +233,29 @@ mutation {
         username
       },
       createdAt
+    }
+  }
+}
+```
+
+### Vote
+
+```
+mutation {
+  vote (challengeId: "5c4352dc4027c65dbc90dd81", supporterId: "5c255339d881ff4ea5a81a25") {
+    id,
+    challenger {
+      user {
+        username
+      }
+    }
+    challenged {
+      user {
+        username
+      }
+    },
+    forWhomDidIVote {
+      username
     }
   }
 }

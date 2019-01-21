@@ -28,6 +28,7 @@ module.exports = {
         rejectChallenge: (_, { challengeId }, c) => { mustBeAuthenticated(c); return connection.rejectChallenge(c.user, challengeId); },
         upload: (_, { challengeId, content }, c) => { mustBeAuthenticated(c); return connection.upload(challengeId, content, c.user); },
         comment: (_, { challengeId, message }, c) => { mustBeAuthenticated(c); return connection.addComment(challengeId, message, c.user); },
+        vote: (_, { challengeId, supporterId }, c) => { mustBeAuthenticated(c); return connection.addVote(c.user, challengeId, supporterId); },
     },
     User: {
         followers: (u, a) => connection.getFollowers(u.id, a.first, a.offset),
@@ -57,6 +58,7 @@ module.exports = {
         user: s => connection.getUser({ _id: s.user }),
         uploadDateStart: s => moment(s.uploadDateStart).format(DATE_FORMAT),
         uploadDateEnd: s => moment(s.uploadDateEnd).format(DATE_FORMAT),
+        numberVotes: s => connection.getNumberVoteForChallengeSide(s.id),
     },
     Challenge: {
         challenger: c => c.challengerSide,
@@ -65,6 +67,7 @@ module.exports = {
         category: c => connection.getCategory({ _id: c.category }),
         format: c => connection.getFormat({ _id: c.format }),
         comments: (c, a) => connection.getComments({ challenge: c.id }, a.first, a.offset),
+        forWhomDidIVote: (c, a, context) => connection.getVotedUser(c.id, context.user.id),
         voteDateStart: c => (c.voteDateStart ? moment(c.voteDateStart).format(DATE_FORMAT) : null),
         voteDateEnd: c => (c.voteDateEnd ? moment(c.voteDateEnd).format(DATE_FORMAT) : null),
         createdAt: c => moment(c.createdAt).format(DATE_FORMAT),
