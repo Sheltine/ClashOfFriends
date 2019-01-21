@@ -86,6 +86,26 @@ class FriendList extends Component {
                   following {
                     username,
                   },
+                  pendingChallenges {
+                    challenger {
+                      username
+                    },
+                    challenged {
+                      username
+                    },
+                    format {
+                      name
+                    },
+                    theme {
+                      name
+                    },
+                    category {
+                      name
+                    },
+                    uploadTime,
+                    createdAt,
+                    updatedAt
+                  }
                 }
               }
             `,
@@ -123,6 +143,26 @@ class FriendList extends Component {
                     following {
                       username,
                     },
+                    pendingChallenges {
+                      challenger {
+                        username
+                      },
+                      challenged {
+                        username
+                      },
+                      format {
+                        name
+                      },
+                      theme {
+                        name
+                      },
+                      category {
+                        name
+                      },
+                      uploadTime,
+                      createdAt,
+                      updatedAt
+                    }
                   }
                 }
               `,

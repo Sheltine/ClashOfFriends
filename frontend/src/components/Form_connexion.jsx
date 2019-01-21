@@ -39,6 +39,26 @@ function getErrorMsg(username, password, submitted) {
                   following {
                     username,
                   },
+                  pendingChallenges {
+                    challenger {
+                      username
+                    },
+                    challenged {
+                      username
+                    },
+                    format {
+                      name
+                    },
+                    theme {
+                      name
+                    },
+                    category {
+                      name
+                    },
+                    uploadTime,
+                    createdAt,
+                    updatedAt
+                  }
                 }
               }
             }
@@ -61,6 +81,24 @@ function getErrorMsg(username, password, submitted) {
           }
             localStorage.setItem('userToken', data.auth.token);
             localStorage.setItem('currentUser', JSON.stringify(data.auth.user));
+            client
+            .query({
+                query: gql`
+                {
+                  categories {
+                    id,
+                   name,
+                    uploadDurationMin,
+                uploadDurationMax,
+                voteDurationMin,
+                voteDurationMax
+                  }
+                }
+                `,
+            })
+            .then((result) => {
+              localStorage.setItem('categories', JSON.stringify(result.data.categories));
+            }).catch(err => console.log('err: ', err));
             return (
               <div>
                 <p>Welcome {`${data.auth.user.username}`}</p>
@@ -68,6 +106,7 @@ function getErrorMsg(username, password, submitted) {
               </div>
             );
           }}
+
           </Query>
 
         </ApolloProvider>
@@ -118,24 +157,24 @@ handleSubmit(event) {
           {sessionStorage.clear()}
           <MuiThemeProvider>
             <div>
-            <form onSubmit={this.handleSubmit}>
-              <TextField
-                hintText="Enter your Username"
-                floatingLabelText="Username"
-                name="username"
-                onChange={this.handleInputChange}
-              />
-              <br />
-              <TextField
-                type="password"
-                hintText="Enter your Password"
-                floatingLabelText="Password"
-                onChange={(event, newValue) => this.setState({ password: newValue })}
-                name="password"
-                onChange={this.handleInputChange}
-              />
-              <br />
-              <RaisedButton type="submit" label="Submit" primary style={style} />
+              <form onSubmit={this.handleSubmit}>
+                <TextField
+                  hintText="Enter your Username"
+                  floatingLabelText="Username"
+                  name="username"
+                  onChange={this.handleInputChange}
+                />
+                <br />
+                <TextField
+                  type="password"
+                  hintText="Enter your Password"
+                  floatingLabelText="Password"
+                  onChange={(event, newValue) => this.setState({ password: newValue })}
+                  name="password"
+                  onChange={this.handleInputChange}
+                />
+                <br />
+                <RaisedButton type="submit" label="Submit" primary style={style} />
               </form>
             </div>
           </MuiThemeProvider>

@@ -5,6 +5,7 @@ import PostsList from './components/PostGroup_timeline';
 import NavbarHead from './components/Navbar_head';
 import BoxChallenge from './components/Box_challenge';
 
+console.log('CATEGORIES: ', JSON.parse(localStorage.getItem('categories')));
 class Timeline extends Component {
   render() {
     if (localStorage.getItem('currentUser') && localStorage.getItem('userToken')) {

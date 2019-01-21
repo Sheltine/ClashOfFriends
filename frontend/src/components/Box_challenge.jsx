@@ -56,7 +56,7 @@ Video
 
           <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>New challenge</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <ChallengeForm category={this.state.category} />

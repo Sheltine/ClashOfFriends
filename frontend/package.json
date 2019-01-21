@@ -28,6 +28,8 @@
     "react": "^16.6.3",
     "react-apollo": "^2.3.2",
     "react-bootstrap": "^0.32.4",
+    "react-countdown-clock": "^2.5.0",
+    "react-countdown-now": "^2.0.3",
     "react-datepicker": "^2.0.0",
     "react-dom": "^16.6.3",
     "react-dropzone": "^8.0.3",
