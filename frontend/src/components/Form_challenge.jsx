@@ -85,10 +85,7 @@ class ChallengeForm extends Component {
             `,
         }).then((response) => {
             console.log('CHALLENGE ACCEPTE! ', response);
-            this.setState({ accepeted: 'Accepted !' });
-            this.setState({
-                validateButton: 'disabled',
-            });
+            this.setState({ accepeted: 'Accepted ! You can upload agin to modify you text.' });
         }).catch((err) => {
             console.log('TEXTFILE: ', this.state.textfile);
             console.log('ID: ', this.state.challengeId);
