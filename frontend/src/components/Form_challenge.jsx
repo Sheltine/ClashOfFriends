@@ -53,6 +53,7 @@ class ChallengeForm extends Component {
             format: '',
             validateButton: '',
             challengeId: '',
+            accepeted: '',
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -84,10 +85,12 @@ class ChallengeForm extends Component {
             `,
         }).then((response) => {
             console.log('CHALLENGE ACCEPTE! ', response);
+            this.setState({ accepeted: 'Accepted ! You can upload agin to modify you text.' });
         }).catch((err) => {
             console.log('TEXTFILE: ', this.state.textfile);
             console.log('ID: ', this.state.challengeId);
             console.log('erreur à l\'upload: ', err);
+            this.setState({ accepeted: 'Error !' });
         });
     }
   }
@@ -142,21 +145,26 @@ class ChallengeForm extends Component {
               <div>
                 <h3>You&apos;re challenging {this.state.challenger}!</h3>
                 <p>You need to upload a text with these constraints:</p>
-                <strong>Format: {this.state.format}</strong><br />
-                <strong>Theme: {this.state.theme}</strong><br />
-                <strong>Time to upload: {this.state.uploadtime}</strong>
+                <p><strong>Format:  {this.state.format}</strong></p>
+                <p><strong>Theme: {this.state.theme}</strong></p>
+                <p><strong>Time to upload: {this.state.uploadtime}</strong></p>
+
+                {/*
                 <input name="file" type="file" value={this.state.file} onChange={e => this.handleInputChange(e)} />
+                */}
+
                 <textarea name="textfile" type="text" value={this.state.textfile} onChange={e => this.handleTextChange(e)} />
                 <center>
                   <ReactCountdownClock
                     seconds={parseInt(this.state.uploadtime, 10)}
-                    color="#000"
+                    color="#00bcd4"
                     alpha={0.9}
                     size={200}
                     onComplete={this.timeout}
                   />
                 </center>
-                <Button className="pull-right" type="submit" onClick={this.validateChallenge} disabled={this.state.validateButton}>Update</Button>
+                <Button className="pull-right" type="submit" onClick={this.validateChallenge} disabled={this.state.validateButton}>Upload</Button>
+                <p>{this.state.accepeted}</p>
               </div>
             );
         }
