@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ListGroup, ListGroupItem, Glyphicon, Panel } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
+import TextField from '@material-ui/core/TextField';
+import { Button } from '@material-ui/core';
 import Comment from '../comment';
 
 // ICI récupération d'un post en particulier selon son id
@@ -26,6 +28,7 @@ function displayContent(category, content) {
       return null;
   }
 }
+
 
 class PostTimeline extends Component {
   render() {
@@ -55,7 +58,7 @@ class PostTimeline extends Component {
         </div>
       </div>
       */
-     
+
       <div>
         <div className="Post-div">
           <div className="row">
@@ -67,7 +70,7 @@ class PostTimeline extends Component {
                 <div className="row">
                   {displayContent(this.props.category, this.props.content)}
                 </div>
-                
+
                 {/*
                 <div className="row">
                   <Glyphicon className="Glyphicon-large pull-right" glyph="comment" />
@@ -84,6 +87,19 @@ class PostTimeline extends Component {
                     }
                   </ListGroup>
                 </div>
+
+                {/* TODO : DB Acces to post comment */}
+                <form>
+                  <TextField
+                    className="commentBox"
+                    type="text"
+                    hintText="Comment"
+                    floatingLabelText="Comment"
+                    name="comment"
+                  />
+                  <Button variant="contained" type="submit">Comment</Button>
+                </form>
+
               </Panel.Body>
             </Panel>
           </div>

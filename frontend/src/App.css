@@ -191,3 +191,7 @@ body {
   .myAlert{
     width: 250px;
   }
+
+  .commentBox{
+    width:80%;
+  }
