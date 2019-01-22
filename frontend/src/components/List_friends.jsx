@@ -110,21 +110,18 @@ class FriendList extends Component {
               }
             `,
         }).then((response) => {
-                console.log('Réponse serveur: ', response.data);
                 localStorage.setItem('currentUser', JSON.stringify(response.data.unfollow));
                 this.setState(
                     {
                         following: JSON.parse(localStorage.getItem('currentUser')).following,
                     },
                 );
-            }).catch((err)=>{
-              console.log('tamere ', err);
+            }).catch((err) => {
+              console.log('An error occured ', err);
             });
     }
 
     follow(event) {
-        // ici delete dans DB
-        console.log('coucou');
         const toFollow = event.target.value;
         console.log(toFollow);
         if (event.target.value !== '') {

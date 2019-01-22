@@ -122,7 +122,7 @@ body {
   background-color: #61dafb;
 }
 
-.main {
+.vote-box {
   background-color: white;
 
   width: 400px;
@@ -163,6 +163,7 @@ body {
   cursor: pointer;
 
   border: 0;
+  margin-bottom: 10px;
 
   font-size: 25px;
   width: 50px;
@@ -195,4 +196,13 @@ body {
 
   .commentBox{
     width:80%;
+  }
+
+  .show-grid {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .vote-box-username {
+    font-size: 1.2em;
   }
