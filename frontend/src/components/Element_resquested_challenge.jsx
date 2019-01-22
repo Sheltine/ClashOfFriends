@@ -61,7 +61,6 @@ handleTextChange(e) {
 
 
 validateChallenge() {
-  /*
   if (this.state.textfile !== '') {
     client
     .mutate({
@@ -82,11 +81,9 @@ validateChallenge() {
     }).then((response) => {
         console.log('CHALLENGE ACCEPTE! ', response);
     }).catch((err) => {
-        console.log('TEXTFILE: ', this.state.textfile);
-        console.log('ID: ', this.state.challengeId);
         console.log('erreur à l\'upload: ', err);
     });
-  } */
+  }
     console.log('C COUCOU LOL');
 }
 
