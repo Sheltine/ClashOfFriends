@@ -39,8 +39,8 @@ module.exports = {
             return slice.map(id => connection.getUser({ _id: id }));
         },
         birthdate: u => moment(u.birthdate).format(BIRTHDATE_FORMAT),
-        pendingChallenges: (u, a, c) => (c.user.id === u.id ? connection.getPendingChallenges(u.id, a.first, a.offset) : null),
-        requestedChallenges: (u, a, c) => (c.user.id === u.id ? connection.getRequestedChallenges(u.id, a.first, a.offset) : null),
+        pendingChallenges: (u, a, c) => ((c.user && c.user.id !== u.id) ? null : connection.getPendingChallenges(u.id, a.first, a.offset)),
+        requestedChallenges: (u, a, c) => ((c.user && c.user.id !== u.id) ? null : connection.getRequestedChallenges(u.id, a.first, a.offset)),
         createdAt: u => moment(u.createdAt).format(DATE_FORMAT),
         updatedAt: u => moment(u.updatedAt).format(DATE_FORMAT),
     },
