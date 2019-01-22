@@ -156,7 +156,7 @@ class ChallengeForm extends Component {
                 <textarea name="textfile" type="text" value={this.state.textfile} onChange={e => this.handleTextChange(e)} />
                 <center>
                   <ReactCountdownClock
-                    seconds={parseInt(this.state.uploadtime, 10)}
+                    seconds={parseInt(this.state.uploadtime, 10) * 60}
                     color="#00bcd4"
                     alpha={0.9}
                     size={200}

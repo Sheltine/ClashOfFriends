@@ -43,8 +43,7 @@ class RequestedChallenges extends Component {
             <div className="col-md-2 Sidebar-style">
               <Sidebar />
             </div>
-            <h1>ICI</h1>
-            {console.log('YOOOOOOOOOOOOOOOOOOOOOOO', JSON.parse(localStorage.getItem('currentUser')).username)}
+            <h1>Challenge from your friends</h1>
             <ApolloProvider client={client}>
               <Query
         // dans server, remplacer if (authRequired) par if (!authRequired) pour debug
