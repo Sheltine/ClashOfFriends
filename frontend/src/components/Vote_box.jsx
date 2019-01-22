@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'react-bootstrap';
-import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 import '../App.css';
 
 
@@ -11,7 +9,7 @@ class VoteBox extends Component {
         <center>
           <div className="main">
             <p>
-              <button className="add-button">&#x1f44d;</button>
+              <button className="add-button" type="button">&#x1f44d;</button>
             </p>
             <p>
               <h2>Challenger2</h2>
