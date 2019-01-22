@@ -16,7 +16,7 @@ const Routing = () => (
       <Route path="/connexion" component={Connexion} />
       <Route path="/profile" component={Profile} />
       <Route path="/votes" component={VotePage} />
-      <Route path="/requestedChallenges" component={RequestedChallenges} />
+      <Route path="/requested" component={RequestedChallenges} />
     </Switch>
   </main>
 );

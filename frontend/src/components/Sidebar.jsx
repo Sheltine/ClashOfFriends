@@ -26,6 +26,7 @@ class Sidebar extends Component {
           <MenuItem eventKey={3.1}>Verbal</MenuItem>
           <MenuItem eventKey={3.2}>Picture</MenuItem>
           <MenuItem eventKey={3.3} href="/votes">Votes</MenuItem>
+          <MenuItem eventKey={3.3} href="/requested">Requested challenges</MenuItem>
         </NavDropdown>
       </Nav>
     );
