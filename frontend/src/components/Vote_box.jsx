@@ -17,7 +17,7 @@ class VoteBox extends Component {
             <p />
             <div>
               <div>
-                <strong>2k</strong><br />
+                <strong>42</strong><br />
                 <span className="details">votes</span>
               </div>
             </div>
