@@ -13,6 +13,8 @@ class VotePage extends Component {
         <div className="row">
           <NavbarHead />
         </div>
+        <br />
+        <br />
         <Row className="show-grid">
           <Col md={5} mdPush={1}>
             <VoteBox />
@@ -52,7 +54,7 @@ class VotePage extends Component {
             <VoteBox />
           </Col>
         </Row>
-      </div >
+      </div>
     );
   }
 }
