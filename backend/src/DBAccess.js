@@ -262,6 +262,7 @@ class DBAccess {
                     challenge.save().then((c, err) => {
                         if (err) return console.error(err);
                         console.log(`Challenge from ${challenge.challengerSide.user.username} to ${challenge.challengedSide.user.username} added to DB !`);
+                        return null;
                     });
                     return this.getUser({ _id: user.id });
                 });
@@ -309,7 +310,6 @@ class DBAccess {
     getChallenges(_first, _offset) {
         const query = Challenge.find({
             'challengerSide.input': { $exists: true },
-            'challengedSide.input': { $exists: true },  // Possible qu'il faille enlever cette ligne pour récupérer les challenges de défaites par non participation du challenged
             'challengedSide.uploadDateEnd': { $lte: new Date() },
         });
         if (_offset && _offset > 0) { query.skip(_offset); }
@@ -385,7 +385,7 @@ class DBAccess {
 
             chall.isAccepted = false;
             chall.answerTime = new Date();
-            
+
             return chall.save().then((c, e) => {
                 if (e) {
                     console.log(e);
@@ -535,8 +535,7 @@ class DBAccess {
                         console.log(`User ${supporterId} does not exist`);
                         throw new Error('Supported user not found');
                     }
-                    console.log(`Support.id: ${support.id}`);
-    
+
                     const vote = new Vote({ voter: user, challenge, support });
                     return vote.save().then((savedVote, err) => {
                         if (err) return console.error(err);
@@ -549,9 +548,7 @@ class DBAccess {
     }
 
     getVotedUser(challengeId, voterId) {
-        return Vote.findOne({ challenge: challengeId, voter: voterId }).then((vote) => {
-            return vote ? this.getUser({ _id: vote.support }) : null;
-        });
+        return Vote.findOne({ challenge: challengeId, voter: voterId }).then(vote => (vote ? this.getUser({ _id: vote.support }) : null));
     }
 
     /*

@@ -9,5 +9,7 @@ module.exports = {
         "indent"                    : 0,
         "no-loop-func"              : 0,
         "no-param-reassign"         : 0,
+        "no-restricted-globals"     : 0,
+        "eqeqeq"                    : 0,
     }
 };

@@ -21,30 +21,10 @@ const server = new ApolloServer({
                 throw new AuthenticationError('You must provide a valid token.');
             });
         }
+        return null;
     },
-    // TODO: Launch in prod: uncomment the following
-    // debug: false,
 
-    /*
-    formatError: (error) => {
-        console.log(error);
-        if (error.message.indexOf('duplicate key') !== -1) {
-            if (error.message.indexOf('ClashOfFriends.users') !== -1) {
-                if (error.message.indexOf('username') !== -1) {
-                    throw new UserInputError('This username is already taken', { username: 'test' });
-                }
-                if (error.message.indexOf('email') !== -1) {
-                    return new UserInputError('This email is already taken.');
-                }
-            }
-        } else {
-            return new Error(`Internal server error: ${error}`);
-            // Or, you can delete the exception information
-            // delete error.extensions.exception;
-            // return error;
-        }
-      },
-      */
+    debug: false,
 
     // Default configuration in development
     // introspection: true,
