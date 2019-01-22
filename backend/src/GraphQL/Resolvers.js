@@ -1,7 +1,7 @@
 const moment = require('moment');
 const connection = require('../DBAccess');
 const { BIRTHDATE_FORMAT, DATE_FORMAT } = require('../../config');
-const { auth, register, update, mustBeAuthenticated } = require('../Auth');
+const { auth, register, update, updatePassword, mustBeAuthenticated } = require('../Auth');
 
 module.exports = {
     Query: {
@@ -20,7 +20,7 @@ module.exports = {
         message: () => 'Hello mutation !',
         register: (_, { user }) => register(user),
         updateProfile: (_, { user }, c) => { mustBeAuthenticated(c); return update(c.user, user); },
-        changePassword: (_, { oldPassword, newPassword }, c) => { mustBeAuthenticated(c); return connection.changeUserPassword(c.user, oldPassword, newPassword); },
+        changePassword: (_, { oldPassword, newPassword }, c) => { mustBeAuthenticated(c); return updatePassword(c.user, oldPassword, newPassword); },
         follow: (_, { username }, c) => { mustBeAuthenticated(c); return connection.addFollower(c.user, username); },
         unfollow: (_, { username }, c) => { mustBeAuthenticated(c); return connection.removeFollower(c.user, username); },
         challenge: (_, { username, categoryId }, c) => { mustBeAuthenticated(c); return connection.addChallenge(c.user, username, categoryId); },

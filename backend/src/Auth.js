@@ -1,7 +1,10 @@
 const jwt = require('jsonwebtoken');
 const { AuthenticationError, ForbiddenError } = require('apollo-server');
+const SHA3 = require('crypto-js/sha256');
 const connection = require('./DBAccess');
+
 const { jwtOptions } = require('../config');
+const SALT = require('../config');
 
 function issueToken({ id, username }) {
     const token = jwt.sign({ userId: id, username }, jwtOptions.secret);
@@ -12,6 +15,10 @@ function thowErrorIfNull(param, paramName) {
     if (param === null) {
         throw new Error(`${paramName} cannot be null.`);
     }
+}
+
+function hashPassword(password) {
+    return SHA3(SALT + password).toString();
 }
 
 function checkIfUserComplete(u) {
@@ -28,7 +35,7 @@ function auth(username, password) {
         throw new Error('Username/password must be defined.');
     }
 
-    return connection.getUser({ username, password }).then((u) => {
+    return connection.getUser({ username, password: hashPassword(password) }).then((u) => {
         if (u === null) {
             throw new Error('Not found');
         }
@@ -38,6 +45,8 @@ function auth(username, password) {
 
 function register(args) {
     checkIfUserComplete(args);
+    args.password = hashPassword(args.password);
+    console.log(args);
     return connection.addUser(args).then((u) => {
         if (undefined === u.id) {
             throw new Error(u);
@@ -61,9 +70,13 @@ function update(himself, newU) {
     });
 }
 
+function updatePassword(user, oldPassword, newPassword) {
+    return connection.changeUserPassword(user, hashPassword(oldPassword), hashPassword(newPassword));
+}
+
 function mustBeAuthenticated(context) {
     if (!context.user) throw new AuthenticationError('You must provide a valid token.');
     console.log(`${context.user.username} authenticated`);
 }
 
-module.exports = { auth, register, update, mustBeAuthenticated };
+module.exports = { auth, register, update, updatePassword, mustBeAuthenticated };
