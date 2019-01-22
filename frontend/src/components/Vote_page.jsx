@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import Divider from '@material-ui/core/Divider';
 import VoteBox from './Vote_box';
 import '../App.css';
 import NavbarHead from './Navbar_head';
@@ -30,6 +31,8 @@ class VotePage extends Component {
           </Col>
         </Row>
         <br />
+        <br />
+        <Divider variant="middle" />
         <br />
         <br />
         <Row className="show-grid">
