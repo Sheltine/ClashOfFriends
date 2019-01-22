@@ -53,7 +53,7 @@ class ChallengeForm extends Component {
             format: '',
             validateButton: '',
             challengeId: '',
-            accepeted:'',
+            accepeted: '',
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -86,6 +86,9 @@ class ChallengeForm extends Component {
         }).then((response) => {
             console.log('CHALLENGE ACCEPTE! ', response);
             this.setState({ accepeted: 'Accepted !' });
+            this.setState({
+                validateButton: 'disabled',
+            });
         }).catch((err) => {
             console.log('TEXTFILE: ', this.state.textfile);
             console.log('ID: ', this.state.challengeId);
