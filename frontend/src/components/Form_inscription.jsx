@@ -37,6 +37,26 @@ function getErrorMsg(username, password, submitted) {
                   following {
                     username,
                   },
+                  pendingChallenges {
+                    challenger {
+                      user{username}
+                    },
+                    challenged {
+                      user{username}
+                    },
+                    format {
+                      name
+                    },
+                    theme {
+                      name
+                    },
+                    category {
+                      name
+                    },
+                    uploadTime,
+                    createdAt,
+                    updatedAt
+                  }
                 }
               }
             }
