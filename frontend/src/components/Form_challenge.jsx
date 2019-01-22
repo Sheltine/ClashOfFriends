@@ -156,9 +156,7 @@ class ChallengeForm extends Component {
                     onComplete={this.timeout}
                   />
                 </center>
-                <form onSubmit={this.validateChallenge}>
-                  <Button className="pull-right" type="submit" name="validation" disabled={this.state.validateButton}>Update</Button>
-                </form>
+                <Button className="pull-right" type="submit" onClick={this.validateChallenge} disabled={this.state.validateButton}>Update</Button>
               </div>
             );
         }
