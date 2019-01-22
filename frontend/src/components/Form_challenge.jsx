@@ -146,7 +146,10 @@ class ChallengeForm extends Component {
                 <p><strong>Theme: {this.state.theme}</strong></p>
                 <p><strong>Time to upload: {this.state.uploadtime}</strong></p>
 
+                {/*
                 <input name="file" type="file" value={this.state.file} onChange={e => this.handleInputChange(e)} />
+                */}
+
                 <textarea name="textfile" type="text" value={this.state.textfile} onChange={e => this.handleTextChange(e)} />
                 <center>
                   <ReactCountdownClock
