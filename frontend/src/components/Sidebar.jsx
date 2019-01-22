@@ -22,12 +22,10 @@ class Sidebar extends Component {
         <NavItem eventKey={2} href="/profile">
                 Profile
         </NavItem>
-        <NavItem eventKey={2} href="/votes">
-                Votes
-        </NavItem>
         <NavDropdown title="Challenge" eventKey={3}>
           <MenuItem eventKey={3.1}>Verbal</MenuItem>
           <MenuItem eventKey={3.2}>Picture</MenuItem>
+          <MenuItem eventKey={3.3} href="/votes">Votes</MenuItem>
         </NavDropdown>
       </Nav>
     );
