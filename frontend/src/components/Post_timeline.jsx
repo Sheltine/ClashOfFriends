@@ -3,7 +3,32 @@ import PropTypes from 'prop-types';
 import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
+import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from 'apollo-boost';
+import gql from 'graphql-tag';
+import { Query, ApolloProvider } from 'react-apollo';
 import Comment from '../comment';
+
+const { BACKEND_URL } = require('../config.js');
+
+const httpLink = new HttpLink({ uri: BACKEND_URL });
+console.log(httpLink);
+const authLink = new ApolloLink((operation, forward) => {
+    const token = localStorage.getItem('userToken');
+
+    // Use the setContext method to set the HTTP headers.
+    operation.setContext({
+    headers: {
+        authorization: token ? `Bearer ${token}` : '',
+    },
+});
+// Call the next link in the middleware chain.
+return forward(operation);
+});
+
+const client = new ApolloClient({
+    link: authLink.concat(httpLink), // Chain it with the HttpLink
+    cache: new InMemoryCache(),
+});
 
 // ICI récupération d'un post en particulier selon son id
 // TODO: remplacer this.props.blablabla par les champs de l'objet récupéré
@@ -62,6 +87,85 @@ class PostTimeline extends Component {
       <div>
         <div className="Post-div">
           <div className="row">
+
+            <ApolloProvider client={client}>
+              <Query
+                query={gql`
+                {
+                  query {
+                    challenges(first: 10, offset: 5) {
+                      id,
+                      category {
+                        name
+                      },
+                      format {
+                        name
+                      },
+                      theme {
+                        name
+                      },
+                      comments(first: 2, offset: 1) {
+                        message,
+                        owner {
+                          username
+                        }
+                        createdAt,
+                        updatedAt
+                      }
+                      challenger {
+                        user {
+                          username
+                        }
+                        uploadDateStart,
+                        uploadDateEnd,
+                        input {
+                          content,
+                          uploadedAt,
+                          updatedAt
+                        },
+                        numberVotes,
+                      }
+                      challenged {
+                        user {
+                          username
+                        }
+                        uploadDateStart,
+                        uploadDateEnd,
+                        input {
+                          content,
+                          uploadedAt,
+                          updatedAt
+                        }
+                        numberVotes,
+                      },
+                      forWhomDidIVote {
+                        username
+                      },
+                      uploadTime,
+                      voteDateStart,
+                      voteDateEnd,
+                      createdAt,
+                      updatedAt
+                    }
+                  }
+                }
+              `}
+              >
+                {({ loading, error, data }) => {
+                  console.log(`Error: ${error}`);
+                  console.log('Data LISTE CHALLENGES:');
+                  console.log(data);
+                if (loading) return <p>Loading...</p>;
+
+                return (
+                  <div>
+                    <p>Welcome !</p>
+                  </div>
+                );
+              }}
+              </Query>
+
+            </ApolloProvider>
             <Panel bsStyle="primary">
               <Panel.Heading>
                 <Panel.Title componentClass="h3">{this.props.player1} {this.props.gameResult} against {this.props.player2}</Panel.Title>
@@ -70,7 +174,6 @@ class PostTimeline extends Component {
                 <div className="row">
                   {displayContent(this.props.category, this.props.content)}
                 </div>
-
                 {/*
                 <div className="row">
                   <Glyphicon className="Glyphicon-large pull-right" glyph="comment" />

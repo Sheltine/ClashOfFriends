@@ -161,10 +161,10 @@ class FormInscription extends Component {
                     },
                     pendingChallenges {
                       challenger {
-                        username
+                        user{username}
                       },
                       challenged {
-                        username
+                        user{username}
                       },
                       format {
                         name

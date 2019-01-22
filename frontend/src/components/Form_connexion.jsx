@@ -42,14 +42,10 @@ function getErrorMsg(username, password, submitted) {
                   },
                   pendingChallenges {
                     challenger {
-                      user {
-                        username
-                      }
+                      user{username}
                     },
                     challenged {
-                      user {
-                        username
-                      }
+                      user{username}
                     },
                     format {
                       name

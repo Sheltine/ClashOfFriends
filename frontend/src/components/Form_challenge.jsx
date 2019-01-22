@@ -5,10 +5,7 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import Select from 'react-select';
 import { Button } from 'react-bootstrap';
-import Countdown from 'react-countdown-now';
 import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from 'apollo-boost';
-import { Query, ApolloProvider } from 'react-apollo';
-import { recomposeColor } from '@material-ui/core/styles/colorManipulator';
 import ReactCountdownClock from 'react-countdown-clock';
 
 const { BACKEND_URL } = require('../config.js');
@@ -46,7 +43,6 @@ class ChallengeForm extends Component {
         console.log('options: ', options);
         super(props);
         this.state = {
-            test: false,
             file: '',
             challenger: '',
             ready: false,
@@ -56,6 +52,7 @@ class ChallengeForm extends Component {
             uploadtime: '',
             format: '',
             validateButton: '',
+            challengeId: '',
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -64,6 +61,35 @@ class ChallengeForm extends Component {
         this.sendChallenge = this.sendChallenge.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.timeout = this.timeout.bind(this);
+        this.validateChallenge = this.validateChallenge.bind(this);
+  }
+
+  validateChallenge() {
+      if (this.state.textfile !== '') {
+        client
+        .mutate({
+            mutation: gql`
+            mutation {
+                upload(
+                        challengeId:"${this.state.challengeId}", content:"${this.state.textfile}"
+                    )
+                {
+                    challenger{
+                        user{
+                            username
+                        }
+                    }
+                }
+             }
+            `,
+        }).then((response) => {
+            console.log('CHALLENGE ACCEPTE! ', response);
+        }).catch((err) => {
+            console.log('TEXTFILE: ', this.state.textfile);
+            console.log('ID: ', this.state.challengeId);
+            console.log('erreur à l\'upload: ', err);
+        });
+    }
   }
 
     sendChallenge() {
@@ -72,9 +98,9 @@ class ChallengeForm extends Component {
             mutation: gql`
             mutation {
                 challenge(username: "${this.state.challenger}", categoryId: "${this.state.category}") {
-                  id,
                   username,
                   pendingChallenges {
+                    id,
                     challenger {
                       user{username}
                     },
@@ -100,37 +126,39 @@ class ChallengeForm extends Component {
         }).then((response) => {
                 console.log(response);
                 const PC = response.data.challenge.pendingChallenges[(response.data.challenge.pendingChallenges.length) - 1];
+                console.log('PCID: ', PC.id);
                 this.setState({
                     format: PC.format.name,
                     uploadtime: PC.uploadTime,
                     theme: PC.theme.name,
+                    challengeId: PC.id,
                 });
             }).catch((err) => { console.log('err: ', err); });
     }
 
-    // eslint-disable-next-line class-methods-use-this
     displayReadyContent(ready) {
         if (ready) {
             return (
               <div>
                 <h3>You&apos;re challenging {this.state.challenger}!</h3>
-                <p>You need to upload a text with thiese constraints:</p>
+                <p>You need to upload a text with these constraints:</p>
                 <strong>Format: {this.state.format}</strong><br />
                 <strong>Theme: {this.state.theme}</strong><br />
                 <strong>Time to upload: {this.state.uploadtime}</strong>
                 <input name="file" type="file" value={this.state.file} onChange={e => this.handleInputChange(e)} />
                 <textarea name="textfile" type="text" value={this.state.textfile} onChange={e => this.handleTextChange(e)} />
-                {this.renderTimeout(this.state.test)}
-                <ReactCountdownClock
-                  seconds={parseInt(this.state.uploadtime)}
-                  color="#000"
-                  alpha={0.9}
-                  size={100}
-                  onComplete={this.timeout}
-                />
-                <Button type="submit" name="validation" disabled={this.state.validateButton}>Update</Button>
-
-                <p>Bien joué lol</p>
+                <center>
+                  <ReactCountdownClock
+                    seconds={parseInt(this.state.uploadtime, 10)}
+                    color="#000"
+                    alpha={0.9}
+                    size={200}
+                    onComplete={this.timeout}
+                  />
+                </center>
+                <form onSubmit={this.validateChallenge}>
+                  <Button className="pull-right" type="submit" name="validation" disabled={this.state.validateButton}>Update</Button>
+                </form>
               </div>
             );
         }
@@ -141,22 +169,18 @@ class ChallengeForm extends Component {
               onChange={this.handleUserSelect}
               options={options}
             />
-            <Button onClick={this.handleReady}>Ready!</Button>
+            <Button classname="vspace" onClick={this.handleReady}>Ready!</Button>
           </div>
         );
     }
 
     timeout() {
-        this.state.test = true;
         this.setState({
-            test: true,
             validateButton: 'disabled',
         });
-        console.log('TIMEOUT DONE', this.state.test);
-        return <p>cojsibfnem</p>;
     }
 
-    handleReady(event) {
+    handleReady() {
         if (this.state.challenger !== '') {
         this.setState({
             ready: true,
@@ -191,22 +215,12 @@ class ChallengeForm extends Component {
                 })
                 .then(result => console.log(result));
             };
-        // console.log(formData);
-        // envoyer ça différemment
     }
 
     handleTextChange(e) {
         this.setState({
             [e.target.name]: e.target.value,
         });
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    renderTimeout(test) {
-        if (test) {
-            return <p>timeout</p>;
-        }
-        return <p>default</p>;
     }
 
 // check https://www.npmjs.com/package/react-file-viewer/v/0.4.1 for fileviewer

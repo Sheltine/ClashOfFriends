@@ -5,6 +5,7 @@ import Register from './Register';
 import Timeline from './Timeline';
 import Profile from './Profile';
 import VotePage from './components/Vote_page';
+import RequestedChallenges from './RequestedChallenges';
 
 // Ajouter ici les routes vers les pages
 const Routing = () => (
@@ -15,6 +16,7 @@ const Routing = () => (
       <Route path="/connexion" component={Connexion} />
       <Route path="/profile" component={Profile} />
       <Route path="/votes" component={VotePage} />
+      <Route path="/requestedChallenges" component={RequestedChallenges} />
     </Switch>
   </main>
 );
