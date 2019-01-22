@@ -118,10 +118,14 @@ mutation {
     username,
     pendingChallenges {
       challenger {
-        username
+        user {
+          username
+        }
       },
       challenged {
-        username
+        user {
+          username
+        }
       },
       format {
         name
@@ -218,6 +222,31 @@ query {
     voteDateEnd,
     createdAt,
     updatedAt
+  }
+}
+```
+
+### Upload on a challenge
+```
+mutation {
+  upload(challengeId: "5c478391ff5844529d990870", content: "Encore plus youpie !") {
+    id,
+    challenger {
+      user {
+        username
+      },
+      input {
+        content
+      }
+    },
+    challenged {
+      user {
+        username
+      },
+      input {
+        content
+      }
+    }
   }
 }
 ```
