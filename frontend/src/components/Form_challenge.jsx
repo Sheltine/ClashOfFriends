@@ -53,6 +53,7 @@ class ChallengeForm extends Component {
             format: '',
             validateButton: '',
             challengeId: '',
+            accepeted:'',
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -84,10 +85,12 @@ class ChallengeForm extends Component {
             `,
         }).then((response) => {
             console.log('CHALLENGE ACCEPTE! ', response);
+            this.setState({ accepeted: 'Accepted !' });
         }).catch((err) => {
             console.log('TEXTFILE: ', this.state.textfile);
             console.log('ID: ', this.state.challengeId);
             console.log('erreur à l\'upload: ', err);
+            this.setState({ accepeted: 'Error !' });
         });
     }
   }
@@ -161,6 +164,7 @@ class ChallengeForm extends Component {
                   />
                 </center>
                 <Button className="pull-right" type="submit" onClick={this.validateChallenge} disabled={this.state.validateButton}>Upload</Button>
+                <p>{this.state.accepeted}</p>
               </div>
             );
         }
