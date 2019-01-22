@@ -68,7 +68,8 @@ class VoteBox extends Component {
           this.setState({ nbVotes: response.data.vote.challenger.numberVotes });
         }
       }).catch((error) => {
-        this.setState({ error });
+        console.log(error.graphQLErrors[0].message);
+        this.setState({ error: error.graphQLErrors[0].message });
       });
   }
 
