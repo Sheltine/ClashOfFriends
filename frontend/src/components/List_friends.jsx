@@ -88,10 +88,10 @@ class FriendList extends Component {
                   },
                   pendingChallenges {
                     challenger {
-                      username
+                      user{username}
                     },
                     challenged {
-                      username
+                      user{username}
                     },
                     format {
                       name
@@ -117,6 +117,8 @@ class FriendList extends Component {
                         following: JSON.parse(localStorage.getItem('currentUser')).following,
                     },
                 );
+            }).catch((err)=>{
+              console.log('tamere ', err);
             });
     }
 
@@ -145,10 +147,10 @@ class FriendList extends Component {
                     },
                     pendingChallenges {
                       challenger {
-                        username
+                        user{username}
                       },
                       challenged {
-                        username
+                        user{username}
                       },
                       format {
                         name
