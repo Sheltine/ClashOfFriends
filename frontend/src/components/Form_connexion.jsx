@@ -7,6 +7,7 @@ import { Query, ApolloProvider } from 'react-apollo';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import '../App.css';
 
 const { BACKEND_URL } = require('../config');
 
@@ -77,8 +78,8 @@ function getErrorMsg(username, password, submitted) {
               return (
                 <div>
                   <br />
-                  <Alert bsStyle="danger">
-                    <strong>Wrong credentials!</strong> Please try again
+                  <Alert className="myAlert" bsStyle="danger">
+                    <strong>Wrong credentials!</strong> <br /> Please try again
                   </Alert>
                 </div>
                 );
@@ -182,7 +183,7 @@ handleSubmit(event) {
               </form>
             </div>
           </MuiThemeProvider>
-          <p>{getErrorMsg(this.state.username, this.state.password, this.state.submitted)}</p>
+          <div>{getErrorMsg(this.state.username, this.state.password, this.state.submitted)}</div>
         </div>
       );
     }
