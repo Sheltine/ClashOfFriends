@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from 'apollo-boost';
 import gql from 'graphql-tag';
 import { Query, ApolloProvider } from 'react-apollo';
@@ -31,12 +30,6 @@ class name extends Component {
   render() {
     return (
       <div className="PostGroup-div">
-        <DropdownButton title="Sort">
-          <MenuItem eventKey="1">All</MenuItem>
-          <MenuItem eventKey="2">Only me</MenuItem>
-          <MenuItem eventKey="3">Only friends</MenuItem>
-        </DropdownButton>
-
         <ApolloProvider client={client}>
           <Query
             query={gql`
@@ -116,6 +109,8 @@ class name extends Component {
                         challengedContent={chall.challenged.input.content}
                         nbvChallenger={chall.challenger.numberVotes}
                         nbvChallenged={chall.challenged.numberVotes}
+                        comments={chall.comments}
+                        challengeId={chall.id}
                       />
 
                     </div>))

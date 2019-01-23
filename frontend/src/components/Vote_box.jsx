@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Alert } from 'react-bootstrap';
 import gql from 'graphql-tag';
 import '../App.css';
+import PropTypes from 'prop-types';
+
 
 import client from '../Util/ApolloClientManager';
 
@@ -88,4 +90,9 @@ class VoteBox extends Component {
   }
 }
 
+  VoteBox.propTypes = {
+    challengeSide: PropTypes.string.isRequired,
+    challengeId: PropTypes.string.isRequired,
+    voted: PropTypes.string.isRequired,
+  };
 export default VoteBox;

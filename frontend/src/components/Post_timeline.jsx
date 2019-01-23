@@ -3,63 +3,53 @@ import PropTypes from 'prop-types';
 import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
-import Comment from '../comment';
+import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from 'apollo-boost';
+import gql from 'graphql-tag';
+
+const { BACKEND_URL } = require('../config.js');
+
+const httpLink = new HttpLink({ uri: BACKEND_URL });
+console.log(httpLink);
+const authLink = new ApolloLink((operation, forward) => {
+  const token = localStorage.getItem('userToken');
+
+  // Use the setContext method to set the HTTP headers.
+  operation.setContext({
+    headers: {
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  });
+  // Call the next link in the middleware chain.
+  return forward(operation);
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink), // Chain it with the HttpLink
+  cache: new InMemoryCache(),
+});
 
 
-// ICI récupération d'un post en particulier selon son id
-// TODO: remplacer this.props.blablabla par les champs de l'objet récupéré
-
-const comments = [];
-comments.push(new Comment('0', 'John', 'Bien ouéj!'));
-comments.push(new Comment('1', 'Marina', 'Cimer'));
-
-function displayContent(category, content) {
-  switch (category) {
-    case 'verbal':
-      return <blockquote>{content}</blockquote>;
-    case 'picture':
-      return <div className="pull-right"><img alt="Winning pic" className="PicChallenge-icon" src={content} height="150em" width="150em" /></div>;
-    case 'sound':
-      return (
-        <audio controls>
-          <source src={content} type="audio/mpeg" />
-        </audio>
-      );
-    default:
-      return null;
-  }
-}
-function displayWin(challenger, challenged, challengerContent, challengedContent, nvbChallenger, nvbChallenged) {
-  console.log('on est la lol', challenger);
+function displayWin(challenger, challenged, challengerContent, challengedContent, nvbChallenger, nvbChallenged, comments) {
+  console.log('on est la lol');
   if (nvbChallenger === nvbChallenged) {
     return (
       <div>
         <h2>{challenger} and {challenged} were even!</h2>
         <Panel.Body>
-              <div className="row">
-                <blockquote>{challengerContent}</blockquote><i className="pull-right">- {challenger}</i><br />
-                <blockquote>{challengedContent}</blockquote><i className="pull-right">- {challenged}</i><br />
-              </div>
-              <div className="row">
-                <ListGroup componentClass="ul">
-                  {
+          <div className="row">
+            <blockquote>{challengerContent}</blockquote><i className="pull-right">- {challenger}</i><br />
+            <blockquote>{challengedContent}</blockquote><i className="pull-right">- {challenged}</i><br />
+          </div>
+          <div className="row">
+            <ListGroup componentClass="ul">
+              {
                     comments.map(comment => (
                       <div>
-                        <ListGroupItem className="ListComments-style"><b>{comment.user}</b>: {comment.comment}</ListGroupItem>
+                        <ListGroupItem className="ListComments-style"><b>{comment.owner.username}</b>: {comment.message}</ListGroupItem>
                       </div>))
                   }
-                </ListGroup>
-              </div>
-          <form>
-                <TextField
-                  className="commentBox"
-                  type="text"
-                  hintText="Comment"
-                  floatingLabelText="Comment"
-                  name="comment"
-                />
-                <Button variant="contained" type="submit">Comment</Button>
-              </form>
+            </ListGroup>
+          </div>
 
         </Panel.Body>
       </div>
@@ -84,83 +74,93 @@ function displayWin(challenger, challenged, challengerContent, challengedContent
     <div>
       <Panel.Heading>
         <h2>{winner} won against {loser}</h2>
-        </Panel.Heading>
-        <Panel.Body>
-              <div className="row">
-                <blockquote>{winnerContent}</blockquote><i className="pull-right">- {winner}</i><br />
-                <blockquote>{loserContent}</blockquote><i className="pull-right">- {loser}</i><br />
-              </div>
-              <div className="row">
-                <ListGroup componentClass="ul">
-                  {
+      </Panel.Heading>
+      <Panel.Body>
+        <div className="row">
+          <blockquote>{winnerContent}</blockquote><i className="pull-right">- {winner}</i><br />
+          <blockquote>{loserContent}</blockquote><i className="pull-right">- {loser}</i><br />
+        </div>
+        <div className="row">
+          <ListGroup componentClass="ul">
+            {
                     comments.map(comment => (
                       <div>
-                        <ListGroupItem className="ListComments-style"><b>{comment.user}</b>: {comment.comment}</ListGroupItem>
+                        <ListGroupItem className="ListComments-style">
+                        <b>{comment.owner.username}</b>: {comment.message}
+                        <div className="pull-right">{comment.createdAt}</div>
+                        </ListGroupItem>
                       </div>))
                   }
-                </ListGroup>
-              </div>
-          <form>
-                <TextField
-                  className="commentBox"
-                  type="text"
-                  hintText="Comment"
-                  floatingLabelText="Comment"
-                  name="comment"
-                />
-                <Button variant="contained" type="submit">Comment</Button>
-              </form>
+          </ListGroup>
+        </div>
 
-        </Panel.Body>
-      </div>
+      </Panel.Body>
+    </div>
   );
 }
 
 
 class PostTimeline extends Component {
-  constructor(props) {
-    super(props);
-    /*
-      if (this.props.nbvChallenger > this.props.nbvChallenged) {
-      console.log('1');
-      this.setState({
-          winner: this.props.challenger,
-          loser: this.props.challenged,
-          winContent: this.props.challengerContent,
-          loseContent: this.props.challengedContent,
-      });
-    } else if (this.props.nbvChallenger < this.props.nbvChallenged) {
-      console.log('2');
-
-      this.setState({
-        loser: this.props.challenger,
-        winner: this.props.challenged,
-        loseContent: this.props.challengerContent,
-        winContent: this.props.challengedContent,
-    });
-    } else {
-      console.log('3');
-
-      this.setState({
-        winner: this.props.challenger,
-        loser: this.props.challenged,
-        winContent: this.props.challengerContent,
-        loseContent: this.props.challengedContent,
-      });
-    } */
+  constructor(props, context) {
+    super(props, context);
     this.state = {
-      winner: '',
-      loser: '',
-      winContent: '',
-      loseContent: '',
+      commentText: '',
+      commentList: this.props.comments,
     };
+    this.commentChall = this.commentChall.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
+  }
+
+  handleTextChange(e) {
+    this.setState({
+        [e.target.name]: e.target.value,
+    });
+}
+
+  commentChall() {
+    if (this.state.commentText !== '') {
+      client.mutate({
+        mutation: gql`
+          mutation {
+            comment (challengeId: "${this.props.challengeId}", message: "${this.state.commentText}") {
+              comments {
+                message,
+                owner {
+                  username
+                },
+                createdAt
+              }
+            }
+          }
+        `,
+        }).then((response) => {
+            console.log(response);
+            this.setState({
+              commentList: response.data.comment.comments,
+            });
+        }).catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   render() {
+    console.log('conmments:', this.props.comments);
     return (
       <div>
         {console.log(this.props.challenger)}
-        {displayWin(this.props.challenger, this.props.challenged, this.props.challengerContent, this.props.challengedContent, this.props.nbvChallenger, this.props.nbvChallenged)}
+        {displayWin(this.props.challenger, this.props.challenged, this.props.challengerContent, this.props.challengedContent, this.props.nbvChallenger, this.props.nbvChallenged, this.state.commentList)}
+        <form>
+          <TextField
+            className="commentBox"
+            type="text"
+            hintText="Comment"
+            floatingLabelText="Comment"
+            name="commentText"
+            onChange={e => this.handleTextChange(e)}
+          />
+          <Button variant="contained" onClick={this.commentChall}>Comment</Button>
+        </form>
       </div>
     );
   }
@@ -174,6 +174,8 @@ PostTimeline.propTypes = {
   challengedContent: PropTypes.string.isRequired,
   nbvChallenger: PropTypes.string.isRequired,
   nbvChallenged: PropTypes.string.isRequired,
+  comments: PropTypes.string.isRequired,
+  challengeId: PropTypes.string.isRequired,
 };
 
 export default PostTimeline;

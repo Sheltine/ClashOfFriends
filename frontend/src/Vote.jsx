@@ -6,6 +6,7 @@ import NavbarHead from './components/Navbar_head';
 import VoteLine from './components/Vote_line';
 import './App.css';
 import client from './Util/ApolloClientManager';
+import Sidebar from './components/Sidebar';
 
 class VotePage extends Component {
   render() {
@@ -14,7 +15,10 @@ class VotePage extends Component {
         <div className="row">
           <NavbarHead />
         </div>
-
+        <div className="col-md-2 Sidebar-style">
+          <Sidebar />
+        </div>
+        <div>
         <ApolloProvider client={client}>
           <Query
             query={gql`
@@ -74,6 +78,7 @@ class VotePage extends Component {
           </Query>
 
         </ApolloProvider>
+        </div>
       </div>
     );
   }
