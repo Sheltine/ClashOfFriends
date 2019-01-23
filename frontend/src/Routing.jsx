@@ -4,7 +4,7 @@ import Connexion from './Connexion';
 import Register from './Register';
 import Timeline from './Timeline';
 import Profile from './Profile';
-import VotePage from './components/Vote_page';
+import VotePage from './Vote';
 import RequestedChallenges from './RequestedChallenges';
 
 // Ajouter ici les routes vers les pages

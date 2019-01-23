@@ -5,7 +5,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import ConnexionForm from './components/Form_connexion';
 
-
 class Connexion extends Component {
   render() {
     return (
