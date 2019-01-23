@@ -36,7 +36,7 @@ function displayWin(challenger, challenged, challengerContent, challengedContent
       <div>
         <Panel bsStyle="primary">
           <Panel.Heading>
-            <Panel.Title componentClass="h3">{challenger} and {challenged} were even!</Panel.Title>
+            <h2>{challenger} and {challenged} were even!</h2>
           </Panel.Heading>
           <Panel.Body>
             <div className="row">
@@ -56,8 +56,6 @@ function displayWin(challenger, challenged, challengerContent, challengedContent
 
           </Panel.Body>
         </Panel>
-
-
       </div>
     );
   }
@@ -80,7 +78,7 @@ function displayWin(challenger, challenged, challengerContent, challengedContent
     <div>
       <Panel bsStyle="primary">
         <Panel.Heading>
-          <Panel.Title componentClass="h3">{winner} won against {loser}</Panel.Title>
+          <h2>{winner} won against {loser}</h2>
         </Panel.Heading>
         <Panel.Body>
           <div className="row">
@@ -156,6 +154,8 @@ class PostTimeline extends Component {
     console.log('conmments:', this.props.comments);
     return (
       <div>
+        <br />
+        <br />
         {console.log(this.props.challenger)}
         {displayWin(this.props.challenger, this.props.challenged, this.props.challengerContent, this.props.challengedContent, this.props.nbvChallenger, this.props.nbvChallenged, this.state.commentList)}
         <form>
@@ -169,7 +169,6 @@ class PostTimeline extends Component {
           />
           <Button variant="contained" onClick={this.commentChall}>Comment</Button>
         </form>
-        <br />
         <br />
         <br />
       </div>
