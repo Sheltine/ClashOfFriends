@@ -14,13 +14,14 @@ Une fois que les deux duelistes ont soumis leur ressource pour le challenge, les
 
 Un système d'amitié est mis en place. Chaque utilisateur est libre de suivre d'autres utilisateur. Notons qu'il est obligé de suivre un utilisateur pour lui proposer un challenge.
 
-Les catégories sont déterminées selon le type de document à fournir. Il existerait donc les catégories suivantes et éventuellement les sous-catégories :
+Les catégories sont déterminées selon le type de document à fournir. Pour chaque catégorie, plusieurs format sont possible (et déterminés aléatoirement par le système).
 
-// TODO : Compléter
-* Texte  // _sous-catégories possibles basées sur le nombre de mots ou de chars_
-* Photo (.jpg, .png,...) // _sous-catégories possibles : portrait, paysage, noir/blanc,..._
-* Son
-* Vidéo
+* **Texte**  : < 20, 50 ou 80 charactères
+* **Photo** : Black'n'white, Square, Nude, Sepia, Portrait, Landscape, Selfie
+* **Son** : < 5, 15, 30, 45 secondes
+* **Vidéo** : < 5, 15, 30, 45 secondes
+
+Finalement, un thème est défini aléatoirement entre les suivants : *Comedy, Love, Beauty, Lazyness, Friendship, Family, Motivation, Eagerness*
 
 Un utilisateur a une page de profil sur laquelle il peut gérer diverses informations liées à son compte.
 
@@ -37,9 +38,14 @@ Un utilisateur a une page de profil sur laquelle il peut gérer diverses informa
 
 ## Utilisation
 - Pour accéder à votre page de profil : via le menu de gauche ou en cliquant sur l'icone utilisateur en haut à droite
+![](images/profile.png)
+![](images/menu.png)
   - C'est depuis ici que vous pouvez modifier vos informations de profil
   - C'est également depuis ici que vous pouvez suivre d'autre utilisateurs
 - Pour créer un challenge : choisissez la catégorie sur la grosse boîte prévue à ce ette effet sur la page d'accueil (franchement, vous pouvez pas la manquer).
+![](images/challbox.png)
+  - Remplissez ensuite votre challenge avec le thème et format imposé dans le temps imparti
+![](images/chall.png)
 - Pour accéder au challenge sur lesquel on vous provoque : utilisez le menu de gauche
 - Pour accéder à la page de vote des challenges : utilisez le menu de gauche
 
@@ -52,7 +58,7 @@ Un utilisateur a une page de profil sur laquelle il peut gérer diverses informa
 ## Auto-évaluation
 // TODO
 
-Nous sommes partis sur un projet peut être un peu ambitieux. Ce système de challenges soulève beaucoup de questions et nécessite bien des étapes différentes. Les cas d'utilisations sont donc assez complexes.
+Nous sommes partis sur un projet peut être un peu ambitieux. Ce système de challenges soulève beaucoup de questions et nécessite bien des étapes différentes. Les cas d'utilisations sont donc assez complexes. Toutes les fonctionnalités voulues n'ont pas pu être implémentées.
 
 ## Il reste à implémenter
 Chaque utilisateur aurait un montant initial de point et ce dernier évoluerait selon les challenges gagnés ou perdus.
