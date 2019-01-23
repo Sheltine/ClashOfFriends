@@ -565,11 +565,60 @@ class DBAccess {
     }
 
     getStats(userId) {
-        return this.getChallenges().then((challenges) => {
-            console.log(challenges);
+        const statusEnum = { WON: 1, LOST: 2, EVEN: 3 };
 
-            const result = { numberWin: 2, numberLoose: 5, numberVotes: 10 };
-            return result;
+        return Challenge.find({
+            'challengerSide.input': { $exists: true },
+            'challengedSide.input': { $exists: true },
+            voteDateEnd: { $lte: new Date() },
+            $or: [{ 'challengerSide.user': userId }, { 'challengedSide.user': userId }],
+        }).then((challenges) => {
+            const promises = [];
+
+            // We iterate over each challenge concerning the user
+            challenges.forEach((chall) => {
+                // We determine if won or lost
+                const tmpPromise = Promise.all([this.getNumberVoteForChallengeSide(chall.challengerSide.id),
+                            this.getNumberVoteForChallengeSide(chall.challengedSide.id)]).then((votes) => {
+                                const numberVoteChallenger = votes[0];
+                                const numberVoteChallenged = votes[1];
+                                let status = null;
+                                let numberVotes = 0;
+
+                                // We get the total number of votes for this user
+                                if (chall.challengerSide.user == userId) {
+                                    numberVotes = numberVoteChallenger;
+                                    if (numberVoteChallenged > numberVoteChallenger) {
+                                        status = statusEnum.LOST;
+                                    } else if (numberVoteChallenged < numberVoteChallenger) {
+                                        status = statusEnum.WON;
+                                    }
+                                } else if (chall.challengedSide.user == userId) {
+                                    numberVotes = numberVoteChallenged;
+                                    if (numberVoteChallenged > numberVoteChallenger) {
+                                        status = statusEnum.WON;
+                                    } else if (numberVoteChallenged < numberVoteChallenger) {
+                                        status = statusEnum.LOST;
+                                    }
+                                }
+                                if (numberVoteChallenged === numberVoteChallenger) {
+                                    status = statusEnum.EVEN;
+                                }
+
+                                return { status, numberVotes };
+                            });
+                promises.push(tmpPromise);
+            });
+            return Promise.all(promises).then((d) => {
+                const result = { numberWin: 0, numberLoose: 0, numberVotes: 0 };
+
+                d.forEach((r) => {
+                    if (r.status == statusEnum.WON) { result.numberWin += 1; }
+                    if (r.status == statusEnum.LOST) { result.numberLoose += 1; }
+                    result.numberVotes += r.numberVotes;
+                });
+                return result;
+            });
         });
     }
 }
