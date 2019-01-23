@@ -563,6 +563,15 @@ class DBAccess {
             return Vote.find({ support: userId, challenge: challenge.id }).count();
         });
     }
+
+    getStats(username) {
+        return this.getChallenges().then((challenges) => {
+            console.log(challenges);
+
+            const result = { numberWin: 2, numberLoose: 5, numberVotes: 10 };
+            return result;
+        });
+    }
 }
 
 const connection = new DBAccess(DB_PARAMS);

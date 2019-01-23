@@ -99,6 +99,11 @@ module.exports = gql`
         user: User!,
         token: String!
     }
+    type Stats {
+        numberWin: Int,
+        numberLoose: Int,
+        numberVotes: Int
+    }
     type Query {
         message: String
         users(first: Int, offset: Int): [User]
@@ -110,6 +115,7 @@ module.exports = gql`
         format(category: String!): [Format]
         challenges(first: Int, offset: Int): [Challenge]
         votables(first: Int, offset: Int): [Challenge]
+        stats(username: String!): Stats
     }
     type Mutation {
         message: String
