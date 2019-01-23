@@ -8,6 +8,10 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
+import { Query, ApolloProvider } from 'react-apollo';
+import gql from 'graphql-tag';
+import client from '../Util/ApolloClientManager';
+
 
 const { SERVER_DATE_FORMAT } = require('../config.js');
 
@@ -32,33 +36,47 @@ class CardUser extends Component {
               <center>Player since {moment(user.createdAt, SERVER_DATE_FORMAT).format('LL')}</center>
             </Typography>
             <Typography component="p">
-              <Table condensed hover className="CardTable-style">
-                <tbody>
-                  <tr>
-                    <td>Street Cred</td>
-                    <td>270</td>
-                  </tr>
-                  <tr>
-                    <td>Won</td>
-                    <td>150</td>
-                  </tr>
-                  <tr>
-                    <td>Lost</td>
-                    <td>15</td>
-                  </tr>
-                </tbody>
-              </Table>
+              <ApolloProvider client={client}>
+                <Query
+                  query={gql`
+                      {
+                        stats(userId:"${JSON.parse(localStorage.getItem('currentUser')).id}"){
+                          numberVotes,
+                          numberWin,
+                          numberLoose
+                        }
+                      }
+                      
+                    `}
+                >
+                  {({ loading, error, data }) => {
+                        console.log(`Error: ${error}`);
+                        console.log(data);
+                      if (loading) return <p>Loading...</p>;
+                      return (
+                        <Table condensed hover className="CardTable-style">
+                          <tbody>
+                            <tr>
+                              <td>Street Cred</td>
+                              <td>{data.stats.numberVotes}</td>
+                            </tr>
+                            <tr>
+                              <td>Won</td>
+                              <td>{data.stats.numberWin}</td>
+                            </tr>
+                            <tr>
+                              <td>Lost</td>
+                              <td>{data.stats.numberLoose}</td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      );
+                    }}
+                </Query>
+              </ApolloProvider>
             </Typography>
           </CardContent>
         </CardActionArea>
-        <CardActions>
-          <Button size="small" color="primary">
-            Share
-          </Button>
-          <Button size="small" color="primary">
-            Learn More
-          </Button>
-        </CardActions>
       </Card>
     );
   }
