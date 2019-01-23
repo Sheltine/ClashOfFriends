@@ -1,6 +1,6 @@
 # Clash of Friends
 _Julien Biefer, Léo Cortès et Johanna Melly_
-_29 octobre 2018_
+_Janvier 2019_
 
 ## Description générale du projet
 Le but de notre réseau social est de mettre en relation des utilisateurs afin qu'ils puissent se souffleter dans diverses catégories.
@@ -50,10 +50,11 @@ Un utilisateur a une page de profil sur laquelle il peut gérer diverses informa
 // TODO
 
 ## Auto-évaluation
-// TODO 
+// TODO
+
+Nous sommes partis sur un projet peut être un peu ambitieux. Ce système de challenges soulève beaucoup de questions et nécessite bien des étapes différentes. Les cas d'utilisations sont donc assez complexes.
 
 ## Il reste à implémenter
-
 Chaque utilisateur aurait un montant initial de point et ce dernier évoluerait selon les challenges gagnés ou perdus.
 
 Un classement des utilisateurs pourra être établi sur tout le réseau social ou pour des catégories données.
@@ -63,7 +64,6 @@ Une page principale montrera les combats en cours ou passés.
 Les utilisateurs auront une page de profile (« Mur ») où seront affiché leurs dernier combats ou les combats à venir, leur nombre de points, le nombre de joutes gagnées ou perdues, leur ratio victoire/défaite, nombre de relations,...
 
 ## Technologies utilisées
-
 * Frontend : [React.js](https://reactjs.org)
 * Backend : [GraphQL](https://graphql.org)
 * Base de donnée : [MongoDB](https://www.mongodb.com)
