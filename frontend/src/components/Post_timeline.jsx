@@ -3,32 +3,8 @@ import PropTypes from 'prop-types';
 import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
-import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from 'apollo-boost';
-import gql from 'graphql-tag';
-import { Query, ApolloProvider } from 'react-apollo';
 import Comment from '../comment';
 
-const { BACKEND_URL } = require('../config.js');
-
-const httpLink = new HttpLink({ uri: BACKEND_URL });
-console.log(httpLink);
-const authLink = new ApolloLink((operation, forward) => {
-    const token = localStorage.getItem('userToken');
-
-    // Use the setContext method to set the HTTP headers.
-    operation.setContext({
-    headers: {
-        authorization: token ? `Bearer ${token}` : '',
-    },
-});
-// Call the next link in the middleware chain.
-return forward(operation);
-});
-
-const client = new ApolloClient({
-    link: authLink.concat(httpLink), // Chain it with the HttpLink
-    cache: new InMemoryCache(),
-});
 
 // ICI récupération d'un post en particulier selon son id
 // TODO: remplacer this.props.blablabla par les champs de l'objet récupéré
@@ -53,171 +29,151 @@ function displayContent(category, content) {
       return null;
   }
 }
+function displayWin(challenger, challenged, challengerContent, challengedContent, nvbChallenger, nvbChallenged) {
+  console.log('on est la lol', challenger);
+  if (nvbChallenger === nvbChallenged) {
+    return (
+      <div>
+        <h2>{challenger} and {challenged} were even!</h2>
+        <Panel.Body>
+              <div className="row">
+                <blockquote>{challengerContent}</blockquote><i className="pull-right">- {challenger}</i><br />
+                <blockquote>{challengedContent}</blockquote><i className="pull-right">- {challenged}</i><br />
+              </div>
+              <div className="row">
+                <ListGroup componentClass="ul">
+                  {
+                    comments.map(comment => (
+                      <div>
+                        <ListGroupItem className="ListComments-style"><b>{comment.user}</b>: {comment.comment}</ListGroupItem>
+                      </div>))
+                  }
+                </ListGroup>
+              </div>
+          <form>
+                <TextField
+                  className="commentBox"
+                  type="text"
+                  hintText="Comment"
+                  floatingLabelText="Comment"
+                  name="comment"
+                />
+                <Button variant="contained" type="submit">Comment</Button>
+              </form>
+
+        </Panel.Body>
+      </div>
+    );
+  }
+  let winner;
+  let loser;
+  let winnerContent;
+  let loserContent;
+  if (nvbChallenger > nvbChallenged) {
+    winner = challenger;
+    loser = challenged;
+    winnerContent = challengerContent;
+    loserContent = challengedContent;
+  } else {
+    loser = challenger;
+    winner = challenged;
+    loserContent = challengerContent;
+    winnerContent = challengedContent;
+  }
+  return (
+    <div>
+      <Panel.Heading>
+        <h2>{winner} won against {loser}</h2>
+        </Panel.Heading>
+        <Panel.Body>
+              <div className="row">
+                <blockquote>{winnerContent}</blockquote><i className="pull-right">- {winner}</i><br />
+                <blockquote>{loserContent}</blockquote><i className="pull-right">- {loser}</i><br />
+              </div>
+              <div className="row">
+                <ListGroup componentClass="ul">
+                  {
+                    comments.map(comment => (
+                      <div>
+                        <ListGroupItem className="ListComments-style"><b>{comment.user}</b>: {comment.comment}</ListGroupItem>
+                      </div>))
+                  }
+                </ListGroup>
+              </div>
+          <form>
+                <TextField
+                  className="commentBox"
+                  type="text"
+                  hintText="Comment"
+                  floatingLabelText="Comment"
+                  name="comment"
+                />
+                <Button variant="contained" type="submit">Comment</Button>
+              </form>
+
+        </Panel.Body>
+      </div>
+  );
+}
 
 
 class PostTimeline extends Component {
+  constructor(props) {
+    super(props);
+    /*
+      if (this.props.nbvChallenger > this.props.nbvChallenged) {
+      console.log('1');
+      this.setState({
+          winner: this.props.challenger,
+          loser: this.props.challenged,
+          winContent: this.props.challengerContent,
+          loseContent: this.props.challengedContent,
+      });
+    } else if (this.props.nbvChallenger < this.props.nbvChallenged) {
+      console.log('2');
+
+      this.setState({
+        loser: this.props.challenger,
+        winner: this.props.challenged,
+        loseContent: this.props.challengerContent,
+        winContent: this.props.challengedContent,
+    });
+    } else {
+      console.log('3');
+
+      this.setState({
+        winner: this.props.challenger,
+        loser: this.props.challenged,
+        winContent: this.props.challengerContent,
+        loseContent: this.props.challengedContent,
+      });
+    } */
+    this.state = {
+      winner: '',
+      loser: '',
+      winContent: '',
+      loseContent: '',
+    };
+  }
+
   render() {
     return (
-      /*
       <div>
-        <div className="Post-div">
-          <div className="row">
-            <p bsSize="small">
-              {this.props.player1} {this.props.gameResult} against {this.props.player2}
-            </p>
-            {displayContent(this.props.category, this.props.content)}
-          </div>
-          <div className="row">
-            <Glyphicon className="Glyphicon-large pull-right" glyph="comment" />
-          </div>
-          <div className="row">
-            <ListGroup componentClass="ul">
-              {
-                comments.map(comment => (
-                  <div>
-                    <ListGroupItem className="ListComments-style">{comment.user}: {comment.comment}</ListGroupItem>
-                  </div>))
-              }
-            </ListGroup>
-          </div>
-        </div>
-      </div>
-      */
-
-      <div>
-        <div className="Post-div">
-          <div className="row">
-
-            <ApolloProvider client={client}>
-              <Query
-                query={gql`
-                {
-                  query {
-                    challenges(first: 10, offset: 5) {
-                      id,
-                      category {
-                        name
-                      },
-                      format {
-                        name
-                      },
-                      theme {
-                        name
-                      },
-                      comments(first: 2, offset: 1) {
-                        message,
-                        owner {
-                          username
-                        }
-                        createdAt,
-                        updatedAt
-                      }
-                      challenger {
-                        user {
-                          username
-                        }
-                        uploadDateStart,
-                        uploadDateEnd,
-                        input {
-                          content,
-                          uploadedAt,
-                          updatedAt
-                        },
-                        numberVotes,
-                      }
-                      challenged {
-                        user {
-                          username
-                        }
-                        uploadDateStart,
-                        uploadDateEnd,
-                        input {
-                          content,
-                          uploadedAt,
-                          updatedAt
-                        }
-                        numberVotes,
-                      },
-                      forWhomDidIVote {
-                        username
-                      },
-                      uploadTime,
-                      voteDateStart,
-                      voteDateEnd,
-                      createdAt,
-                      updatedAt
-                    }
-                  }
-                }
-              `}
-              >
-                {({ loading, error, data }) => {
-                  console.log(`Error: ${error}`);
-                  console.log('Data LISTE CHALLENGES:');
-                  console.log(data);
-                if (loading) return <p>Loading...</p>;
-
-                return (
-                  <div>
-                    <p>Welcome !</p>
-                  </div>
-                );
-              }}
-              </Query>
-
-            </ApolloProvider>
-            <Panel bsStyle="primary">
-              <Panel.Heading>
-                <Panel.Title componentClass="h3">{this.props.player1} {this.props.gameResult} against {this.props.player2}</Panel.Title>
-              </Panel.Heading>
-              <Panel.Body>
-                <div className="row">
-                  {displayContent(this.props.category, this.props.content)}
-                </div>
-                {/*
-                <div className="row">
-                  <Glyphicon className="Glyphicon-large pull-right" glyph="comment" />
-                </div>
-                */}
-
-                <div className="row">
-                  <ListGroup componentClass="ul">
-                    {
-                      comments.map(comment => (
-                        <div>
-                          <ListGroupItem className="ListComments-style"><b>{comment.user}</b>: {comment.comment}</ListGroupItem>
-                        </div>))
-                    }
-                  </ListGroup>
-                </div>
-
-                {/* TODO : DB Acces to post comment */}
-                <form>
-                  <TextField
-                    className="commentBox"
-                    type="text"
-                    hintText="Comment"
-                    floatingLabelText="Comment"
-                    name="comment"
-                  />
-                  <Button variant="contained" type="submit">Comment</Button>
-                </form>
-
-              </Panel.Body>
-            </Panel>
-          </div>
-        </div>
+        {console.log(this.props.challenger)}
+        {displayWin(this.props.challenger, this.props.challenged, this.props.challengerContent, this.props.challengedContent, this.props.nbvChallenger, this.props.nbvChallenged)}
       </div>
     );
   }
 }
 
 PostTimeline.propTypes = {
-  player1: PropTypes.string.isRequired,
-  gameResult: PropTypes.string.isRequired,
+  challenger: PropTypes.string.isRequired,
+  challenged: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
-  player2: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  challengerContent: PropTypes.string.isRequired,
+  challengedContent: PropTypes.string.isRequired,
+  nbvChallenger: PropTypes.string.isRequired,
+  nbvChallenged: PropTypes.string.isRequired,
 };
 
 export default PostTimeline;
