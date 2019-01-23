@@ -1,0 +1,385 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>TWEB Projet 2 - Présentation</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+        <link rel="stylesheet" href="css/animate.css">
+
+        <!-- ======== PERSONNAL STYLES ======== -->
+		<style media="all">
+			.contentleft {
+				display: table-cell;
+				vertical-align: middle;
+				float: left; 
+				width: 70%;
+                height: 100%;
+				border : 2px solid black;
+				}
+			.contentright {
+                float: right;
+				display: table-cell;
+                text-align: center;
+				vertical-align: middle;
+				width: 30%;
+                height: 100%;
+				border : 2px solid black;
+				}
+            .reveal section img {
+                margin: 15px 0px;
+                background: rgba(255, 255, 255, 0.12);
+                border: 4px solid #fff;
+                box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.25); }
+            .reveal section img.plain {
+                border: 0;
+                box-shadow: none;
+                margin: 0 0;
+            }
+            .reveal section img.sprintscreen {
+                border: 0;
+                margin: 0 0;
+                height: 180px;
+                align-self: center;
+                display: inline-block;
+            }
+            .reveal div.fullline{
+                width: 100%;
+            }
+
+            .reveal canvas.mychart{
+                background-color: rgba(81,81,81,0.8);
+                border-radius: 25px;
+                box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.25);"
+            }
+
+            .reveal h1,
+            .reveal h2,
+            .reveal h3,
+            .reveal h4,
+            .reveal h5,
+            .reveal h6 {
+                text-transform: none;
+            }
+
+			#header-left {
+				position: absolute;
+				top: 0%;
+				left: 0%;
+			}
+			#header-right {
+				position: absolute;
+				top: 0%;
+				right: 0%;
+			}
+			#footer-left {
+				position: absolute;
+				bottom: 0%;
+				left: 0%;
+			}
+
+            .reveal div.parent{
+                #border:1px solid red;
+                display:table;
+                height:100%;
+                width:100%;
+            }
+            .reveal div.left-box{
+                #background-color:#eee;
+                display: table-cell;
+                vertical-align:middle;
+                padding:3px;
+                width:70%;
+            }
+            .reveal div.right-box{
+                #background-color:#dddddd;
+                display: table-cell;
+                vertical-align:middle;
+                padding:3px;
+                width:30%;
+            }
+		</style>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	
+	
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<!-- ================================ TITRE ================================ -->
+				<section data-transition="convex" data-background="#00bcd4" data-background-transition="zoom">
+					<div>
+                        <h1>Clash of Friends</h1>
+
+                        <!-- ---- TYPED STRING ---->
+                        <div id="typed-strings">
+                            <!-- enter custom text below here -->
+                            <h1>TWEB</h1>
+                            <h2>Projet 2</h2>
+                            <!-- enter custom text above here -->
+                        </div>
+                        <span id="typed"></span>
+                        <!-- ---- END TYPED STRING ---->
+
+                        <p>
+                            <small>
+                                <i>
+                                    Julien Biefer, Léo Cortès, Johanna Melly
+                                </i>
+                            </small>
+                        </p>
+                    </div>
+                    <div style="width:100%">
+                        <img class="plain" src="img/heigvd.png" style="background: none;" align="left" height="100">
+                    </div>
+				</section>
+				<!-- ================================ PRESENTATION ================================ -->
+				<section data-transition="convex" data-background="#3f51b5" data-background-transition="zoom">
+					<section>
+						<h2>Présentation du projet</h2>
+                        <h3 data-animate="rollIn" data-relay="0.5">Réseau social challenging</h3>
+					</section>
+					<section>
+						<ul>
+							<li>Basé sur des duels entre amis</li>
+							<li>On peut soumettre un challenge a un ami</li>
+							<li>Système de vote par les utilisateurs pour départager</li>
+                        </ul>
+                        <img src="https://media.giphy.com/media/3oz8xVaphwj9oi1eow/giphy.gif" style="height: 400px" />
+					</section>
+					<section>
+                        <h3>Les challenges</h3>
+						<ul>
+							<li>Uplaod d'une ressource choisie</li>
+                            <li>Selon un format imposé</li>
+                            <li>Selon un thème imposé</li>
+                            <li>A fournir dans un temps imparti</li>
+                        </ul>
+                        <img src="https://media.giphy.com/media/3WPKHcTih1xwQ/giphy.gif">
+					</section>
+				</section>
+				<!-- ================================ GESTION ET ORGANISATION ================================ -->
+				<section data-transition="convex" data-background="#00bcd4" data-background-transition="zoom">
+					 <section>
+                        <h2>Technologies utilisées</h2>
+                        
+                        <table style="width:100%">
+                                <tr>
+                                    <td class="fragment fade-right" data-fragment-index="1" valign="middle">React</td>
+                                    <td class="fragment fade-left" data-fragment-index="1" align="center" valign="middle"><img class="plain" src="https://logos-download.com/wp-content/uploads/2016/09/React_logo_wordmark.png" height=80 style="margin: 0 0; background(0, 0, 255, 0.8);"> </td>
+                                </tr>
+                              <tr>
+                                <td class="fragment fade-right" data-fragment-index="2" valign="middle">GraphQL</td>
+                                <td class="fragment fade-left" data-fragment-index="2" align="center" valign="middle"><img class="plain" src="https://cdn-images-1.medium.com/max/2000/1*RHQ7lpGDV_M3yWRa9DiR2g.png" height=80> </td>
+                              </tr>
+                              <tr>
+                                <td class="fragment fade-right" data-fragment-index="3" valign="middle">MongoDB</td>
+                                <td class="fragment fade-left" data-fragment-index="3" align="center" valign="middle"><img class="plain" src="https://webassets.mongodb.com/_com_assets/cms/mongodb-logo-rgb-j6w271g1xn.jpg" height=80> </td>
+                              </tr>
+                              <tr>
+                              </tr>
+                            </table>
+                     </section>
+				</section>
+                <!-- ================================ DEFIS TWEB ================================ -->
+				<section data-transition="convex"data-background="#3f51b5" data-background-transition="zoom">
+					 <section>
+						<h2>Défis TWEB</h2>
+					 </section>
+                </section>
+                
+                <section data-transition="convex"data-background="#00bcd4" data-background-transition="zoom">
+                        <h3>Difficultés rencontrées</h3>
+                        <div class="parent">
+                            <div class="left-box">
+                                <ul>
+                                    <li class="fragment fade-up" data-fragment-index="1">lol</li>
+                                    <li class="fragment fade-up">lol</li>
+                                </ul>
+                            </div>
+                            <div class="right-box">
+                                <img class="fragment fade-left" data-fragment-index="1" src="https://media.giphy.com/media/ZKZiW6GSx8eSA/giphy.gif">
+                            </div>
+                        </div>​
+                    </section>
+				<!-- ================================ AMELIORATIONS ET BILAN ================================ -->
+				<section data-transition="convex" data-background="#3f51b5" data-background-transition="zoom">
+					<section>
+						<h2>Améliorations à faire</h2>
+                        <ul>
+                            <li class="fragment fade-down">Gestion des scores et des points</li>
+                            <li class="fragment fade-down">Classement global et par catégories</li>
+                            <li class="fragment fade-down">Autre catégories que du texte</li>
+                            <li class="fragment fade-down">Affichage des challenges fait et à venir sur le profil d'un user</li>
+                        </ul>
+                        <img src="img/todo.gif">
+					</section>
+
+                    <section>
+                        <h2>Bilan</h2>
+                        <ul>
+                            <li class="fragment fade-down">Première version fonctionnelle pour du texte</li>
+                            <li class="fragment fade-down">Logique déjà présente pour les catégories futures</li>
+                        </ul>
+                        <img src="img/happy.gif">
+					</section>
+				</section>
+                <!-- ================================ DEMONSTATION ================================ -->
+                <section data-transition="convex" data-background="#00bcd4" data-background-transition="zoom">
+                    <h2>Démonstration</h2>
+                    <img src="img/showtime.gif" height="500">
+                </section>
+                <!-- ================================ QUESTIONS ================================-->
+                <section data-transition="convex" data-background="#3f51b5" data-background-transition="zoom">
+                    <h2>Questions</h2>
+                    <img src="img/question.gif" data-animate="bounce" class="infinite">
+                </section>
+                <!-- ================================ SOURCES PHOTO ================================ -->
+				<section data-transition="convex" data-background="#00bcd4" data-background-transition="zoom">
+					<h2>Sources média</h2>
+						<p>
+							<font size=2>
+								<ul data-delay="0.5" data-animate="swing">
+									<li>https://giphy.com/gifs/lotr-gandalf-lord-of-the-rings-njYrp176NQsHS</li>
+									<li>https://giphy.com/gifs/debbyryan-debby-ryan-3oKIPchYaXx2YQybcY</li>
+									<li>https://tenor.com/view/gaming-timmy-turner-fairly-odd-parents-console-no-sleep-gif-5096256</li>
+									<li>https://tenor.com/view/the-fairly-odd-parents-timmy-video-game-pissed-mad-gif-4709934</li>
+									<li>https://maven.apache.org/images/maven-logo-black-on-white.png</li>
+									<li>https://image.flaticon.com/icons/svg/25/25231.svg</li>
+									<li>https://upload.wikimedia.org/wikipedia/commons/2/22/Hibernate_logo_a.png</li>
+                                    <li>https://fr.wikipedia.org/wiki/Fichier:JSON_vector_logo.svg</li>
+                                    <li>https://giphy.com/gifs/book-library-literacy-l0HlRnAWXxn0MhKLK</li>
+                                    <li>https://tenor.com/view/showtime-gif-4986952</li>
+                                    <li>https://giphy.com/gifs/running-usain-bolt-track-and-field-BilReW6166x7W</li>
+                                    <li>https://tenor.com/view/lazy-unproductive-productive-nothing-to-do-list-gif-5684151</li>
+                                    <li>https://giphy.com/gifs/cheer-cheering-11sBLVxNs7v6WA</li>
+								</ul>
+							</font>
+						</p>
+					</small>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+        <script src="lib/js/jquery.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/typed/typed.js', async: false , callback: function() { callTypedJs(); }},
+                    { src: 'plugin/mouse-pointer/mouse-pointer.js', async: true },
+                    { src: 'plugin/chart/Chart.min.js' },
+                    { src: 'plugin/chart/csv2chart.js' }
+				],
+                chart: {
+                    defaults: {
+                        global: {
+                            title: { fontColor: "#FFF" },
+                            legend: {
+                                labels: { fontColor: "#FFF" },
+                            },
+                        },
+                        scale: {
+                            scaleLabel: { fontColor: "#FFF" },
+                            gridLines: { color: "#FFF", zeroLineColor: "#FFF" },
+                            ticks: { fontColor: "#FFF" },
+                        }
+                    },
+                    line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ]},
+                    bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+                    pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+                    radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+                },
+			});
+		</script>
+
+        <!-- TO USE animate.css. FROM : https://github.com/hakimel/reveal.js/issues/833 -->
+        <script>
+            // Set animation delay if data-delay is specified
+            Reveal.addEventListener('ready', function ( event ) {
+                $('*[data-delay]').each( function () {
+                    var delay = $(this).attr("data-delay");
+                    $(this).css("-webkit-animation-delay", delay+"s");
+                    $(this).css("animation-delay", delay+"s");
+                });
+            });
+
+            // Set animation duration if data-duration is specified
+            Reveal.addEventListener('ready', function ( event ) {
+                $('*[data-duration]').each( function () {
+                    var duration = $(this).attr("data-duration");
+                    $(this).css("-webkit-animation-duration", duration+"s");
+                    $(this).css("animation-duration", duration+"s");
+                });
+            });
+
+            // Animate items that are not in a fragment
+            Reveal.addEventListener('slidechanged', function( event ) {
+                // Animate elements that are not a fragment (or in a fragment)
+                var filter = '*[data-animate]:not(.fragment):not(.fragment *)';
+
+                $(event.currentSlide).find(filter).each( function () {
+                    $(this).addClass('animated');
+                    $(this).addClass($(this).attr('data-animate'));
+                });
+                $(event.previousSlide).find(filter).each( function () {
+                    $(this).removeClass('animated');
+                    $(this).removeClass($(this).attr('data-animate'));
+                });
+            });
+
+            // Animate fragments
+            Reveal.addEventListener('fragmentshown', function( event ) {
+                function loop(i, el) {
+                    if ($(el).attr('data-animate')) {
+                        $(el).addClass('animated');
+                        $(el).addClass($(el).attr('data-animate'));
+                    }
+                    $.each($(el).children().not('.fragment'), loop);
+                };
+                $.each(event.fragments, loop);
+            });
+
+            // Make the animation runnable again if fragment is hidden
+            Reveal.addEventListener('fragmenthidden', function( event ) {
+                function loop(i, el) {
+                    if ($(el).attr('data-animate')) {
+                        $(el).removeClass('animated');
+                        $(el).removeClass($(el).attr('data-animate'));
+                    }
+                    $.each($(el).children().not('.fragment'), loop);
+                };
+                $.each(event.fragments, loop);
+            });
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,414 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>GGStore - Présentation</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+		
+		<link rel="stylesheet" href="fontawesome.css">
+
+        <!-- ======== PERSONNAL STYLES ======== -->
+		<style media="all">
+			.contentleft {
+				display: table-cell;
+				vertical-align: middle;
+				float: left; 
+				width: 70%;
+				border : 2px solid black;
+				}
+			.contentright {
+				display: block;
+				vertical-align: middle;
+				float: right; 
+				width: 30%;
+				border : 2px solid black;
+				}
+
+            .reveal section img {
+                margin: 15px 0px;
+                background: rgba(255, 255, 255, 0.12);
+                border: 4px solid #fff;
+                box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.25); }
+
+            .reveal section img.plain {
+                border: 0;
+                box-shadow: none;
+                margin: 0 0;
+            }
+
+            .reveal section img.sprintscreen {
+                border: 0;
+                margin: 0 0;
+                height: 180px;
+                align-self: center;
+                display: inline-block;
+            }
+
+            .reveal div.fullline{
+                width: 100%;
+            }
+
+			#header-left {
+				position: absolute;
+				top: 0%;
+				left: 0%;
+			}
+			#header-right {
+				position: absolute;
+				top: 0%;
+				right: 0%;
+			}
+			#footer-left {
+				position: absolute;
+				bottom: 0%;
+				left: 0%;
+			}
+		</style>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	
+	
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<!-- ================================ TITRE ================================ -->
+				<section data-transition="convex" data-background="#99ebff" data-background-transition="zoom">
+					<div>
+                        <h1>GGStore</h1>
+                        <h2>Présentation finale</h2>
+                        <p>
+                            <small>
+                                <i>
+                                    Julien Biefer, Léo Cortès, David Jaquet, Johanna Melly, Adam Zouari
+                                </i>
+                            </small>
+                        </p>
+                    </div>
+                    <div style="width:100%">
+                        <img class="plain" src="img/heigvd.png" style="background: none;" align="left" height="100">
+                    </div>
+				</section>
+				<!-- ================================ OBJECTIFS ET FONCTIONNALITES ================================ -->
+				<section data-transition="convex" data-background="#99ff99" data-background-transition="zoom">
+					<section>
+						<h2>Objectifs et fonctionnalités</h2>
+						<h3>Plateforme de jeux</h3>
+					</section>
+					<section>
+						<ul>
+							<li>Gestion des utilisateur</li>
+							<li>Gestion des droits et privilèges</li>
+							<li>Joueur - Développeur - Admin</li>
+							<img src="img/notpass.gif">
+                        </ul>
+					</section>
+					<section>
+						<ul>
+							<li>Gestion de comptes</li>
+							<li>Reports et banissements</li>
+							<img src="img/blocked.gif">
+						</ul>
+					</section>
+					<section>
+						<ul>
+							<li>Gestions de jeux</li>
+							<li>Proposition et uplaod</li>
+							<li>Validation et suppression</li>
+							<img src="img/upload.gif">
+						</ul>
+					</section>
+					<section>
+						<ul>
+							<li>Lancement d'un jeu</li>
+							<li>Héberger la partie serveur du jeu concerné</li>
+							<center>
+								<img src = "img/gamer.gif" height=300>
+								<img src = "img/gamer2.gif" height=300>
+							</center>
+						</ul>
+					</section>
+				</section>
+				<!-- ================================ GESTION ET ORGANISATION ================================ -->
+				<section data-transition="convex" data-background="#ffff99" data-background-transition="zoom">
+					 <section>
+						<h2>Gestion de projet et organisation</h2>
+					 </section>
+					 
+					 <section>
+						 <h3>L'équipe</h3>
+                         <center><small><p style="margin: 0">En résumé </p></small></center>
+							<img src="img/david.png" height="500">
+					 </section>
+
+                    <section>
+                        <h3>Exécution des sprints</h3>
+                        <div class="contentleft" width="70%">
+                            <ul>
+                                <li class="fragment fade-up" data-fragment-index="1">Globalement fidèle à ce qui est prévu</li>
+                                <li class="fragment fade-up">Quelques débordements dus à rien</li>
+                                <li class="fragment fade-up">Une replanification effectuée</li>
+                                <li class="fragment fade-up">Gestion des scores abandonnée</li>
+                            </ul>
+                        </div>
+
+                        <div class="contentright" width="30%">
+                            <img class="fragment fade-left" data-fragment-index="1" src="img/sprint.gif">
+                        </div>
+                    </section>
+
+					 <section>
+                         <h4>Sprint 1</h4>
+                         <div class="fullline"><img src="img/init_sprint1.png" class="sprintscreen"></div>
+						 <div class="fullline"><img src="img/sprint1_start.png" class="sprintscreen"></div>
+                         <div class="fullline"><img src="img/sprint1_end.png" class="sprintscreen"></div>
+					 </section>
+                    <section>
+                        <h4>Sprint 2</h4>
+                        <div class="fullline"><img src="img/init_sprint2.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint2_start.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint2_end.png" class="sprintscreen"></div>
+                    </section>
+                    <section>
+                        <h4>Sprint 3</h4>
+                        <div class="fullline"><img src="img/init_sprint3.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint3_start.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint3_end.png" class="sprintscreen"></div>
+                    </section>
+                    <section>
+                        <h4>Sprint 4</h4>
+                        <div class="fullline"><img src="img/init_sprint4.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint4_start.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint4_end.png" class="sprintscreen"></div>
+                    </section>
+                    <section>
+                        <h4>Sprint 5</h4>
+                        <div class="fullline"> <img src="img/init_sprint5.png" class="sprintscreen"></div>
+                        <div class="fullline"> <img src="img/sprint5_start.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint5_end.png" class="sprintscreen"></div>
+                    </section>
+                    <section>
+                        <h4>Sprint 6</h4>
+                        <div class="fullline"><img src="img/init_sprint6.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint6_start.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint6_end.png" class="sprintscreen"></div>
+                    </section>
+                    <section>
+                        <h4>Sprint 7</h4>
+                        <div class="fullline"><img src="img/init_sprint7.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint7_start.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint7_end.png" class="sprintscreen"></div>
+                    </section>
+                    <section>
+                        <h4>Sprint 8</h4>
+                        <div class="fullline"><img src="img/init_sprint8.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint8_start.png" class="sprintscreen"></div>
+                        <div class="fullline"><img src="img/sprint8_end.png" class="sprintscreen"></div>
+                    </section>
+
+				</section>
+				<!-- ================================ AMELIORATIONS ================================ -->
+				<section data-transition="convex" data-background="#ff9999" data-background-transition="zoom">
+					 <section>
+						<h2>Améliorations à faire</h2>
+					 </section>
+					 
+					 <section>
+						<ul>
+							<li class="fragment fade-down">Gestion des scores</li>
+                            <li class="fragment fade-down">Ajout de conventions ? </li>
+                            <li class="fragment fade-down">Automatisation lors d'un upload</li>
+						</ul>
+                         <img src="img/todo.gif">
+					 </section>
+				</section>
+                <!-- ================================ LIBRAIRIES ================================ -->
+				<section data-transition="convex"data-background="#4d7e65" data-background-transition="zoom">
+					 <section>
+						<h2>Technologies et librairies utilisées</h2>
+					 </section>
+					 
+					 <section>
+					 
+					 <!--
+					     <div class="contentleft">
+							<ul>
+								<li>Hibernate</li>
+								<li>Maven</li>
+								<li>Github</li>
+								<li><s>Jackson</s> Gson</li>
+							</ul>
+						</div>
+
+						<span class="contentright">
+							<img src="img/hibernate.png" height=80 style="border:0px" />
+							<img src="img/maven.png" height=80 style="border:0px" />
+							<img src="img/git.png" height=80 style="border:0px" />
+						</span>
+						-->
+						
+						<table style="width:100%">
+						  <tr>
+							<td class="fragment fade-right" data-fragment-index="1" valign="middle">Hibernate</td>
+							<td class="fragment fade-left" data-fragment-index="1" align="center" valign="middle"><img class="plain" src="img/hibernate.png" height=80> </td>
+						  </tr>
+						  <tr>
+							<td class="fragment fade-right" data-fragment-index="2" valign="middle">Maven</td>
+							<td class="fragment fade-left" data-fragment-index="2" align="center" valign="middle"><img class="plain" src="img/maven.png" height=80 style="margin: 0 0; background(0, 0, 255, 0.8);"> </td>
+						  </tr>
+						  <tr>
+							<td class="fragment fade-right" data-fragment-index="3" valign="middle">Github</td>
+							<td class="fragment fade-left" data-fragment-index="3" align="center" valign="middle"><img class="plain" src="img/git.png" height=80> </td>
+						  </tr>
+						  <tr>
+							<td class="fragment fade-right" data-fragment-index="4" valign="middle"><s>Jackson</s> Gson</td>
+							<td class="fragment fade-left" data-fragment-index="4" align="center" valign="middle"><img class="plain" src="img/json.svg" height=80> </td>
+						  </tr>
+						  <tr>
+						  </tr>
+						</table>
+					 
+						<!--
+						<ul>
+							<li>Hibernate</li>
+							<li>Maven</li>
+							<li>Github</li>
+							<li> <s>Jackson</s> Gson</li>
+						</ul>
+						<img src="img/hibernate.png" height=100  border=0 />
+						<img src="img/maven.png" height=100 border=0 />
+						<img src="img/git.png" height=100 border=0 />
+						-->
+
+					 </section>
+				</section>
+                <!-- ================================ DEMONSTATION ================================ -->
+                <section data-transition="convex" data-background="#99ebff" data-background-transition="zoom">
+                    <h2>Démonstration</h2>
+                    <img src="img/showtime.gif" height="500">
+                </section>
+                <!-- ================================ QUESTIONS ================================-->
+                <section data-transition="convex" data-background="#99ff99" data-background-transition="zoom">
+                    <h2>Questions</h2>
+                    <img src="img/question.gif">
+                </section>
+                <!-- ================================ SOURCES PHOTO ================================ -->
+				<section data-transition="convex" data-background="#ffcc99" data-background-transition="zoom">
+					<h2>Sources photographiques</h2>
+						<p>
+							<font size=2>
+								<ul>
+									<li>https://giphy.com/gifs/lotr-gandalf-lord-of-the-rings-njYrp176NQsHS</li>
+									<li>https://giphy.com/gifs/debbyryan-debby-ryan-3oKIPchYaXx2YQybcY</li>
+									<li>https://tenor.com/view/gaming-timmy-turner-fairly-odd-parents-console-no-sleep-gif-5096256</li>
+									<li>https://tenor.com/view/the-fairly-odd-parents-timmy-video-game-pissed-mad-gif-4709934</li>
+									<li>https://maven.apache.org/images/maven-logo-black-on-white.png</li>
+									<li>https://image.flaticon.com/icons/svg/25/25231.svg</li>
+									<li>https://upload.wikimedia.org/wikipedia/commons/2/22/Hibernate_logo_a.png</li>
+                                    <li>https://fr.wikipedia.org/wiki/Fichier:JSON_vector_logo.svg</li>
+                                    <li>https://giphy.com/gifs/book-library-literacy-l0HlRnAWXxn0MhKLK</li>
+                                    <li>https://tenor.com/view/showtime-gif-4986952</li>
+                                    <li>https://giphy.com/gifs/running-usain-bolt-track-and-field-BilReW6166x7W</li>
+                                    <li>https://tenor.com/view/lazy-unproductive-productive-nothing-to-do-list-gif-5684151</li>
+								</ul>
+							</font>
+						</p>
+					</small>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+			controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				mouseWheel: true,
+				previewLinks: true,
+				menu: { // Menu works best with font-awesome installed: sudo apt-get install fonts-font-awesome
+					themes: false,
+					transitions: false,
+					markers: true,
+					hideMissingTitles: true,
+					custom: [
+				            { title: 'Plugins', icon: '<i class="fa fa-external-link"></i>', src: 'toc.html' },
+				            { title: 'About', icon: '<i class="fa fa-info"></i>', src: 'about.html' }
+				        ]
+				},
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					
+					// ADDED BY ME 
+					
+					{ src: 'plugin/menu/menu.js' },
+					{ src: 'plugin/chart/Chart.js' },
+					{ src: 'plugin/chalkboard/chalkboard.js' }
+					
+					
+				],
+				
+				chalkboard: { 
+					src: "chalkboard/chalkboard.json",
+					toggleChalkboardButton: { left: "80px" },
+					toggleNotesButton: { left: "130px" },
+// 					pen:  [ 'crosshair', 'pointer' ]
+//					theme: "whiteboard",
+//					background: [ 'rgba(127,127,127,.1)' , 'reveal.js-plugins/chalkboard/img/whiteboard.png' ],
+// 					pen:  [ 'crosshair', 'pointer' ]
+//					pen: [ url('reveal.js-plugins/chalkboard/img/boardmarker.png), auto' , 'url(reveal.js-plugins/chalkboard/img/boardmarker.png), auto' ],
+//				        color: [ 'rgba(0,0,255,1)', 'rgba(0,0,255,0.5)' ],
+//				        draw: [ (RevealChalkboard) ?  RevealChalkboard.drawWithPen : null , (RevealChalkboard) ? RevealChalkboard.drawWithPen : null ],
+				},
+				keyboard: {
+				    67: function() { RevealChalkboard.toggleNotesCanvas() },	// toggle chalkboard when 'c' is pressed
+				    66: function() { RevealChalkboard.toggleChalkboard() },	// toggle chalkboard when 'b' is pressed
+				    46: function() { RevealChalkboard.clear() },	// clear chalkboard when 'DEL' is pressed
+				     8: function() { RevealChalkboard.reset() },	// reset all chalkboard data when 'BACKSPACE' is pressed
+				    68: function() { RevealChalkboard.download() },	// downlad chalkboard drawing when 'd' is pressed
+					90: function() { Recorder.downloadZip(); }, 	// press 'z' to download zip containing audio files
+					84: function() { Recorder.fetchTTS(); } 	// press 't' to fetch TTS audio files
+				},
+				menu: {
+					numbers: true,
+					openSlideNumber: true,
+					themes: true,
+					themesPath: 'lib/reveal.js/css/theme/',
+					transitions: true,
+			        custom: [
+			            { title: 'Custom', icon: '<i class="fa fa-bookmark">', src: 'links.html' },
+			        ]
+				}
+				
+			});
+		</script>
+	</body>
+</html>
