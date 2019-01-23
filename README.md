@@ -61,6 +61,7 @@ Un utilisateur a une page de profil sur laquelle il peut gérer diverses informa
 // TODO
 
 Nous sommes partis sur un projet peut être un peu ambitieux. Ce système de challenges soulève beaucoup de questions et nécessite bien des étapes différentes. Les cas d'utilisations sont donc assez complexes. Toutes les fonctionnalités voulues n'ont pas pu être implémentées.
+Néanmoins, une première version fonctionnelle peut être présentée. Seul les challenges basés sur le texte sont possible, mais la logique est déjà implémentée pour pouvoir le faire avec d'autres types de fichiers (photos, sons, vidéos). Adapter le projet ne devrait donc pas être trop compliqué.
 
 ## Il reste à implémenter
 Chaque utilisateur aurait un montant initial de point et ce dernier évoluerait selon les challenges gagnés ou perdus.
