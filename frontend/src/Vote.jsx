@@ -19,70 +19,68 @@ class VotePage extends Component {
           <Sidebar />
         </div>
         <div>
-        <ApolloProvider client={client}>
-          <Query
-            query={gql`
-            {
-              votables {
-                id,
-                challenger {
-                  user {
-                    id,
-                    username
-                  },
-                  input {
-                    content,
-                    uploadedAt,
-                    updatedAt
+          <ApolloProvider client={client}>
+            <Query
+              query={gql`
+              {
+                votables {
+                  id,
+                  challenger {
+                    user {
+                      id,
+                      username
+                    },
+                    input {
+                      content,
+                      uploadedAt,
+                      updatedAt
+                    }
+                    numberVotes
                   }
-                  numberVotes
-                }
-                challenged {
-                  user {
-                    id,
-                    username
+                  challenged {
+                    user {
+                      id,
+                      username
+                    },
+                    input {
+                      content,
+                      uploadedAt,
+                      updatedAt
+                    }
+                    numberVotes
                   },
-                  input {
-                    content,
-                    uploadedAt,
-                    updatedAt
+                  forWhomDidIVote {
+                    id
                   }
-                  numberVotes
-                },
-                forWhomDidIVote {
-                  id
                 }
               }
-            }
-            `}
-          >
-            {({ loading, error, data }) => {
-              console.log(`Error: ${error}`);
+              `}
+            >
+              {({ loading, error, data }) => {
+                if (loading) return <p>Loading...</p>;
+                if (error) {
+                  return null;
+                }
 
-              if (loading) return <p>Loading...</p>;
-              if (error) {
-                return null;
-              }
-
-              return (
-                <>
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                  { data.votables.map(chall => (
-                    <div>
-                      <VoteLine challenge={chall} />
-                      <Divider variant="middle" />
-                    </div>
-                  )) }
-                </>
-              );
-            }}
-          </Query>
-
-        </ApolloProvider>
+                // This is really ugly but it works for now. We will fix later, trust us.
+                return (
+                  <>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    { data.votables.map(chall => (
+                      <div>
+                        <VoteLine challenge={chall} />
+                        <Divider variant="middle" />
+                      </div>
+                    )) }
+                  </>
+                );
+              }}
+            </Query>
+          </ApolloProvider>
         </div>
       </div>
     );

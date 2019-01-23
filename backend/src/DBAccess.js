@@ -310,7 +310,8 @@ class DBAccess {
     getChallenges(_first, _offset) {
         const query = Challenge.find({
             'challengerSide.input': { $exists: true },
-            'challengedSide.uploadDateEnd': { $lte: new Date() },
+            'challengedSide.input': { $exists: true },
+            voteDateEnd: { $lte: new Date() },
         });
         if (_offset && _offset > 0) { query.skip(_offset); }
         if (_first && _first > 0) { query.limit(_first); }

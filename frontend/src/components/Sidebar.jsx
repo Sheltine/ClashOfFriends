@@ -6,8 +6,6 @@ function handleSelect(selectedKey) {
     switch (selectedKey) {
       case '1':
        return <Redirect to="/register" />;
-      case '3.1':
-        return <p>coucou</p>;
       default:
         return null;
     }
@@ -23,10 +21,8 @@ class Sidebar extends Component {
                 Profile
         </NavItem>
         <NavDropdown title="Challenge" eventKey={3}>
-          <MenuItem eventKey={3.1}>Verbal</MenuItem>
-          <MenuItem eventKey={3.2}>Picture</MenuItem>
-          <MenuItem eventKey={3.3} href="/votes">Votes</MenuItem>
-          <MenuItem eventKey={3.3} href="/requested">Requested challenges</MenuItem>
+          <MenuItem href="/votes">Votes</MenuItem>
+          <MenuItem href="/requested">Requested challenges</MenuItem>
         </NavDropdown>
       </Nav>
     );

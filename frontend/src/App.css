@@ -57,6 +57,7 @@
   background-color: #00bcd4;
   box-shadow: 10px 10px 5px grey;
   margin-top: 20px;
+  margin-bottom: 40px;
 }
 
 .Glyphicon-large {
@@ -188,21 +189,21 @@ body {
   border: 2px solid #fff;
   color: #fff;
   text-align: center;
-  }
+}
 
-  .myAlert{
-    width: 250px;
-  }
+.myAlert{
+  width: 250px;
+}
 
-  .commentBox{
-    width:80%;
-  }
+.commentBox{
+  width:80%;
+}
 
-  .show-grid {
-    margin-top: 40px;
-    margin-bottom: 40px;
-  }
+.show-grid {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
 
-  .vote-box-username {
-    font-size: 1.2em;
-  }
+.vote-box-username {
+  font-size: 1.2em;
+}

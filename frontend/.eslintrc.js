@@ -15,5 +15,6 @@ module.exports = {
         "prefer-destructuring": 0,
         "no-undef": 0,
         "class-methods-use-this": 0,
+        "react/forbid-prop-types": 0,
     }
 };

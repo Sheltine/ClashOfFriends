@@ -26,34 +26,32 @@ class name extends Component {
 
   render() {
     return (
-      <div>
+      <div className="challenge-box">
         <h1>Challenge!</h1>
         <ButtonToolbar>
           <ButtonGroup>
-            { /* Those types could be added later in the project. Let's start with the basics
-            <Button name="Picture" bsSize="large" onClick={this.handleShow}>
+            { // Those types could be enabled later in the project. Let's start with the basics text upload
+            }
+            <Button name="Picture" bsSize="large" onClick={this.handleShow} disabled>
               <Glyphicon glyph="camera" />
               <br />
               Picture
             </Button>
-            <Button name="Sound" bsSize="large" onClick={this.handleShow}>
+            <Button name="Sound" bsSize="large" onClick={this.handleShow} disabled>
               <Glyphicon glyph="music" />
               <br />
               Sound
             </Button>
-            */ }
             <Button name="Verbal" bsSize="large" onClick={this.handleShow}>
               <Glyphicon glyph="pencil" />
               <br />
               Verbal
             </Button>
-            { /*
-            <Button name="Video" bsSize="large" onClick={this.handleShow}>
+            <Button name="Video" bsSize="large" onClick={this.handleShow} disabled>
               <Glyphicon glyph="film" />
               <br />
               Video
             </Button>
-            */ }
           </ButtonGroup>
         </ButtonToolbar>
         <div>

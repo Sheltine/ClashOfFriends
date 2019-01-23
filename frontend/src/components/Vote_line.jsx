@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import VoteBox from './Vote_box';
 import '../App.css';
 
@@ -14,7 +15,7 @@ class VoteLine extends Component {
         };
     }
 
-        hasChallengedVoted() {
+    hasChallengedVoted() {
         return this.state.votedFor && this.state.votedFor.id === this.state.challengedSide.user.id;
     }
 
@@ -46,5 +47,12 @@ class VoteLine extends Component {
         );
     }
 }
+
+VoteLine.propTypes = {
+    challengeId: PropTypes.string.isRequired,
+    challengerSide: PropTypes.object.isRequired,
+    challengedSide: PropTypes.object.isRequired,
+    votedFor: PropTypes.object.isRequired,
+};
 
 export default VoteLine;

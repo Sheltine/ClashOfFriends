@@ -89,37 +89,43 @@ const styles = theme => ({
 });
 
 class NavbarHead extends React.Component {
-  state = {
-    anchorEl: null,
-    mobileMoreAnchorEl: null,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      anchorEl: null,
+      mobileMoreAnchorEl: null,
+    };
+    this.handleProfileMenuOpen = this.handleProfileMenuOpen.bind(this);
+    this.handleMenuClose = this.handleMenuClose.bind(this);
+    this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
+    this.handleMobileMenuClose = this.handleMobileMenuClose.bind(this);
+  }
 
-  handleProfileMenuOpen = event => {
+  handleProfileMenuOpen(event) {
     this.setState({ anchorEl: event.currentTarget });
-  };
+  }
 
-  handleMenuClose = () => {
+  handleMenuClose() {
     this.setState({ anchorEl: null });
     this.handleMobileMenuClose();
-  };
+  }
 
-  handleMobileMenuOpen = event => {
+  handleMobileMenuOpen(event) {
     this.setState({ mobileMoreAnchorEl: event.currentTarget });
-  };
+  }
 
-  handleMobileMenuClose = () => {
+  handleMobileMenuClose() {
     this.setState({ mobileMoreAnchorEl: null });
-  };
+  }
 
   render() {
-    const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
-    const isMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const isMenuOpen = Boolean(this.state.anchorEl);
+    const isMobileMenuOpen = Boolean(this.state.mobileMoreAnchorEl);
 
     const renderMenu = (
       <Menu
-        anchorEl={anchorEl}
+        anchorEl={this.state.anchorEl}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={isMenuOpen}
@@ -132,7 +138,7 @@ class NavbarHead extends React.Component {
 
     const renderMobileMenu = (
       <Menu
-        anchorEl={mobileMoreAnchorEl}
+        anchorEl={this.state.mobileMoreAnchorEl}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={isMobileMenuOpen}
@@ -167,11 +173,6 @@ class NavbarHead extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            {/*
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
-              <MenuIcon />
-            </IconButton>
-            */}
             <Typography className={classes.title} variant="h6" color="inherit" noWrap>
               <Link to="/">Clash of Friends</Link>
             </Typography>
