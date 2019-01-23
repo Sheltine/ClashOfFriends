@@ -564,7 +564,7 @@ class DBAccess {
         });
     }
 
-    getStats(username) {
+    getStats(userId) {
         return this.getChallenges().then((challenges) => {
             console.log(challenges);
 
