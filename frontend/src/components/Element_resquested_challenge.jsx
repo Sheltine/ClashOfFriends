@@ -143,7 +143,6 @@ class RequestedChall extends Component {
 
 RequestedChall.propTypes = {
   challenger: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
   theme: PropTypes.string.isRequired,
   format: PropTypes.string.isRequired,
   uploadTime: PropTypes.string.isRequired,

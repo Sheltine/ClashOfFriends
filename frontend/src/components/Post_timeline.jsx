@@ -3,31 +3,9 @@ import PropTypes from 'prop-types';
 import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
-import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from 'apollo-boost';
 import gql from 'graphql-tag';
 
-const { BACKEND_URL } = require('../config.js');
-
-const httpLink = new HttpLink({ uri: BACKEND_URL });
-console.log(httpLink);
-const authLink = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem('userToken');
-
-  // Use the setContext method to set the HTTP headers.
-  operation.setContext({
-    headers: {
-      authorization: token ? `Bearer ${token}` : '',
-    },
-  });
-  // Call the next link in the middleware chain.
-  return forward(operation);
-});
-
-const client = new ApolloClient({
-  link: authLink.concat(httpLink), // Chain it with the HttpLink
-  cache: new InMemoryCache(),
-});
-
+import client from '../Util/ApolloClientManager';
 
 function displayWin(challenger, challenged, challengerContent, challengedContent, nvbChallenger, nvbChallenged, comments) {
   console.log('on est la lol');
@@ -36,7 +14,7 @@ function displayWin(challenger, challenged, challengerContent, challengedContent
       <div>
         <Panel bsStyle="primary">
           <Panel.Heading>
-            <h2>{challenger} and {challenged} were even!</h2>
+            <Panel.Title componentClass="h3">{challenger} and {challenged} were even! ({nvbChallenger} - {nvbChallenged})</Panel.Title>
           </Panel.Heading>
           <Panel.Body>
             <div className="row">
@@ -48,7 +26,10 @@ function displayWin(challenger, challenged, challengerContent, challengedContent
                 {
                   comments.map(comment => (
                     <div>
-                      <ListGroupItem className="ListComments-style"><b>{comment.owner.username}</b>: {comment.message}</ListGroupItem>
+                      <ListGroupItem className="ListComments-style">
+                        <b>{comment.owner.username}</b>: {comment.message}
+                        <div className="pull-right">{comment.createdAt}</div>
+                      </ListGroupItem>
                     </div>))
                 }
               </ListGroup>
@@ -63,22 +44,28 @@ function displayWin(challenger, challenged, challengerContent, challengedContent
   let loser;
   let winnerContent;
   let loserContent;
+  let nbWin;
+  let nbLose;
   if (nvbChallenger > nvbChallenged) {
     winner = challenger;
     loser = challenged;
     winnerContent = challengerContent;
     loserContent = challengedContent;
+    nbWin = nvbChallenger;
+    nbLose = nvbChallenged;
   } else {
     loser = challenger;
     winner = challenged;
     loserContent = challengerContent;
     winnerContent = challengedContent;
+    nbLose = nvbChallenger;
+    nbWin = nvbChallenged;
   }
   return (
     <div>
       <Panel bsStyle="primary">
         <Panel.Heading>
-          <h2>{winner} won against {loser}</h2>
+          <Panel.Title componentClass="h3">{winner} won against {loser} ({nbWin} - {nbLose})</Panel.Title>
         </Panel.Heading>
         <Panel.Body>
           <div className="row">
@@ -179,7 +166,6 @@ class PostTimeline extends Component {
 PostTimeline.propTypes = {
   challenger: PropTypes.string.isRequired,
   challenged: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
   challengerContent: PropTypes.string.isRequired,
   challengedContent: PropTypes.string.isRequired,
   nbvChallenger: PropTypes.string.isRequired,

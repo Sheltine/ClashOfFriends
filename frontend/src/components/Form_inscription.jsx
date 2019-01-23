@@ -111,7 +111,6 @@ class FormInscription extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.getDate = this.getDate.bind(this);
         this.passwordValidation = this.passwordValidation.bind(this);
-        this.usernameValidation = this.usernameValidation.bind(this);
   }
 
 
@@ -207,17 +206,6 @@ class FormInscription extends Component {
         return null;
       }
 
-      usernameValidation() {
-        const length = this.state.username.length;
-        if (length > 3 /* et qu'il n'est pas dans bd */) {
-            return 'success';
-        }
-        if (0/* n'est pas dans la bd */) {
-            return 'warning';
-        }
-        return 'error';
-      }
-
       birthdateValidation() {
         const length = this.state.birthdate.length;
         if (length !== 8 || !this.state.birthdate.match(/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{2}$/i)) {
@@ -278,9 +266,7 @@ class FormInscription extends Component {
           </FormGroup>
 
 
-          <FormGroup
-            validationState={this.usernameValidation()}
-          >
+          <FormGroup>
             <TextField
               hintText="Enter your Username"
               floatingLabelText="Username"

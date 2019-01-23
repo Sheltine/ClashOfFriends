@@ -49,10 +49,7 @@ class VoteLine extends Component {
 }
 
 VoteLine.propTypes = {
-    challengeId: PropTypes.string.isRequired,
-    challengerSide: PropTypes.object.isRequired,
-    challengedSide: PropTypes.object.isRequired,
-    votedFor: PropTypes.object.isRequired,
+    challenge: PropTypes.object.isRequired,
 };
 
 export default VoteLine;
