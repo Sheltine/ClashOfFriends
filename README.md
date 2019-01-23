@@ -41,7 +41,9 @@ Un utilisateur a une page de profil sur laquelle il peut gérer diverses informa
 ![](images/profile.png)
 ![](images/menu.png)
   - C'est depuis ici que vous pouvez modifier vos informations de profil
+  ![](images/infos.png)
   - C'est également depuis ici que vous pouvez suivre d'autre utilisateurs
+  ![](images/follow.png)
 - Pour créer un challenge : choisissez la catégorie sur la grosse boîte prévue à ce ette effet sur la page d'accueil (franchement, vous pouvez pas la manquer).
 ![](images/challbox.png)
   - Remplissez ensuite votre challenge avec le thème et format imposé dans le temps imparti
