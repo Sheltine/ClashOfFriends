@@ -67,8 +67,6 @@ Chaque utilisateur aurait un montant initial de point et ce dernier évoluerait 
 
 Un classement des utilisateurs pourra être établi sur tout le réseau social ou pour des catégories données.
 
-Une page principale montrera les combats en cours ou passés.
-
 Les utilisateurs auront une page de profile (« Mur ») où seront affiché leurs dernier combats ou les combats à venir, leur nombre de points, le nombre de joutes gagnées ou perdues, leur ratio victoire/défaite, nombre de relations,...
 
 ## Technologies utilisées
