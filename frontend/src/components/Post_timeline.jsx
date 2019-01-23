@@ -34,24 +34,30 @@ function displayWin(challenger, challenged, challengerContent, challengedContent
   if (nvbChallenger === nvbChallenged) {
     return (
       <div>
-        <h2>{challenger} and {challenged} were even!</h2>
-        <Panel.Body>
-          <div className="row">
-            <blockquote>{challengerContent}</blockquote><i className="pull-right">- {challenger}</i><br />
-            <blockquote>{challengedContent}</blockquote><i className="pull-right">- {challenged}</i><br />
-          </div>
-          <div className="row">
-            <ListGroup componentClass="ul">
-              {
-                    comments.map(comment => (
-                      <div>
-                        <ListGroupItem className="ListComments-style"><b>{comment.owner.username}</b>: {comment.message}</ListGroupItem>
-                      </div>))
-                  }
-            </ListGroup>
-          </div>
+        <Panel bsStyle="primary">
+          <Panel.Heading>
+            <Panel.Title componentClass="h3">{challenger} and {challenged} were even!</Panel.Title>
+          </Panel.Heading>
+          <Panel.Body>
+            <div className="row">
+              <blockquote>{challengerContent}</blockquote><i className="pull-right">- {challenger}</i><br />
+              <blockquote>{challengedContent}</blockquote><i className="pull-right">- {challenged}</i><br />
+            </div>
+            <div className="row">
+              <ListGroup componentClass="ul">
+                {
+                  comments.map(comment => (
+                    <div>
+                      <ListGroupItem className="ListComments-style"><b>{comment.owner.username}</b>: {comment.message}</ListGroupItem>
+                    </div>))
+                }
+              </ListGroup>
+            </div>
 
-        </Panel.Body>
+          </Panel.Body>
+        </Panel>
+
+
       </div>
     );
   }
@@ -72,29 +78,31 @@ function displayWin(challenger, challenged, challengerContent, challengedContent
   }
   return (
     <div>
-      <Panel.Heading>
-        <h2>{winner} won against {loser}</h2>
-      </Panel.Heading>
-      <Panel.Body>
-        <div className="row">
-          <blockquote>{winnerContent}</blockquote><i className="pull-right">- {winner}</i><br />
-          <blockquote>{loserContent}</blockquote><i className="pull-right">- {loser}</i><br />
-        </div>
-        <div className="row">
-          <ListGroup componentClass="ul">
-            {
-                    comments.map(comment => (
-                      <div>
-                        <ListGroupItem className="ListComments-style">
-                        <b>{comment.owner.username}</b>: {comment.message}
-                        <div className="pull-right">{comment.createdAt}</div>
-                        </ListGroupItem>
-                      </div>))
-                  }
-          </ListGroup>
-        </div>
+      <Panel bsStyle="primary">
+        <Panel.Heading>
+          <Panel.Title componentClass="h3">{winner} won against {loser}</Panel.Title>
+        </Panel.Heading>
+        <Panel.Body>
+          <div className="row">
+            <blockquote>{winnerContent}</blockquote><i className="pull-right">- {winner}</i><br />
+            <blockquote>{loserContent}</blockquote><i className="pull-right">- {loser}</i><br />
+          </div>
+          <div className="row">
+            <ListGroup componentClass="ul">
+              {
+                comments.map(comment => (
+                  <div>
+                    <ListGroupItem className="ListComments-style">
+                      <b>{comment.owner.username}</b>: {comment.message}
+                      <div className="pull-right">{comment.createdAt}</div>
+                    </ListGroupItem>
+                  </div>))
+              }
+            </ListGroup>
+          </div>
 
-      </Panel.Body>
+        </Panel.Body>
+      </Panel>
     </div>
   );
 }
@@ -113,9 +121,9 @@ class PostTimeline extends Component {
 
   handleTextChange(e) {
     this.setState({
-        [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value,
     });
-}
+  }
 
   commentChall() {
     if (this.state.commentText !== '') {
@@ -133,14 +141,14 @@ class PostTimeline extends Component {
             }
           }
         `,
-        }).then((response) => {
-            console.log(response);
-            this.setState({
-              commentList: response.data.comment.comments,
-            });
-        }).catch((error) => {
-          console.log(error);
+      }).then((response) => {
+        console.log(response);
+        this.setState({
+          commentList: response.data.comment.comments,
         });
+      }).catch((error) => {
+        console.log(error);
+      });
     }
   }
 
@@ -161,6 +169,9 @@ class PostTimeline extends Component {
           />
           <Button variant="contained" onClick={this.commentChall}>Comment</Button>
         </form>
+        <br />
+        <br />
+        <br />
       </div>
     );
   }
