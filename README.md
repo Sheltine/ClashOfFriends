@@ -55,13 +55,22 @@ Un utilisateur a une page de profil sur laquelle il peut gérer diverses informa
 // TODO
 
 ## Requêtes et données
-// TODO
+Un grand nombre de requêtes est fait. Un listing exhaustif serait un peu trop conséquent; cependant, voici un aperçu des requêtes et données principales de notre application:
+
+- Récupération d'un utilisateur et toutes les données personnelles qui le concernent
+- Récupération des challenges et de tout ce qui le compose
+  - Contenu
+  - Utilisateurs concernés
+  - Votes
+  - Dates
+  - Temps limite d'upload
+  - ...
 
 ## Auto-évaluation
-// TODO
+Nous sommes partis sur un projet peut-être un peu ambitieux. Ce système de challenges soulève beaucoup de questions et nécessite bien des étapes différentes. Les cas d'utilisations sont donc assez complexes. Toutes les fonctionnalités voulues n'ont pas pu être implémentées.
+Néanmoins, une première version fonctionnelle peut être présentée. Seuls les challenges basés sur le texte sont possibles, mais la logique est déjà implémentée pour pouvoir le faire avec d'autres types de fichiers (photos, sons, vidéos). Adapter le projet ne devrait donc pas être trop compliqué.
 
-Nous sommes partis sur un projet peut être un peu ambitieux. Ce système de challenges soulève beaucoup de questions et nécessite bien des étapes différentes. Les cas d'utilisations sont donc assez complexes. Toutes les fonctionnalités voulues n'ont pas pu être implémentées.
-Néanmoins, une première version fonctionnelle peut être présentée. Seul les challenges basés sur le texte sont possible, mais la logique est déjà implémentée pour pouvoir le faire avec d'autres types de fichiers (photos, sons, vidéos). Adapter le projet ne devrait donc pas être trop compliqué.
+Le visuel laisse aussi à désirer, mais nous avons préféré nous concentrer sur l'implémentation des fonctionnalités, étant partis du principe qu'elle était plus importante que l'esthétique de l'app.
 
 ## Il reste à implémenter
 Chaque utilisateur aurait un montant initial de point et ce dernier évoluerait selon les challenges gagnés ou perdus.
