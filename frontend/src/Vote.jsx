@@ -66,6 +66,11 @@ class VotePage extends Component {
 
               return (
                 <>
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
                   { data.votables.map(chall => (
                     <div>
                       <VoteLine challenge={chall} />
