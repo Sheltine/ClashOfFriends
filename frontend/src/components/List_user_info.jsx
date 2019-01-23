@@ -243,9 +243,8 @@ class UserInfo extends Component {
                 }
               }
             `,
-        }).then((response) => {
-          console.log(response);
-          this.state.typePass = 'valid';
+        }).then(() => {
+          this.setState({ typePass: 'valid' });
          }).catch((errors) => {
           console.log(errors);
           this.setState({
@@ -267,35 +266,33 @@ class UserInfo extends Component {
       });
       buttonType = 'edit';
 
-      client
-        .mutate({
-            mutation: gql`
-            mutation{
-              updateProfile(user : {
-                username:"${user.username}",
-                firstname:"${this.state.firstname}",
-                lastname:"${this.state.lastname}",
-                email:"${this.state.email}",
-                birthdate:"${this.state.birthdate}"
-                }) {
-                    id,
+      client.mutate({
+        mutation: gql`
+          mutation{
+            updateProfile(user : {
+              username:"${user.username}",
+              firstname:"${this.state.firstname}",
+              lastname:"${this.state.lastname}",
+              email:"${this.state.email}",
+              birthdate:"${this.state.birthdate}"
+              }) {
+                  id,
+                  username,
+                  firstname,
+                  lastname,
+                  email,
+                  birthdate,
+                  createdAt,
+                  followers {
                     username,
-                    firstname,
-                    lastname,
-                    email,
-                    birthdate,
-                    createdAt,
-                    followers {
-                      username,
-                    },
-                    following {
-                      username,
-                    },
-                }}
+                  },
+                  following {
+                    username,
+                  },
+              }}
             `,
         }).then((response) => {
-          console.log(response);
-          this.state.type = 'valid';
+          this.setState({ type: 'valid' });
           localStorage.setItem('currentUser', JSON.stringify(response.data.updateProfile));
           const newUser = JSON.parse(localStorage.getItem('currentUser'));
           this.setState({
@@ -308,7 +305,7 @@ class UserInfo extends Component {
           console.log(errors);
           this.setState({
             type: 'error',
-        });
+          });
         });
   }
 
