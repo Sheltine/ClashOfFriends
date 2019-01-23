@@ -19,8 +19,8 @@ class name extends Component {
 
   handleShow(event) {
     this.setState({
-        show: true,
-        category: event.target.name,
+      show: true,
+      category: event.target.name,
     });
   }
 
@@ -33,23 +33,25 @@ class name extends Component {
             <Button name="Picture" bsSize="large" onClick={this.handleShow}>
               <Glyphicon glyph="camera" />
               <br />
-Picture
+              Picture
             </Button>
+            { /* Those types could be added later in the project. Let's start with the basics
             <Button name="Sound" bsSize="large" onClick={this.handleShow}>
               <Glyphicon glyph="music" />
               <br />
-Sound
+              Sound
             </Button>
             <Button name="Verbal" bsSize="large" onClick={this.handleShow}>
               <Glyphicon glyph="pencil" />
               <br />
-Verbal
+              Verbal
             </Button>
             <Button name="Video" bsSize="large" onClick={this.handleShow}>
               <Glyphicon glyph="film" />
               <br />
-Video
+              Video
             </Button>
+            */ }
           </ButtonGroup>
         </ButtonToolbar>
         <div>

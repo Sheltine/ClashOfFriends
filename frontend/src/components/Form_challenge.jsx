@@ -5,30 +5,9 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import Select from 'react-select';
 import { Button } from 'react-bootstrap';
-import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from 'apollo-boost';
 import ReactCountdownClock from 'react-countdown-clock';
 
-const { BACKEND_URL } = require('../config.js');
-
-const httpLink = new HttpLink({ uri: BACKEND_URL });
-console.log(httpLink);
-const authLink = new ApolloLink((operation, forward) => {
-    const token = localStorage.getItem('userToken');
-
-    // Use the setContext method to set the HTTP headers.
-    operation.setContext({
-    headers: {
-        authorization: token ? `Bearer ${token}` : '',
-    },
-});
-// Call the next link in the middleware chain.
-return forward(operation);
-});
-
-const client = new ApolloClient({
-    link: authLink.concat(httpLink), // Chain it with the HttpLink
-    cache: new InMemoryCache(),
-});
+import client from '../Util/ApolloClientManager';
 
 const options = [];
 class ChallengeForm extends Component {
@@ -43,7 +22,6 @@ class ChallengeForm extends Component {
         console.log('options: ', options);
         super(props);
         this.state = {
-            file: '',
             challenger: '',
             ready: false,
             category: '5c2fe5379591d0aa36b42ceb',
@@ -67,76 +45,68 @@ class ChallengeForm extends Component {
 
   validateChallenge() {
       if (this.state.textfile !== '') {
-        client
-        .mutate({
+        client.mutate({
             mutation: gql`
-            mutation {
-                upload(
-                        challengeId:"${this.state.challengeId}", content:"${this.state.textfile}"
-                    )
-                {
-                    challenger{
-                        user{
-                            username
+                mutation {
+                    upload(
+                            challengeId:"${this.state.challengeId}", content:"${this.state.textfile}"
+                        )
+                    {
+                        challenger{
+                            user{
+                                username
+                            }
                         }
                     }
                 }
-             }
             `,
-        }).then((response) => {
-            console.log('CHALLENGE ACCEPTE! ', response);
-            this.setState({ accepeted: 'Accepted ! You can upload agin to modify you text.' });
-        }).catch((err) => {
-            console.log('TEXTFILE: ', this.state.textfile);
-            console.log('ID: ', this.state.challengeId);
-            console.log('erreur à l\'upload: ', err);
+        }).then(() => {
+            this.setState({ accepeted: 'Accepted ! You can upload again to modify you text.' });
+        }).catch(() => {
             this.setState({ accepeted: 'Error !' });
         });
     }
   }
 
     sendChallenge() {
-        client
-        .mutate({
+        client.mutate({
             mutation: gql`
-            mutation {
-                challenge(username: "${this.state.challenger}", categoryId: "${this.state.category}") {
-                  username,
-                  pendingChallenges {
-                    id,
-                    challenger {
-                      user{username}
-                    },
-                    challenged {
-                      user{username}
-                    },
-                    format {
-                      name
-                    },
-                    theme {
-                      name
-                    },
-                    category {
-                      name
-                    },
-                    uploadTime,
-                    createdAt,
-                    updatedAt
-                  }
+                mutation {
+                    challenge(username: "${this.state.challenger}", categoryId: "${this.state.category}") {
+                        username,
+                        pendingChallenges {
+                            id,
+                            challenger {
+                            user{username}
+                            },
+                            challenged {
+                            user{username}
+                            },
+                            format {
+                            name
+                            },
+                            theme {
+                            name
+                            },
+                            category {
+                            name
+                            },
+                            uploadTime,
+                            createdAt,
+                            updatedAt
+                        }
+                    }
                 }
-              }
             `,
         }).then((response) => {
-                console.log(response);
                 const PC = response.data.challenge.pendingChallenges[(response.data.challenge.pendingChallenges.length) - 1];
-                console.log('PCID: ', PC.id);
                 this.setState({
                     format: PC.format.name,
                     uploadtime: PC.uploadTime,
                     theme: PC.theme.name,
                     challengeId: PC.id,
                 });
-            }).catch((err) => { console.log('err: ', err); });
+        }).catch((err) => { console.log('err: ', err); });
     }
 
     displayReadyContent(ready) {
@@ -149,7 +119,7 @@ class ChallengeForm extends Component {
                 <p><strong>Theme: {this.state.theme}</strong></p>
                 <p><strong>Time to upload: {this.state.uploadtime}</strong></p>
 
-                {/*
+                {/* This could be add when file upload will be used
                 <input name="file" type="file" value={this.state.file} onChange={e => this.handleInputChange(e)} />
                 */}
 
@@ -188,10 +158,10 @@ class ChallengeForm extends Component {
 
     handleReady() {
         if (this.state.challenger !== '') {
-        this.setState({
-            ready: true,
-        });
-        this.sendChallenge();
+            this.setState({
+                ready: true,
+            });
+            this.sendChallenge();
         }
     }
 
@@ -199,10 +169,10 @@ class ChallengeForm extends Component {
         this.setState({
             challenger: event.value,
         });
-        console.log('Option selected:', this.state.challenger);
-      }
+    }
 
     // will send data to server
+    // Not functional yet.
     handleInputChange(e) {
         this.setState({
             [e.target.name]: e.target.file,
@@ -211,15 +181,13 @@ class ChallengeForm extends Component {
         reader.readAsDataURL(e.target.files[0]);
         reader.onload = (a) => {
             console.log('file', a.target.result);
-            client
-                .query({
+            client.query({
                     query: gql`
                     {
                         file(type:"png", file:"${a.target.result}")
                     }
                     `,
-                })
-                .then(result => console.log(result));
+                });
             };
     }
 
@@ -229,15 +197,15 @@ class ChallengeForm extends Component {
         });
     }
 
-// check https://www.npmjs.com/package/react-file-viewer/v/0.4.1 for fileviewer
-  render() {
-    return (
-      <div>
-        <h1>{this.props.category} Challenge</h1>
-        {this.displayReadyContent(this.state.ready)}
-      </div>
-    );
-  }
+    // check https://www.npmjs.com/package/react-file-viewer/v/0.4.1 for fileviewer
+    render() {
+        return (
+          <div>
+            <h1>{this.props.category} Challenge</h1>
+            {this.displayReadyContent(this.state.ready)}
+          </div>
+        );
+    }
 }
 
 ChallengeForm.propTypes = {

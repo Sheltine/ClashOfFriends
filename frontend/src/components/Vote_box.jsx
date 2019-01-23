@@ -1,30 +1,9 @@
-import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from 'apollo-boost';
 import React, { Component } from 'react';
 import { Alert } from 'react-bootstrap';
 import gql from 'graphql-tag';
 import '../App.css';
 
-const { BACKEND_URL } = require('../config.js');
-
-const httpLink = new HttpLink({ uri: BACKEND_URL });
-console.log(httpLink);
-const authLink = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem('userToken');
-
-  // Use the setContext method to set the HTTP headers.
-  operation.setContext({
-    headers: {
-      authorization: token ? `Bearer ${token}` : '',
-    },
-  });
-  // Call the next link in the middleware chain.
-  return forward(operation);
-});
-
-const client = new ApolloClient({
-  link: authLink.concat(httpLink), // Chain it with the HttpLink
-  cache: new InMemoryCache(),
-});
+import client from '../Util/ApolloClientManager';
 
 class VoteBox extends Component {
   constructor(props, context) {

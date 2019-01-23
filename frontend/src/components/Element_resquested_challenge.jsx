@@ -2,30 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal } from 'react-bootstrap';
 import gql from 'graphql-tag';
-import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from 'apollo-boost';
 import ReactCountdownClock from 'react-countdown-clock';
 
-const { BACKEND_URL } = require('../config.js');
-
-const httpLink = new HttpLink({ uri: BACKEND_URL });
-console.log(httpLink);
-const authLink = new ApolloLink((operation, forward) => {
-    const token = localStorage.getItem('userToken');
-
-    // Use the setContext method to set the HTTP headers.
-    operation.setContext({
-    headers: {
-        authorization: token ? `Bearer ${token}` : '',
-    },
-});
-// Call the next link in the middleware chain.
-return forward(operation);
-});
-
-const client = new ApolloClient({
-    link: authLink.concat(httpLink), // Chain it with the HttpLink
-    cache: new InMemoryCache(),
-});
+import client from '../Util/ApolloClientManager';
 
 class RequestedChall extends Component {
   constructor(props) {
@@ -49,82 +28,68 @@ class RequestedChall extends Component {
 
   timeout() {
     this.setState({
-        validateButton: 'disabled',
-    });
-}
-
-handleTextChange(e) {
-  this.setState({
-      [e.target.name]: e.target.value,
-  });
-}
-
-
-validateChallenge() {
-  if (this.state.textfile !== '') {
-    client
-    .mutate({
-        mutation: gql`
-        mutation {
-            upload(
-                    challengeId:"${this.props.challengeId}", content:"${this.state.textfile}"
-                )
-            {
-                challenger{
-                    user{
-                        username
-                    }
-                }
-            }
-         }
-        `,
-    }).then((response) => {
-        console.log('CHALLENGE ACCEPTE! ', response);
-    }).catch((err) => {
-        console.log('erreur à l\'upload: ', err);
+      validateButton: 'disabled',
     });
   }
-    console.log('C COUCOU LOL');
+
+  handleTextChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  validateChallenge() {
+    if (this.state.textfile !== '') {
+      client.mutate({
+        mutation: gql`
+          mutation {
+              upload(challengeId:"${this.props.challengeId}", content:"${this.state.textfile}")
+              {
+                challenger {
+                  user {
+                      username
+                  }
+                }
+              }
+            }
+        `,
+      });
+  }
 }
 
-
-  // eslint-disable-next-line class-methods-use-this
   rejectChall() {
-    client
-    .mutate({
-        mutation: gql`
+    client.mutate({
+      mutation: gql`
         mutation {
           rejectChallenge(challengeId: "${this.props.challengeId}") {
             id
           }
         }
-        `,
+      `,
     }).then((response) => {
         console.log('Successfully rejected! ', response);
-        return <p>done</p>;
+        return <p>Done</p>;
     }).catch((err) => {
         console.log('Rejection problem ', err);
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   acceptChall() {
-    client
-    .mutate({
-        mutation: gql`
+    client.mutate({
+      mutation: gql`
         mutation {
           acceptChallenge(challengeId: "${this.props.challengeId}") {
             id
           }
         }
-        `,
+      `,
     }).then((response) => {
-        console.log('Successfully accepted! ', response);
-        this.setState({
-          show: true,
-        });
+      console.log('Successfully accepted! ', response);
+      this.setState({
+        show: true,
+      });
     }).catch((err) => {
-        console.log('Acceptation problem ', err);
+      console.log('Acceptation problem ', err);
     });
     this.setState({
       show: true,
@@ -146,8 +111,6 @@ validateChallenge() {
               <Modal.Title>Answer to challenge</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-
-
               <div>
                 <h3>You&apos;re challenging {this.props.challenger}!</h3>
                 <p>You need to upload a text with these constraints:</p>
@@ -185,7 +148,6 @@ RequestedChall.propTypes = {
   format: PropTypes.string.isRequired,
   uploadTime: PropTypes.string.isRequired,
   challengeId: PropTypes.string.isRequired,
-  // date: PropTypes.string.isRequired,
 };
 
 
