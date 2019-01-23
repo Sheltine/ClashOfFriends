@@ -36,7 +36,7 @@ function displayWin(challenger, challenged, challengerContent, challengedContent
       <div>
         <Panel bsStyle="primary">
           <Panel.Heading>
-            <h2>{challenger} and {challenged} were even!</h2>
+            <Panel.Title componentClass="h3">{challenger} and {challenged} were even! ({nvbChallenger} - {nvbChallenged})</Panel.Title>
           </Panel.Heading>
           <Panel.Body>
             <div className="row">
@@ -48,7 +48,10 @@ function displayWin(challenger, challenged, challengerContent, challengedContent
                 {
                   comments.map(comment => (
                     <div>
-                      <ListGroupItem className="ListComments-style"><b>{comment.owner.username}</b>: {comment.message}</ListGroupItem>
+                      <ListGroupItem className="ListComments-style">
+                        <b>{comment.owner.username}</b>: {comment.message}
+                        <div className="pull-right">{comment.createdAt}</div>
+                      </ListGroupItem>
                     </div>))
                 }
               </ListGroup>
@@ -63,22 +66,28 @@ function displayWin(challenger, challenged, challengerContent, challengedContent
   let loser;
   let winnerContent;
   let loserContent;
+  let nbWin;
+  let nbLose;
   if (nvbChallenger > nvbChallenged) {
     winner = challenger;
     loser = challenged;
     winnerContent = challengerContent;
     loserContent = challengedContent;
+    nbWin = nvbChallenger;
+    nbLose = nvbChallenged;
   } else {
     loser = challenger;
     winner = challenged;
     loserContent = challengerContent;
     winnerContent = challengedContent;
+    nbLose = nvbChallenger;
+    nbWin = nvbChallenged;
   }
   return (
     <div>
       <Panel bsStyle="primary">
         <Panel.Heading>
-          <h2>{winner} won against {loser}</h2>
+          <Panel.Title componentClass="h3">{winner} won against {loser} ({nbWin} - {nbLose})</Panel.Title>
         </Panel.Heading>
         <Panel.Body>
           <div className="row">
