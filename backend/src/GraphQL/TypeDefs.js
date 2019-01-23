@@ -115,7 +115,7 @@ module.exports = gql`
         format(category: String!): [Format]
         challenges(first: Int, offset: Int): [Challenge]
         votables(first: Int, offset: Int): [Challenge]
-        stats(username: String!): Stats
+        stats(userId: String!): Stats
     }
     type Mutation {
         message: String
